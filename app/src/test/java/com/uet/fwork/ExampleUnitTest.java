@@ -1,4 +1,4 @@
-package com.uet.jobfinding;
+package com.uet.fwork;
 
 import org.junit.Test;
 

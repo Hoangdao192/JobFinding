@@ -1,4 +1,4 @@
-package com.uet.jobfinding;
+package com.uet.fwork;
 
 public class Constants {
     public static final String DATABASE_URL = "https://ecommerceapplication-10d5c-default-rtdb.asia-southeast1.firebasedatabase.app/";
