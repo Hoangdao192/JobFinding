@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "557453445554",
+    "firebase_url": "https://ecommerceapplication-10d5c-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "ecommerceapplication-10d5c",
+    "storage_bucket": "ecommerceapplication-10d5c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557453445554:android:9e7caeb23c3a159becfcab",
+        "android_client_info": {
+          "package_name": "com.uet.fwork"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557453445554-fd5oe95tkjtbbekq97qtrok6e748ohq6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-DL1GhShSQY-MkRdbweeHSOr13AJlNfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "557453445554-fd5oe95tkjtbbekq97qtrok6e748ohq6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
