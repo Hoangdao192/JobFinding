@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/registration_navigation_graph"
-    app:startDestination="@id/registerMainFragment">
+    app:startDestination="@id/createCompanyProfileFragment">
 
     <fragment
         android:id="@+id/registerMainFragment"
@@ -37,4 +37,8 @@
             android:id="@+id/action_registerCreateProfileFragment_to_registerVerifyDoneFragment"
             app:destination="@id/registerVerifyDoneFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/createCompanyProfileFragment"
+        android:name="com.uet.fwork.CreateCompanyProfileFragment"
+        android:label="CreateCompanyProfileFragment" />
 </navigation>

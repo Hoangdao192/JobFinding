@@ -22,10 +22,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.uet.fwork.user.Role;
 
 import java.io.IOException;
@@ -37,16 +42,20 @@ public class RegisterCreateProfileFragment extends Fragment {
     private EditText edtFullName, edtPhoneNumber, edtWorkEmail, edtMajor;
     private Spinner spnSex;
     private Button btnSubmit;
-    private DatabaseReference databaseReference;
     private ImageView imgCamera;
     private CircleImageView cirImgAvatar;
     private ActivityResultLauncher<Intent> mGetImage;
+    private Uri avatarImageUri;
+
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
+    private FirebaseStorage firebaseStorage;
 
     public RegisterCreateProfileFragment() {
         super(R.layout.fragment_enter_profile);
         databaseReference = FirebaseDatabase.getInstance(Constants.DATABASE_URL).getReference("/users");
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
     }
 
     @Override
@@ -62,13 +71,13 @@ public class RegisterCreateProfileFragment extends Fragment {
                             // do your operation from here....
                             if (data != null
                                     && data.getData() != null) {
-                                Uri selectedImageUri = data.getData();
+                                avatarImageUri = data.getData();
                                 Bitmap selectedImageBitmap = null;
                                 try {
                                     selectedImageBitmap
                                             = MediaStore.Images.Media.getBitmap(
                                             getActivity().getContentResolver(),
-                                            selectedImageUri);
+                                            avatarImageUri);
                                 }
                                 catch (IOException e) {
                                     e.printStackTrace();
@@ -141,5 +150,34 @@ public class RegisterCreateProfileFragment extends Fragment {
         databaseReference.child(userUID).child("phoneNumber").setValue(phoneNumber);
         databaseReference.child(userUID).child("role").setValue(Role.CANDIDATE);
         databaseReference.child(userUID).child("sex").setValue(sex);
+
+        uploadAvatarImage();
+    }
+
+    private void uploadAvatarImage() {
+        LoadingScreenDialog loadingScreenDialog = new LoadingScreenDialog(getContext());
+        loadingScreenDialog.show();
+        StorageReference storageReference = firebaseStorage.getReference("users/avatars");
+        StorageReference imageReference = storageReference.child(firebaseAuth.getCurrentUser().getUid());
+        imageReference.putFile(avatarImageUri)
+                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if (task.isCanceled()) {
+                            task.getException().printStackTrace();
+                        }
+
+
+                        imageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                databaseReference.child(firebaseAuth.getCurrentUser().getUid())
+                                        .child("avatar")
+                                        .setValue(task.getResult().toString());
+                                loadingScreenDialog.dismiss();
+                            }
+                        });
+                    }
+                });
     }
 }
