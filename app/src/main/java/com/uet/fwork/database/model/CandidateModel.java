@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 
 import lombok.Data;
 
-@Data
 public class CandidateModel extends UserModel {
     private String sex;
     private LocalDate dateOfBirth;
@@ -26,6 +25,22 @@ public class CandidateModel extends UserModel {
                 DateTimeFormatter.ofPattern("dd/MM/yyyy")
         );
     }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+//    public void setDateOfBirth(LocalDate dateOfBirth) {
+//        this.dateOfBirth = dateOfBirth;
+//    }
 
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = LocalDate.parse(

@@ -1,8 +1,5 @@
 package com.uet.fwork.database.model;
 
-import lombok.Data;
-
-@Data
 public class EmployerModel extends UserModel {
     private AddressModel addressModel;
 
@@ -16,6 +13,14 @@ public class EmployerModel extends UserModel {
             String contactEmail, AddressModel addressModel
     ) {
         super(id, email, avatar, fullName, phoneNumber, contactEmail, UserRole.EMPLOYER);
+        this.addressModel = addressModel;
+    }
+
+    public AddressModel getAddressModel() {
+        return addressModel;
+    }
+
+    public void setAddressModel(AddressModel addressModel) {
         this.addressModel = addressModel;
     }
 }

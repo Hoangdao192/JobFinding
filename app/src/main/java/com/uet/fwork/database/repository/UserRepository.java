@@ -38,4 +38,21 @@ public class UserRepository extends Repository {
             }
         });
     }
+
+    public void insertUser(UserModel userModel) {
+        rootDatabaseReference.child(userModel.getId()).setValue(userModel);
+    }
+
+    public void insertUser(
+            UserModel userModel,
+            Repository.OnQuerySuccessListener<Void> listener
+    ) {
+        rootDatabaseReference.child(userModel.getId()).setValue(userModel)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        listener.onSuccess(unused);
+                    }
+                });
+    }
 }
