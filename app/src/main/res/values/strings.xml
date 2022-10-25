@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">FWork</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="email_verify">An email has been sent to example@email.com with a link to verify your account.\nIf you not received the email after a few minutes, please check your spam folder.
+    </string>
+    <string name="account_created">Congratulations, your account has been successfully created. Login to use the app.</string>
+    <string name="dont_have_account">Don\'t have an account ? <font fgcolor="#F1B814">Signup</font> </string>
+    <string name="already_have_account">I already have an account. <font fgcolor="#F1B814">Login</font> </string>
+    <string name="you_are">Bạn là</string>
+    <string name="you_are_error">Bạn là <font fgcolor="#FF0000"> *</font></string>
+    <string-array name="sex_list">
+        <item>Nam</item>
+        <item>Nữ</item>
+        <item>Khác</item>
+    </string-array>
 </resources>
