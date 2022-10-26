@@ -1,9 +1,5 @@
 package com.uet.fwork.database.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 public class AddressModel {
     private String province;
     private String district;
