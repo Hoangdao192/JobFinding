@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/registration_navigation_graph"
-    app:startDestination="@id/createCompanyProfileFragment">
+    app:startDestination="@id/registerMainFragment">
 
     <fragment
         android:id="@+id/registerMainFragment"

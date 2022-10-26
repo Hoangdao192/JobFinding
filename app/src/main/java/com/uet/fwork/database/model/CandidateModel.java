@@ -3,8 +3,6 @@ package com.uet.fwork.database.model;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import lombok.Data;
-
 public class CandidateModel extends UserModel {
     private String sex;
     private LocalDate dateOfBirth;

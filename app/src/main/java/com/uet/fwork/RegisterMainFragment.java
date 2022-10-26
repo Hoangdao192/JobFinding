@@ -12,11 +12,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.database.FirebaseDatabase;
+import com.uet.fwork.database.model.CandidateModel;
+import com.uet.fwork.database.model.UserModel;
+import com.uet.fwork.database.model.UserRole;
+import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.user.Role;
 
 import java.util.HashMap;
@@ -26,6 +33,7 @@ public class RegisterMainFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
+    private UserRepository userRepository;
 
     private TextInputLayout edtEmail;
     private TextInputLayout edtPassword, edtRePassword;
@@ -38,6 +46,7 @@ public class RegisterMainFragment extends Fragment {
         super(R.layout.fragment_register_main);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance(Constants.DATABASE_URL);
+        userRepository = new UserRepository(firebaseDatabase);
     }
 
     @Override
@@ -91,27 +100,6 @@ public class RegisterMainFragment extends Fragment {
                 }
 
                 createUserAccount(email, password);
-
-//                firebaseAuth.createUserWithEmailAndPassword(email, password)
-//                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-//                            @Override
-//                            public void onSuccess(AuthResult authResult) {
-//                                LoadingScreenDialog dialog = new LoadingScreenDialog(getContext());
-//                                dialog.show();
-//                                firebaseAuth.getCurrentUser().sendEmailVerification()
-//                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                            @Override
-//                                            public void onSuccess(Void unused) {
-//                                                createUserData();
-//                                                dialog.dismiss();
-//                                                Navigation.findNavController(getActivity(), R.id.navigation_host)
-//                                                        .navigate(R.id.action_registerMainFragment_to_registerVerifyRequestFragment);
-//                                            }
-//                                        });
-//                            }
-//                        });
-//                Navigation.findNavController(getActivity(), R.id.navigation_host)
-//                        .navigate(R.id.action_registerMainFragment_to_registerVerifyRequestFragment);
             }
         });
     }
@@ -146,10 +134,23 @@ public class RegisterMainFragment extends Fragment {
                                     }
                                 });
                     }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        if (e instanceof FirebaseAuthUserCollisionException) {
+                            edtEmail.setError("Email đã được sử dụng.");
+                        } else if (e instanceof FirebaseAuthWeakPasswordException) {
+                            edtPassword.setError("Mật khẩu phải chứa ít nhất 6 kí tự");
+                        }
+                    }
                 });
     }
 
-    //  Khởi tạo data ban đầu cho user
+    /**
+     *  Khởi tạo data ban đầu cho user
+     */
     private void createUserData() {
         String email = edtEmail.getEditText().getText().toString();
         String role = "";
@@ -160,17 +161,9 @@ public class RegisterMainFragment extends Fragment {
             case R.id.radEmployer: role = Role.EMPLOYER; break;
         }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("id", userUID);
-        data.put("email", email);
-        data.put("role", role);
-        data.put("fullName", "");
-        data.put("phoneNumber", "");
-        data.put("sex", "");
-        data.put("avatar", "");
-        data.put("major", "");
-
-        firebaseDatabase.getReference("users")
-                .child(userUID).setValue(data);
+        UserModel userModel = new UserModel(
+                userUID, email, "", "", "", "", role
+        );
+        userRepository.insertUser(userModel);
     }
 }

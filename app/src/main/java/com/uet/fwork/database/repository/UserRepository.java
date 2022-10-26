@@ -8,7 +8,13 @@ import com.uet.fwork.database.model.EmployerModel;
 import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.model.UserRole;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UserRepository extends Repository {
+
+    private static UserRepository INSTANCE = null;
+
     //  Path from root node
     public static final String databaseReferencePath = "users/";
 
@@ -54,5 +60,9 @@ public class UserRepository extends Repository {
                         listener.onSuccess(unused);
                     }
                 });
+    }
+
+    public void updateUser(String userUID, Map<String, Object> updateDataMap) {
+        rootDatabaseReference.child(userUID).updateChildren(updateDataMap);
     }
 }

@@ -31,9 +31,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.uet.fwork.database.model.CandidateModel;
+import com.uet.fwork.database.model.EmployerModel;
+import com.uet.fwork.database.model.UserModel;
+import com.uet.fwork.database.model.UserRole;
+import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.user.Role;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,12 +57,14 @@ public class RegisterCreateProfileFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private FirebaseStorage firebaseStorage;
+    private UserRepository userRepository;
 
     public RegisterCreateProfileFragment() {
         super(R.layout.fragment_enter_profile);
         databaseReference = FirebaseDatabase.getInstance(Constants.DATABASE_URL).getReference("/users");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
+        userRepository = new UserRepository(FirebaseDatabase.getInstance());
     }
 
     @Override
@@ -142,14 +151,11 @@ public class RegisterCreateProfileFragment extends Fragment {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         String userUID = firebaseUser.getUid();
 
-        databaseReference.child(userUID).child("id").setValue(userUID);
-        databaseReference.child(userUID).child("avatar").setValue("");
-        databaseReference.child(userUID).child("workEmail").setValue(workEmail);
-        databaseReference.child(userUID).child("fullName").setValue(fullName);
-        databaseReference.child(userUID).child("major").setValue(major);
-        databaseReference.child(userUID).child("phoneNumber").setValue(phoneNumber);
-        databaseReference.child(userUID).child("role").setValue(Role.CANDIDATE);
-        databaseReference.child(userUID).child("sex").setValue(sex);
+        CandidateModel candidateModel = new CandidateModel(
+                userUID, firebaseUser.getEmail(), "",
+                fullName, phoneNumber, workEmail, sex, "26/10/2002"
+        );
+        userRepository.insertUser(candidateModel);
 
         uploadAvatarImage();
     }
@@ -165,18 +171,21 @@ public class RegisterCreateProfileFragment extends Fragment {
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         if (task.isCanceled()) {
                             task.getException().printStackTrace();
+                        } else {
+                            imageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
+                                    String userUID = firebaseAuth.getCurrentUser().getUid();
+                                    Map<String, Object> updateData = new HashMap<>();
+                                    updateData.put("avatar", task.getResult().toString());
+                                    userRepository.updateUser(
+                                            userUID,
+                                            updateData
+                                    );
+                                    loadingScreenDialog.dismiss();
+                                }
+                            });
                         }
-
-
-                        imageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Uri> task) {
-                                databaseReference.child(firebaseAuth.getCurrentUser().getUid())
-                                        .child("avatar")
-                                        .setValue(task.getResult().toString());
-                                loadingScreenDialog.dismiss();
-                            }
-                        });
                     }
                 });
     }

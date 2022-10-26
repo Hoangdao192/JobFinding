@@ -91,13 +91,13 @@ public class CreateCompanyProfileFragment extends Fragment {
                             provinceMap.add(Pair.create(jsonObject.getInt("code"), jsonObject.getString("name")));
                         }
 
-                        ArrayAdapter<Pair<Integer, String>> adapter
-                                = new ArrayAdapter<>(
-                                        getContext(),
-                                        R.layout.custom_spinner_dropdown,
-                                        a
-                                );
-                        spnProvince.setAdapter(adapter);
+//                        ArrayAdapter<Pair<Integer, String>> adapter
+//                                = new ArrayAdapter<>(
+//                                        getContext(),
+//                                        R.layout.custom_spinner_dropdown,
+//                                        a
+//                                );
+//                        spnProvince.setAdapter(adapter);
 
                     }
                 } catch (MalformedURLException e) {
