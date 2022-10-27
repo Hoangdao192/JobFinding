@@ -1,7 +1,7 @@
 package com.uet.fwork.database.model;
 
 public class EmployerModel extends UserModel {
-    private AddressModel addressModel;
+    private AddressModel address;
 
     public EmployerModel() {
         super();
@@ -13,14 +13,14 @@ public class EmployerModel extends UserModel {
             String contactEmail, AddressModel addressModel
     ) {
         super(id, email, avatar, fullName, phoneNumber, contactEmail, UserRole.EMPLOYER);
-        this.addressModel = addressModel;
+        this.address = addressModel;
     }
 
-    public AddressModel getAddressModel() {
-        return addressModel;
+    public AddressModel getAddress() {
+        return address;
     }
 
-    public void setAddressModel(AddressModel addressModel) {
-        this.addressModel = addressModel;
+    public void setAddress(AddressModel address) {
+        this.address = address;
     }
 }

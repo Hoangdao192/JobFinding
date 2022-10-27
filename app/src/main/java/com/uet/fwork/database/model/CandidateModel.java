@@ -32,8 +32,12 @@ public class CandidateModel extends UserModel {
         this.sex = sex;
     }
 
-    public LocalDate getDateOfBirth() {
+    public LocalDate getDateOfBirthOrigin() {
         return dateOfBirth;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth.getDayOfMonth() + "/" + dateOfBirth.getMonthValue() + "/" + dateOfBirth.getYear();
     }
 
 //    public void setDateOfBirth(LocalDate dateOfBirth) {

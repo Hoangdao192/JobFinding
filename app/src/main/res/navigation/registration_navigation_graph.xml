@@ -20,8 +20,15 @@
         android:label="fragment_register_verify_request"
         tools:layout="@layout/fragment_register_verify_request" >
         <action
+            app:popUpTo="@id/registerMainFragment"
+            app:popUpToInclusive="true"
             android:id="@+id/action_registerVerifyRequestFragment_to_registerCreateProfileFragment"
             app:destination="@id/registerCreateProfileFragment" />
+        <action
+            app:popUpTo="@id/registerMainFragment"
+            app:popUpToInclusive="true"
+            android:id="@+id/action_registerVerifyRequestFragment_to_createCompanyProfileFragment"
+            app:destination="@id/createCompanyProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerVerifyDoneFragment"
@@ -34,11 +41,20 @@
         android:label="fragment_enter_profile"
         tools:layout="@layout/fragment_enter_profile" >
         <action
+            app:popUpTo="@id/registerMainFragment"
+            app:popUpToInclusive="true"
             android:id="@+id/action_registerCreateProfileFragment_to_registerVerifyDoneFragment"
             app:destination="@id/registerVerifyDoneFragment" />
     </fragment>
     <fragment
         android:id="@+id/createCompanyProfileFragment"
         android:name="com.uet.fwork.CreateCompanyProfileFragment"
-        android:label="CreateCompanyProfileFragment" />
+        android:label="CreateCompanyProfileFragment"
+        tools:layout="@layout/fragment_enter_profile_company">
+        <action
+            app:popUpTo="@id/registerMainFragment"
+            app:popUpToInclusive="true"
+            android:id="@+id/action_createCompanyProfileFragment_to_registerVerifyDoneFragment"
+            app:destination="@id/registerVerifyDoneFragment" />
+    </fragment>
 </navigation>

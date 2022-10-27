@@ -58,17 +58,24 @@
                 android:layout_marginLeft="3dp"
                 app:layout_constraintLeft_toLeftOf="@id/edtCompanyName"/>
 
-            <EditText
-                android:id="@+id/edtCompanyName"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lexenddeca_light"
-                android:inputType="textPersonName"
-                android:hint="Nhập tên công ty"
-                android:textColor="@color/purple"
-                android:paddingBottom="20dp"
+                android:id="@+id/edtCompanyName"
                 app:layout_constraintTop_toBottomOf="@id/txtCompanyName"
-                tools:layout_editor_absoluteX="40dp" />
+                app:boxBackgroundColor="@android:color/transparent"
+                android:paddingStart="0dp">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lexenddeca_light"
+                    android:inputType="textPersonName"
+                    android:hint="Nhập tên công ty"
+                    android:textColor="@color/purple"
+                    android:paddingBottom="20dp"
+                    tools:layout_editor_absoluteX="40dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -83,17 +90,22 @@
                 android:layout_marginLeft="3dp"
                 app:layout_constraintLeft_toLeftOf="@id/edtCompanyName"/>
 
-            <EditText
-                android:id="@+id/edtPhoneNumber"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lexenddeca_light"
-                android:hint="Nhập số điện thoại"
-                android:textColor="@color/purple"
-                android:inputType="phone"
-                android:paddingBottom="20dp"
-                app:layout_constraintTop_toBottomOf="@id/txtPhoneNumber"
-                tools:layout_editor_absoluteX="40dp" />
+                android:id="@+id/edtPhoneNumber"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:layout_constraintTop_toBottomOf="@id/txtPhoneNumber">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lexenddeca_light"
+                    android:hint="Nhập số điện thoại"
+                    android:textColor="@color/purple"
+                    android:inputType="phone"
+                    android:paddingBottom="20dp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -102,24 +114,28 @@
                 android:fontFamily="@font/lexenddeca_bold"
                 android:textSize="20dp"
                 android:textColor="@color/purple"
-                android:inputType="textEmailAddress"
                 android:id="@+id/txtWorkEmail"
                 app:layout_constraintTop_toBottomOf="@id/edtPhoneNumber"
                 android:layout_marginTop="40dp"
                 android:layout_marginLeft="3dp"
                 app:layout_constraintLeft_toLeftOf="@id/edtCompanyName"/>
 
-            <EditText
-                android:id="@+id/edtWorkEmail"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lexenddeca_light"
-                android:hint="Nhập email của bạn"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/purple"
-                android:paddingBottom="20dp"
                 app:layout_constraintTop_toBottomOf="@id/txtWorkEmail"
-                tools:layout_editor_absoluteX="40dp" />
+                android:id="@+id/edtWorkEmail"
+                app:boxBackgroundColor="@android:color/transparent">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lexenddeca_light"
+                    android:hint="Nhập email của bạn"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/purple"
+                    android:paddingBottom="20dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <TextView
                 android:inputType="phone"
@@ -150,7 +166,7 @@
                 style="@style/MySpinner"
                 android:id="@+id/spnProvince"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/txtProvince"/>
 
             <TextView
@@ -168,7 +184,7 @@
                 style="@style/MySpinner"
                 android:id="@+id/spnDistrict"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/txtDistrict"/>
 
             <TextView
@@ -186,20 +202,24 @@
                 style="@style/MySpinner"
                 android:id="@+id/spnWard"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/txtWard"/>
 
-            <EditText
-                android:id="@+id/edtDetailAddress"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lexenddeca_light"
-                android:hint="Địa chỉ chi tiết"
-                android:textColor="@color/purple"
-                android:paddingBottom="15dp"
-                android:layout_marginTop="20dp"
                 app:layout_constraintTop_toBottomOf="@id/spnWard"
-                tools:layout_editor_absoluteX="40dp" />
+                android:id="@+id/edtDetailAddress"
+                app:boxBackgroundColor="@android:color/transparent">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lexenddeca_light"
+                    android:hint="Địa chỉ chi tiết"
+                    android:textColor="@color/purple"
+                    android:paddingBottom="15dp"
+                    tools:layout_editor_absoluteX="40dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:layout_width="match_parent"

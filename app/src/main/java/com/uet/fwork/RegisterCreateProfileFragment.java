@@ -26,17 +26,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.uet.fwork.database.model.CandidateModel;
-import com.uet.fwork.database.model.EmployerModel;
-import com.uet.fwork.database.model.UserModel;
-import com.uet.fwork.database.model.UserRole;
 import com.uet.fwork.database.repository.UserRepository;
-import com.uet.fwork.user.Role;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -55,13 +50,11 @@ public class RegisterCreateProfileFragment extends Fragment {
     private Uri avatarImageUri;
 
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference databaseReference;
     private FirebaseStorage firebaseStorage;
     private UserRepository userRepository;
 
     public RegisterCreateProfileFragment() {
         super(R.layout.fragment_enter_profile);
-        databaseReference = FirebaseDatabase.getInstance(Constants.DATABASE_URL).getReference("/users");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         userRepository = new UserRepository(FirebaseDatabase.getInstance());

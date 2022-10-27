@@ -46,6 +46,7 @@
             app:layout_constraintRight_toRightOf="parent"
             android:id="@+id/txtEmailVerify"/>
         <Button
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"

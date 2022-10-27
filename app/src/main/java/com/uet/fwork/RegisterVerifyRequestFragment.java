@@ -3,6 +3,7 @@ package com.uet.fwork;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -14,11 +15,13 @@ import androidx.navigation.Navigation;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.uet.fwork.database.model.UserRole;
 
 
 public class RegisterVerifyRequestFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
+    private String userRole;
     private CountDownTimer countDownTimer;
 
     private boolean canSendVerificationEmail = false;
@@ -34,6 +37,8 @@ public class RegisterVerifyRequestFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        userRole = (String) getArguments().get("role");
+
         Button btnEmailVerified = view.findViewById(R.id.emailVerified);
         btnResendEmail = view.findViewById(R.id.btnResendEmail);
 
@@ -64,10 +69,16 @@ public class RegisterVerifyRequestFragment extends Fragment {
                     return;
                 }
 
+                Log.d("ROLE", userRole);
                 if (user.isEmailVerified()) {
-                    System.out.println(user.getEmail());
-                    Navigation.findNavController(getActivity(), R.id.navigation_host)
-                            .navigate(R.id.action_registerVerifyRequestFragment_to_registerCreateProfileFragment);
+                    if (userRole.equals(UserRole.EMPLOYER)) {
+                        Navigation.findNavController(getActivity(), R.id.navigation_host)
+                                .navigate(R.id.action_registerVerifyRequestFragment_to_createCompanyProfileFragment);
+                    } else if (userRole.equals(UserRole.CANDIDATE)) {
+                        Navigation.findNavController(getActivity(), R.id.navigation_host)
+                                .navigate(R.id.action_registerVerifyRequestFragment_to_registerCreateProfileFragment);
+                    }
+
                 } else {
                     Toast.makeText(getActivity(), "Email is not verified", Toast.LENGTH_SHORT).show();
                 }

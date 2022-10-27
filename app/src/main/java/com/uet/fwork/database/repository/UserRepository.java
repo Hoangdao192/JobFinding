@@ -65,4 +65,12 @@ public class UserRepository extends Repository {
     public void updateUser(String userUID, Map<String, Object> updateDataMap) {
         rootDatabaseReference.child(userUID).updateChildren(updateDataMap);
     }
+
+    public void updateUser(String userUID, UserModel userModel) {
+        if (userModel.getRole().equals(UserRole.CANDIDATE)) {
+            rootDatabaseReference.child(userUID).setValue(((CandidateModel) userModel));
+        } else if (userModel.getRole().equals(UserRole.EMPLOYER)) {
+            rootDatabaseReference.child(userUID).setValue(((EmployerModel) userModel));
+        }
+    }
 }

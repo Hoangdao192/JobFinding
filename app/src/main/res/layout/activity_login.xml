@@ -85,4 +85,29 @@
         android:layout_marginTop="20dp"
         android:id="@+id/txtCreateAccount"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/txtCreateAccount"
+        android:layout_marginTop="50dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded_corner_10"
+        android:backgroundTint="@color/white"
+        android:elevation="3dp"
+        android:id="@+id/relLoginGoogle">
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/google"
+            android:id="@+id/imgGoogle"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đăng nhập bằng Google"
+            android:layout_toRightOf="@id/imgGoogle"
+            android:fontFamily="@font/poppins_semibold"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"/>
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

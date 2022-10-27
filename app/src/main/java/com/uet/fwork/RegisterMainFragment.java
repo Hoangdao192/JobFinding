@@ -1,5 +1,6 @@
 package com.uet.fwork;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,14 +21,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.database.FirebaseDatabase;
-import com.uet.fwork.database.model.CandidateModel;
 import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.model.UserRole;
 import com.uet.fwork.database.repository.UserRepository;
-import com.uet.fwork.user.Role;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class RegisterMainFragment extends Fragment {
 
@@ -41,6 +37,7 @@ public class RegisterMainFragment extends Fragment {
     private RadioGroup radGroupRole;
     private RadioButton radEmployee, radEmployer;
     private TextView txtIam;
+    private TextView txtLogin;
 
     public RegisterMainFragment() {
         super(R.layout.fragment_register_main);
@@ -60,6 +57,15 @@ public class RegisterMainFragment extends Fragment {
         radEmployee = view.findViewById(R.id.radEmployee);
         radEmployer = view.findViewById(R.id.radEmployer);
         txtIam = view.findViewById(R.id.txtIam);
+        txtLogin = view.findViewById(R.id.txtLogin);
+
+        txtLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
 
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,20 +123,32 @@ public class RegisterMainFragment extends Fragment {
      * @param password
      */
     private void createUserAccount(String email, String password) {
+        LoadingScreenDialog dialog = new LoadingScreenDialog(getContext());
+        dialog.show();
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        LoadingScreenDialog dialog = new LoadingScreenDialog(getContext());
-                        dialog.show();
                         firebaseAuth.getCurrentUser().sendEmailVerification()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
                                         createUserData();
                                         dialog.dismiss();
+
+                                        Bundle bundle = new Bundle();
+                                        String role = "";
+                                        switch (radGroupRole.getCheckedRadioButtonId()) {
+                                            case R.id.radEmployee: role = UserRole.CANDIDATE; break;
+                                            case R.id.radEmployer: role = UserRole.EMPLOYER; break;
+                                        }
+                                        bundle.putString("role", role);
+
                                         Navigation.findNavController(getActivity(), R.id.navigation_host)
-                                                .navigate(R.id.action_registerMainFragment_to_registerVerifyRequestFragment);
+                                                .navigate(
+                                                        R.id.action_registerMainFragment_to_registerVerifyRequestFragment,
+                                                        bundle
+                                                );
                                     }
                                 });
                     }
@@ -144,6 +162,7 @@ public class RegisterMainFragment extends Fragment {
                         } else if (e instanceof FirebaseAuthWeakPasswordException) {
                             edtPassword.setError("Mật khẩu phải chứa ít nhất 6 kí tự");
                         }
+                        dialog.dismiss();
                     }
                 });
     }
@@ -157,8 +176,8 @@ public class RegisterMainFragment extends Fragment {
         String userUID = firebaseAuth.getCurrentUser().getUid();
 
         switch (radGroupRole.getCheckedRadioButtonId()) {
-            case R.id.radEmployee: role = Role.CANDIDATE; break;
-            case R.id.radEmployer: role = Role.EMPLOYER; break;
+            case R.id.radEmployee: role = UserRole.CANDIDATE; break;
+            case R.id.radEmployer: role = UserRole.EMPLOYER; break;
         }
 
         UserModel userModel = new UserModel(

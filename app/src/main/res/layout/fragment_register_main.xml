@@ -145,6 +145,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="20dp"
-            android:id="@+id/txtCreateAccount"/>
+            android:id="@+id/txtLogin"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
