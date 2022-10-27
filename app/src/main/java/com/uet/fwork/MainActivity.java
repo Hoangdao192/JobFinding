@@ -1,5 +1,6 @@
 package com.uet.fwork;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -16,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+        } else {
+            startActivity(new Intent(this, HomeActivity.class));
         }
     }
 }
