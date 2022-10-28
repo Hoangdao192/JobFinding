@@ -1,5 +1,10 @@
 package com.uet.fwork.database.repository;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
@@ -26,6 +31,7 @@ public class UserRepository extends Repository {
             String userUID,
             Repository.OnQuerySuccessListener<UserModel> listener
     ) {
+        Log.d("GET USER", userUID);
         rootDatabaseReference.child(userUID).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
@@ -42,11 +48,23 @@ public class UserRepository extends Repository {
                     listener.onSuccess(null);
                 }
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 
     public void insertUser(UserModel userModel) {
-        rootDatabaseReference.child(userModel.getId()).setValue(userModel);
+        String userUID = userModel.getId();
+        if (userModel.getRole().equals(UserRole.CANDIDATE)) {
+            rootDatabaseReference.child(userUID).setValue(((CandidateModel) userModel));
+        } else if (userModel.getRole().equals(UserRole.EMPLOYER)) {
+            rootDatabaseReference.child(userUID).setValue(((EmployerModel) userModel));
+        } else {
+            rootDatabaseReference.child(userUID).setValue(userModel);
+        }
     }
 
     public void insertUser(

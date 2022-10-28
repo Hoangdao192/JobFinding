@@ -16,11 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private FirebaseAuth firebaseAuth;
-    private TextInputLayout edtEmail;
-    private TextInputLayout edtPassword;
-    private Button btnCreateAccount;
-
     public RegisterActivity() {
         super();
     }

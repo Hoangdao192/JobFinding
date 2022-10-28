@@ -81,4 +81,17 @@ public class UserModel {
     public void setRole(String role) {
         this.role = role;
     }
+
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "id='" + id + '\'' +
+                ", email='" + email + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", contactEmail='" + contactEmail + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }

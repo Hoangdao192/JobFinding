@@ -97,7 +97,7 @@ public class CreateCompanyProfileFragment extends Fragment {
                 ) {
                     submitUserData();
                     Navigation.findNavController(getActivity(), R.id.navigation_host)
-                            .navigate(R.id.action_createCompanyProfileFragment_to_registerVerifyDoneFragment);
+                            .navigate(R.id.action_registerCreateCompanyProfile_to_registerVerifyDoneFragment);
                 }
             }
         });
@@ -117,6 +117,7 @@ public class CreateCompanyProfileFragment extends Fragment {
         userRepository.getUserByUID(userUID, new Repository.OnQuerySuccessListener<UserModel>() {
             @Override
             public void onSuccess(UserModel result) {
+                System.out.println(result.toString());
                 EmployerModel employerModel = (EmployerModel) result;
                 employerModel.setFullName(companyName);
                 employerModel.setContactEmail(contactEmail);

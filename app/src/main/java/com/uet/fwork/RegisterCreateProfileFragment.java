@@ -47,7 +47,7 @@ public class RegisterCreateProfileFragment extends Fragment {
     private ImageView imgCamera;
     private CircleImageView cirImgAvatar;
     private ActivityResultLauncher<Intent> mGetImage;
-    private Uri avatarImageUri;
+    private Uri avatarImageUri = null;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseStorage firebaseStorage;
@@ -154,6 +154,9 @@ public class RegisterCreateProfileFragment extends Fragment {
     }
 
     private void uploadAvatarImage() {
+        if (avatarImageUri == null) {
+            return;
+        }
         LoadingScreenDialog loadingScreenDialog = new LoadingScreenDialog(getContext());
         loadingScreenDialog.show();
         StorageReference storageReference = firebaseStorage.getReference("users/avatars");

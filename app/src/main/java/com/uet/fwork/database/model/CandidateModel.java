@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 public class CandidateModel extends UserModel {
     private String sex;
-    private LocalDate dateOfBirth;
+    private String dateOfBirth;
 
     public CandidateModel() {
         super();
@@ -18,10 +18,7 @@ public class CandidateModel extends UserModel {
     ) {
         super(id, email, avatar, fullName, phoneNumber, contactEmail, UserRole.CANDIDATE);
         this.sex = sex;
-        this.dateOfBirth = LocalDate.parse(
-                dateOfBirth,
-                DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        );
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getSex() {
@@ -32,23 +29,12 @@ public class CandidateModel extends UserModel {
         this.sex = sex;
     }
 
-    public LocalDate getDateOfBirthOrigin() {
-        return dateOfBirth;
-    }
-
     public String getDateOfBirth() {
-        return dateOfBirth.getDayOfMonth() + "/" + dateOfBirth.getMonthValue() + "/" + dateOfBirth.getYear();
+        return this.dateOfBirth;
     }
-
-//    public void setDateOfBirth(LocalDate dateOfBirth) {
-//        this.dateOfBirth = dateOfBirth;
-//    }
 
     public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = LocalDate.parse(
-                dateOfBirth,
-                DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        );
+        this.dateOfBirth = dateOfBirth;
     }
 
     @Override
