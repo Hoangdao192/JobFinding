@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.uet.fwork.R;
+import com.uet.fwork.user.ProfileActivity;
 
 public class HomeActivity extends AppCompatActivity {
 

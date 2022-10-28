@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.uet.fwork.user.ProfileActivity;
 
 public class MainActivity extends AppCompatActivity {
     @Override
