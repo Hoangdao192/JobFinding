@@ -94,7 +94,7 @@ public class LoginMainFragment extends Fragment {
                             .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                    Intent intent = new Intent(getContext(), HelloActivity.class);
+                                    Intent intent = new Intent(getContext(), DashboardActivity.class);
                                     startActivity(intent);
                                 }
                             });

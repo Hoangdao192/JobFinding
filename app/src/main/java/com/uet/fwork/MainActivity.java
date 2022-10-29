@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         } else {
-            startActivity(new Intent(this, HelloActivity.class));
+            startActivity(new Intent(this, DashboardActivity.class));
         }
     }
 }
