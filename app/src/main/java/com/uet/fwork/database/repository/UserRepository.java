@@ -27,6 +27,24 @@ public class UserRepository extends Repository {
         super(firebaseDatabase, databaseReferencePath);
     }
 
+    public void isUserExists(String userUID, OnQuerySuccessListener<Boolean> onQuerySuccessListener) {
+        rootDatabaseReference.child(userUID).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    onQuerySuccessListener.onSuccess(true);
+                } else {
+                    onQuerySuccessListener.onSuccess(false);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
     public void getUserByUID(
             String userUID,
             Repository.OnQuerySuccessListener<UserModel> listener
@@ -56,11 +74,22 @@ public class UserRepository extends Repository {
         });
     }
 
+//    public void insertUser(UserModel userModel) {
+//        String userUID = userModel.getId();
+//        if (userModel.getRole().equals(UserRole.CANDIDATE)) {
+//            rootDatabaseReference.child(userUID).setValue(((CandidateModel) userModel));
+//        } else if (userModel.getRole().equals(UserRole.EMPLOYER)) {
+//            rootDatabaseReference.child(userUID).setValue(((EmployerModel) userModel));
+//        } else {
+//            rootDatabaseReference.child(userUID).setValue(userModel);
+//        }
+//    }
+
     public void insertUser(UserModel userModel) {
         String userUID = userModel.getId();
-        if (userModel.getRole().equals(UserRole.CANDIDATE)) {
+        if (userModel instanceof CandidateModel) {
             rootDatabaseReference.child(userUID).setValue(((CandidateModel) userModel));
-        } else if (userModel.getRole().equals(UserRole.EMPLOYER)) {
+        } else if (userModel instanceof EmployerModel) {
             rootDatabaseReference.child(userUID).setValue(((EmployerModel) userModel));
         } else {
             rootDatabaseReference.child(userUID).setValue(userModel);
@@ -72,12 +101,7 @@ public class UserRepository extends Repository {
             Repository.OnQuerySuccessListener<Void> listener
     ) {
         rootDatabaseReference.child(userModel.getId()).setValue(userModel)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        listener.onSuccess(unused);
-                    }
-                });
+                .addOnSuccessListener(unused -> listener.onSuccess(unused));
     }
 
     public void updateUser(String userUID, Map<String, Object> updateDataMap) {

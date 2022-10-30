@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/registerMainFragment"
-        android:name="com.uet.fwork.RegisterMainFragment"
+        android:name="com.uet.fwork.account.register.RegisterMainFragment"
         android:label="fragment_register_main"
         tools:layout="@layout/fragment_register_main" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerVerifyRequestFragment"
-        android:name="com.uet.fwork.RegisterVerifyRequestFragment"
+        android:name="com.uet.fwork.account.register.EmailVerifyRequestFragment"
         android:label="fragment_register_verify_request"
         tools:layout="@layout/fragment_register_verify_request" >
         <action
@@ -32,29 +32,29 @@
     </fragment>
     <fragment
         android:id="@+id/registerVerifyDoneFragment"
-        android:name="com.uet.fwork.RegisterVerifyDoneFragment"
+        android:name="com.uet.fwork.account.register.AccountCreatedFragment"
         android:label="fragment_register_verify_done"
         tools:layout="@layout/fragment_register_verify_done" />
     <fragment
         android:id="@+id/registerCreateProfileFragment"
-        android:name="com.uet.fwork.RegisterCreateProfileFragment"
+        android:name="com.uet.fwork.account.CreateCandidateProfileFragment"
         android:label="fragment_enter_profile"
         tools:layout="@layout/fragment_enter_profile" >
         <action
             app:popUpTo="@id/registerMainFragment"
             app:popUpToInclusive="true"
             android:id="@+id/action_registerCreateProfileFragment_to_registerVerifyDoneFragment"
-            app:destination="@id/registerVerifyDoneFragment" />
+            app:destination="@id/registerVerifyDoneFragment"/>
     </fragment>
     <fragment
         android:id="@+id/createCompanyProfileFragment"
-        android:name="com.uet.fwork.CreateCompanyProfileFragment"
+        android:name="com.uet.fwork.account.CreateCompanyProfileFragment"
         android:label="CreateCompanyProfileFragment"
         tools:layout="@layout/fragment_enter_profile_company">
         <action
             app:popUpTo="@id/registerMainFragment"
             app:popUpToInclusive="true"
             android:id="@+id/action_createCompanyProfileFragment_to_registerVerifyDoneFragment"
-            app:destination="@id/registerVerifyDoneFragment" />
+            app:destination="@id/registerVerifyDoneFragment"/>
     </fragment>
 </navigation>

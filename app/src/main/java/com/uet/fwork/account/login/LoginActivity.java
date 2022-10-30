@@ -1,9 +1,11 @@
-package com.uet.fwork;
+package com.uet.fwork.account.login;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.uet.fwork.R;
 
 public class LoginActivity extends AppCompatActivity {
     public LoginActivity() {

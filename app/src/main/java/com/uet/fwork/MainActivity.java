@@ -2,14 +2,15 @@ package com.uet.fwork;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+import com.uet.fwork.account.login.LoginActivity;
+import com.uet.fwork.util.VietNameAdministrativeDivisionAPI;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -20,7 +21,14 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         } else {
+            System.out.println(FirebaseAuth.getInstance().getUid());
+            System.out.println(FirebaseAuth.getInstance().getCurrentUser().getUid());
             startActivity(new Intent(this, HelloActivity.class));
         }
+
+//        VietNameAdministrativeDivisionAPI api = VietNameAdministrativeDivisionAPI.getInstance();
+//        api.getProvinceList(this, result -> {
+//
+//        });
     }
 }
