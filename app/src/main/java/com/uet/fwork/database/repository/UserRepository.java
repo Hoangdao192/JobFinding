@@ -61,6 +61,9 @@ public class UserRepository extends Repository {
                     } else if (userRole.equals(UserRole.EMPLOYER)) {
                         UserModel userModel = dataSnapshot.getValue(EmployerModel.class);
                         listener.onSuccess(userModel);
+                    } else if (userRole.equals(UserRole.NOT_SET)) {
+                        UserModel userModel = dataSnapshot.getValue(UserModel.class);
+                        listener.onSuccess(userModel);
                     }
                 } else {
                     listener.onSuccess(null);

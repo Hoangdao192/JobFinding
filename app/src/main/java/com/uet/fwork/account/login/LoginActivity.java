@@ -34,6 +34,8 @@ import com.uet.fwork.HelloActivity;
 import com.uet.fwork.R;
 import com.uet.fwork.account.register.RegisterActivity;
 import com.uet.fwork.account.resetpassword.ResetPasswordActivity;
+import com.uet.fwork.database.model.UserModel;
+import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
 import com.uet.fwork.firebasehelper.FirebaseSignInMethod;
@@ -52,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView txtForgotPassword;
 
     private FirebaseAuthHelper firebaseAuthHelper;
+    private UserRepository userRepository;
 
     private CallbackManager callbackManager;
     private LoginManager loginManager;
@@ -63,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuthHelper = new FirebaseAuthHelper(firebaseAuth);
 //        FacebookSdk.sdkInitialize(getApplicationContext());
+        userRepository = new UserRepository(FirebaseDatabase.getInstance());
 
     }
 
@@ -109,8 +113,20 @@ public class LoginActivity extends AppCompatActivity {
     private void loginFirebaseWithCredential(AuthCredential authCredential) {
         firebaseAuth.signInWithCredential(authCredential)
                 .addOnSuccessListener(authResult -> {
-                    Intent intent = new Intent(LoginActivity.this, HelloActivity.class);
-                    startActivity(intent);
+                    userRepository.getUserByUID(firebaseAuth.getUid(), new Repository.OnQuerySuccessListener<UserModel>() {
+                        @Override
+                        public void onSuccess(UserModel result) {
+                            //  Người dùng chưa khai báo thông tin cá nhân
+                            if (result.getLastUpdate() == 0) {
+                                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                                intent.putExtra("startDestinationId", R.id.selectUserRoleFragment);
+                                startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(LoginActivity.this, HelloActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+                    });
                 })
                 .addOnFailureListener(Throwable::printStackTrace);
     }
@@ -130,9 +146,53 @@ public class LoginActivity extends AppCompatActivity {
             firebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnFailureListener(exception -> edtEmail.setError("Email or password is invalid."))
                     .addOnSuccessListener(authResult -> {
+                        //  Kiểm tra email người dùng đã được xác mình chưa
+                        if (!firebaseAuth.getCurrentUser().isEmailVerified()) {
+                            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                            intent.putExtra("startDestinationId", R.id.registerVerifyRequestFragment);
+                            startActivity(intent);
+                        }
+                        //  Kiểm tra người dùng đã khai báo thông tin cá nhân chưa
+                        else {
+                            userRepository.getUserByUID(firebaseAuth.getUid(), new Repository.OnQuerySuccessListener<UserModel>() {
+                                @Override
+                                public void onSuccess(UserModel result) {
+                                    //  Người dùng chưa khai báo thông tin cá nhân
+                                    if (result.getLastUpdate() == 0) {
+                                        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                                        intent.putExtra("startDestinationId", R.id.selectUserRoleFragment);
+                                        startActivity(intent);
+                                    } else {
+                                        Intent intent = new Intent(LoginActivity.this, HelloActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
+                        }
+                    });
+        }
+    }
+
+    private void onFirebaseLoginSuccess() {
+        if (!firebaseAuth.getCurrentUser().isEmailVerified()) {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            intent.putExtra("startDestinationId", R.id.registerVerifyRequestFragment);
+            startActivity(intent);
+        } else {
+            userRepository.getUserByUID(firebaseAuth.getUid(), new Repository.OnQuerySuccessListener<UserModel>() {
+                @Override
+                public void onSuccess(UserModel result) {
+                    //  Người dùng chưa khai báo thông tin cá nhân
+                    if (result.getLastUpdate() == 0) {
+                        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                        intent.putExtra("startDestinationId", R.id.selectUserRoleFragment);
+                        startActivity(intent);
+                    } else {
                         Intent intent = new Intent(LoginActivity.this, HelloActivity.class);
                         startActivity(intent);
-                    });
+                    }
+                }
+            });
         }
     }
 
@@ -218,6 +278,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     /**
      * Xử lý login bằng Facebook

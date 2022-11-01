@@ -16,6 +16,15 @@ public class EmployerModel extends UserModel {
         this.address = addressModel;
     }
 
+    public EmployerModel(
+            String id, String email,
+            String avatar, String fullName, String phoneNumber,
+            String contactEmail, AddressModel addressModel, long lastUpdate
+    ) {
+        this(id, email, avatar, fullName, phoneNumber, contactEmail, addressModel);
+        this.setLastUpdate(lastUpdate);
+    }
+
     public AddressModel getAddress() {
         return address;
     }

@@ -26,6 +26,17 @@ public class CandidateModel extends UserModel {
         this.yearOfExperience = yearOfExperience;
     }
 
+    public CandidateModel(
+            String id, String email,
+            String avatar, String fullName, String phoneNumber,
+            String contactEmail, String sex, /*dd/MM/yyyy*/ String dateOfBirth,
+            String major, double yearOfExperience, long lastUpdate
+    ) {
+        this(id, email, avatar, fullName, phoneNumber, contactEmail, sex, dateOfBirth,major, yearOfExperience);
+        this.setLastUpdate(lastUpdate);
+    }
+
+
     public String getMajor() {
         return major;
     }

@@ -116,6 +116,11 @@ public class RegisterMainFragment extends Fragment {
                 loginManager.logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile"));
             }
         });
+
+        Intent intent = getActivity().getIntent();
+        if (intent.hasExtra("startDestinationId")) {
+            navController.navigate(intent.getIntExtra("startDestinationId", R.id.registerMainFragment));
+        }
     }
 
     private boolean checkUserInput() {
@@ -192,7 +197,7 @@ public class RegisterMainFragment extends Fragment {
         String userUID = firebaseAuth.getCurrentUser().getUid();
 
         UserModel userModel = new UserModel(
-                userUID, email, "", "", "", "", UserRole.NOT_SET
+                userUID, email, "", "", "", "", UserRole.NOT_SET, 0
         );
         userRepository.insertUser(userModel);
     }

@@ -161,7 +161,7 @@ public class CreateCandidateProfileFragment extends Fragment {
         CandidateModel candidateModel = new CandidateModel(
                 userUID, firebaseUser.getEmail(), "",
                 fullName, phoneNumber, workEmail, sex, "26/10/2002",
-                major, yearOfExperience
+                major, yearOfExperience, System.currentTimeMillis()/1000
         );
         userRepository.insertUser(candidateModel);
     }

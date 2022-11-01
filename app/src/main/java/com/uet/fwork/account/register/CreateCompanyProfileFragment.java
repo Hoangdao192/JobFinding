@@ -175,6 +175,7 @@ public class CreateCompanyProfileFragment extends Fragment {
                             detailAddress
                     )
             );
+            employerModel.setLastUpdate(System.currentTimeMillis() / 1000);
             userRepository.updateUser(userUID, employerModel);
         });
     }
