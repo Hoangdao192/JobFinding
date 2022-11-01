@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">FWork</string>
+    <string name="facebook_app_id">1591105611322349</string>
+    <string name="fb_login_protocol_scheme">fb1591105611322349</string>
+    <string name="facebook_client_token">d50461106e808a81f8dca17181b21241</string>
+
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="email_verify">An email has been sent to example@email.com with a link to verify your account.\nIf you not received the email after a few minutes, please check your spam folder.

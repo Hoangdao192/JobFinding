@@ -61,6 +61,16 @@
             android:textColor="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtForgotPassword"
+        android:text="Quên mật khẩu ?"
+        android:textSize="17sp"
+        app:layout_constraintTop_toBottomOf="@id/txtCreateAccount"
+        android:layout_marginTop="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
     <Button
         android:id="@+id/btnLogin"
         style="@style/MyButton"
@@ -107,6 +117,33 @@
             android:fontFamily="@font/poppins_semibold"
             android:layout_centerVertical="true"
             android:layout_marginLeft="30dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/relLoginGoogle"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded_corner_10"
+        android:backgroundTint="#1877f2"
+        android:elevation="3dp"
+        android:id="@+id/btnLoginFacebook">
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/facebook"
+            android:id="@+id/imgFacebook"/>
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đăng nhập bằng Facebook"
+            android:layout_toRightOf="@id/imgFacebook"
+            android:fontFamily="@font/poppins_semibold"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:textColor="@color/white"/>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

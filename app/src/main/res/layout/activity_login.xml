@@ -6,15 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".account.login.LoginActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/navigation_host"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/login_navigation_graph"/>
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded_corner_10"
+        android:backgroundTint="#1877f2"
+        android:elevation="3dp"
+        android:id="@+id/btnLoginFacebook">
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/facebook"
+            android:id="@+id/imgFacebook"/>
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đăng nhập bằng Facebook"
+            android:layout_toRightOf="@id/imgFacebook"
+            android:fontFamily="@font/poppins_semibold"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:textColor="@color/white"/>
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

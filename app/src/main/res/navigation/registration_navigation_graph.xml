@@ -21,12 +21,12 @@
         tools:layout="@layout/fragment_register_verify_request" >
         <action
             app:popUpTo="@id/registerMainFragment"
-            app:popUpToInclusive="true"
+            app:popUpToInclusive="false"
             android:id="@+id/action_registerVerifyRequestFragment_to_registerCreateProfileFragment"
             app:destination="@id/registerCreateProfileFragment" />
         <action
             app:popUpTo="@id/registerMainFragment"
-            app:popUpToInclusive="true"
+            app:popUpToInclusive="false"
             android:id="@+id/action_registerVerifyRequestFragment_to_createCompanyProfileFragment"
             app:destination="@id/createCompanyProfileFragment" />
     </fragment>
@@ -42,7 +42,7 @@
         tools:layout="@layout/fragment_enter_profile" >
         <action
             app:popUpTo="@id/registerMainFragment"
-            app:popUpToInclusive="true"
+            app:popUpToInclusive="false"
             android:id="@+id/action_registerCreateProfileFragment_to_registerVerifyDoneFragment"
             app:destination="@id/registerVerifyDoneFragment"/>
     </fragment>
@@ -53,7 +53,7 @@
         tools:layout="@layout/fragment_enter_profile_company">
         <action
             app:popUpTo="@id/registerMainFragment"
-            app:popUpToInclusive="true"
+            app:popUpToInclusive="false"
             android:id="@+id/action_createCompanyProfileFragment_to_registerVerifyDoneFragment"
             app:destination="@id/registerVerifyDoneFragment"/>
     </fragment>
