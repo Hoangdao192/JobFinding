@@ -1,4 +1,4 @@
-package com.uet.fwork.account;
+package com.uet.fwork.account.register;
 
 import android.os.Bundle;
 import android.view.View;
@@ -61,7 +61,7 @@ public class SelectUserRoleFragment extends Fragment {
                 data.put("role", UserRole.EMPLOYER);
                 userRepository.updateUser(firebaseUser.getUid(), data);
                 navController.navigate(
-                                R.id.action_selectUserRoleFragment_to_registerCreateCompanyProfile
+                                R.id.action_selectUserRoleFragment_to_createCompanyProfileFragment
                         );
             }
         });

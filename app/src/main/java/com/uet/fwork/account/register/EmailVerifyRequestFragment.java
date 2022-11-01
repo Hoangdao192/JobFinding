@@ -23,7 +23,6 @@ import com.uet.fwork.database.model.UserRole;
 public class EmailVerifyRequestFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
-    private String userRole;
 
 //    private boolean canSendVerificationEmail = false;
     private final long RE_SEND_EMAIL_TIME = 30000;
@@ -39,7 +38,6 @@ public class EmailVerifyRequestFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        userRole = (String) getArguments().get("role");
 
         Button btnEmailVerified = view.findViewById(R.id.emailVerified);
         btnResendEmail = view.findViewById(R.id.btnResendEmail);
@@ -65,13 +63,7 @@ public class EmailVerifyRequestFragment extends Fragment {
             user.reload();
 
             if (user.isEmailVerified()) {
-                if (userRole.equals(UserRole.EMPLOYER)) {
-                    //  Chuyển hướng sang màn hình tạo Profile cho nhà tuyển dụng
-                    navController.navigate(R.id.action_registerVerifyRequestFragment_to_createCompanyProfileFragment);
-                } else if (userRole.equals(UserRole.CANDIDATE)) {
-                    //  Chuyển hướng sang màn hình tạo Profile cho ứng viên
-                    navController.navigate(R.id.action_registerVerifyRequestFragment_to_registerCreateProfileFragment);
-                }
+                navController.navigate(R.id.action_registerVerifyRequestFragment_to_selectUserRoleFragment);
             } else {
                 Toast.makeText(getActivity(), "Email is not verified", Toast.LENGTH_SHORT).show();
             }

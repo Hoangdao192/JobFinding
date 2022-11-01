@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_registerMainFragment_to_registerVerifyRequestFragment"
             app:destination="@id/registerVerifyRequestFragment" />
+        <action
+            android:id="@+id/action_registerMainFragment_to_selectUserRoleFragment"
+            app:destination="@id/selectUserRoleFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerVerifyRequestFragment"
@@ -22,13 +25,8 @@
         <action
             app:popUpTo="@id/registerMainFragment"
             app:popUpToInclusive="false"
-            android:id="@+id/action_registerVerifyRequestFragment_to_registerCreateProfileFragment"
-            app:destination="@id/registerCreateProfileFragment" />
-        <action
-            app:popUpTo="@id/registerMainFragment"
-            app:popUpToInclusive="false"
-            android:id="@+id/action_registerVerifyRequestFragment_to_createCompanyProfileFragment"
-            app:destination="@id/createCompanyProfileFragment" />
+            android:id="@+id/action_registerVerifyRequestFragment_to_selectUserRoleFragment"
+            app:destination="@id/selectUserRoleFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerVerifyDoneFragment"
@@ -37,7 +35,7 @@
         tools:layout="@layout/fragment_register_verify_done" />
     <fragment
         android:id="@+id/registerCreateProfileFragment"
-        android:name="com.uet.fwork.account.CreateCandidateProfileFragment"
+        android:name="com.uet.fwork.account.register.CreateCandidateProfileFragment"
         android:label="fragment_enter_profile"
         tools:layout="@layout/fragment_enter_profile" >
         <action
@@ -48,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/createCompanyProfileFragment"
-        android:name="com.uet.fwork.account.CreateCompanyProfileFragment"
+        android:name="com.uet.fwork.account.register.CreateCompanyProfileFragment"
         android:label="CreateCompanyProfileFragment"
         tools:layout="@layout/fragment_enter_profile_company">
         <action
@@ -56,5 +54,21 @@
             app:popUpToInclusive="false"
             android:id="@+id/action_createCompanyProfileFragment_to_registerVerifyDoneFragment"
             app:destination="@id/registerVerifyDoneFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/selectUserRoleFragment"
+        android:name="com.uet.fwork.account.register.SelectUserRoleFragment"
+        android:label="fragment_select_user_role"
+        tools:layout="@layout/fragment_select_user_role" >
+        <action
+            app:popUpTo="@id/registerMainFragment"
+            app:popUpToInclusive="false"
+            android:id="@+id/action_selectUserRoleFragment_to_registerCreateProfileFragment"
+            app:destination="@id/registerCreateProfileFragment" />
+        <action
+            app:popUpTo="@id/registerMainFragment"
+            app:popUpToInclusive="false"
+            android:id="@+id/action_selectUserRoleFragment_to_createCompanyProfileFragment"
+            app:destination="@id/createCompanyProfileFragment" />
     </fragment>
 </navigation>

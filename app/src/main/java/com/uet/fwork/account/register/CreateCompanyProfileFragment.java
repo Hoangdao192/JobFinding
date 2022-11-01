@@ -1,4 +1,4 @@
-package com.uet.fwork.account;
+package com.uet.fwork.account.register;
 
 import android.app.Activity;
 import android.content.Intent;
