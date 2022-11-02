@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".UpdateProfileActivity">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <EditText
+        android:id="@+id/nameEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:drawablePadding="7dp"
+        android:hint="Name:"
+        android:minHeight="48dp"
+        android:paddingLeft="10dp"
+        android:textColor="@android:color/black" />
+
+    <EditText
+        android:id="@+id/contactEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:drawablePadding="7dp"
+        android:hint="Contact Email:"
+        android:minHeight="48dp"
+        android:paddingLeft="10dp"
+        android:textColor="@android:color/black" />
+
+    <EditText
+        android:id="@+id/phoneEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:drawablePadding="7dp"
+        android:hint="Phone Number:"
+        android:minHeight="48dp"
+        android:paddingLeft="10dp"
+        android:textColor="@android:color/black" />
+
+    <EditText
+        android:id="@+id/jobEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:drawablePadding="7dp"
+        android:hint="Job:"
+        android:minHeight="48dp"
+        android:paddingLeft="10dp"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:text="Save profile"
+        android:id="@+id/saveEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible" />
+
+</LinearLayout>
