@@ -55,6 +55,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         emailTv = view.findViewById(R.id.emailTv);
         phoneTv = view.findViewById(R.id.phoneTv);
 
+
+        // Đoạn này m có thể dùng userRepository để lấy ra user bằng udi thì hơn ấy
+        //  Hoặc m có thể querry trực tiếp như thế này databaseReference.child(uid).get
         Query query = databaseReference.orderByChild("email").equalTo(user.getEmail());
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -68,7 +71,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                     nameTv.setText(name);
                     emailTv.setText(email);
                     phoneTv.setText(phoneNumber);
-                    Picasso.get().load(image).into(avatarIv);
+
+//                    Picasso.get().load(image).into(avatarIv);
                 }
 
             }

@@ -30,6 +30,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
+import com.uet.fwork.DashboardActivity;
 import com.uet.fwork.HelloActivity;
 import com.uet.fwork.R;
 import com.uet.fwork.account.register.RegisterActivity;
@@ -62,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> getGoogleAccountActivityLauncher;
 
     public LoginActivity() {
-        super(R.layout.fragment_login_main);
+        super();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuthHelper = new FirebaseAuthHelper(firebaseAuth);
 //        FacebookSdk.sdkInitialize(getApplicationContext());
@@ -73,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
 
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
@@ -122,8 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                                 intent.putExtra("startDestinationId", R.id.selectUserRoleFragment);
                                 startActivity(intent);
                             } else {
-                                Intent intent = new Intent(LoginActivity.this, HelloActivity.class);
-                                startActivity(intent);
+                                startDashboardActivity();
                             }
                         }
                     });
@@ -163,14 +164,18 @@ public class LoginActivity extends AppCompatActivity {
                                         intent.putExtra("startDestinationId", R.id.selectUserRoleFragment);
                                         startActivity(intent);
                                     } else {
-                                        Intent intent = new Intent(LoginActivity.this, HelloActivity.class);
-                                        startActivity(intent);
+                                        startDashboardActivity();
                                     }
                                 }
                             });
                         }
                     });
         }
+    }
+
+    private void startDashboardActivity() {
+        Intent intent = new Intent(this, DashboardActivity.class);
+        startActivity(intent);
     }
 
     private void onFirebaseLoginSuccess() {
@@ -188,8 +193,7 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("startDestinationId", R.id.selectUserRoleFragment);
                         startActivity(intent);
                     } else {
-                        Intent intent = new Intent(LoginActivity.this, HelloActivity.class);
-                        startActivity(intent);
+                        startDashboardActivity();
                     }
                 }
             });

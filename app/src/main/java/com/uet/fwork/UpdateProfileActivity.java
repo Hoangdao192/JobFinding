@@ -12,8 +12,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+//import com.google.firebase.firestore.DocumentReference;
+//import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
@@ -23,8 +23,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
     Button button;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference reference;
-    DocumentReference documentReference;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+//    DocumentReference documentReference;
+//    FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String currentUid = user.getUid();
 

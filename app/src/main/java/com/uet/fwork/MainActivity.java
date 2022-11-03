@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                                                                     intent.putExtra("startDestinationId", R.id.selectUserRoleFragment);
                                                                     startActivity(intent);
                                                                 } else {
-                                                                    Intent intent = new Intent(MainActivity.this, HelloActivity.class);
+                                                                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
                                                                     startActivity(intent);
                                                                 }
                                                             }
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                                                                         intent.putExtra("startDestinationId", R.id.selectUserRoleFragment);
                                                                         startActivity(intent);
                                                                     } else {
-                                                                        Intent intent = new Intent(MainActivity.this, HelloActivity.class);
+                                                                        Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
                                                                         startActivity(intent);
                                                                     }
                                                                 }
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                                                     }
                                                 }
                                             });
-                            startActivity(new Intent(MainActivity.this, HelloActivity.class));
+                            startActivity(new Intent(MainActivity.this, DashboardActivity.class));
                         }
                     }
             )
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         } else {
-            Intent intent = new Intent(this, DashboardActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
     }
