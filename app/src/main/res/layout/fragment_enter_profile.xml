@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".RegisterCreateProfileFragment">
+    tools:context=".account.register.CreateCandidateProfileFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -164,11 +164,32 @@
                 app:layout_constraintTop_toBottomOf="@id/txtMajor"
                 tools:layout_editor_absoluteX="40dp" />
 
+            <TextView
+                android:inputType="phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Số năm kinh nghiệm"
+                android:fontFamily="@font/lexenddeca_bold"
+                android:textSize="20dp"
+                android:textColor="@color/purple"
+                android:id="@+id/txtYearExperience"
+                app:layout_constraintTop_toBottomOf="@id/edtMajor"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="3dp"
+                app:layout_constraintLeft_toLeftOf="@id/txtMajor"/>
+
+            <Spinner
+                style="@style/MySpinner"
+                android:id="@+id/spnYearExperience"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/txtYearExperience"/>
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MyButton"
-                app:layout_constraintTop_toBottomOf="@id/edtMajor"
+                app:layout_constraintTop_toBottomOf="@id/spnYearExperience"
                 android:layout_marginTop="50dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

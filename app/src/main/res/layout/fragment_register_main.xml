@@ -12,8 +12,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Register"
+            android:fontFamily="@font/lexenddeca_bold"
+            android:text="Đăng ký"
             android:textColor="@color/dark_purple"
             android:textSize="35dp"
             android:textStyle="bold"
@@ -81,55 +81,12 @@
                 android:layout_gravity="center_vertical"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <RelativeLayout
-            android:id="@+id/relRole"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/edtRePassword"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="20dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_semibold"
-                android:textColor="@color/black"
-                android:textSize="16dp"
-                android:text="Bạn là ?"
-                android:id="@+id/txtIam"
-                android:layout_marginLeft="10dp"/>
-            <RadioGroup
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtIam"
-                android:layout_centerVertical="true"
-                android:orientation="horizontal"
-                android:padding="0dp"
-                android:layout_marginTop="-7dp"
-                android:id="@+id/radGroupRole">
-                <RadioButton
-                    android:id="@+id/radEmployee"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="0dp"
-                    android:text="Người tìm việc"
-                    android:fontFamily="@font/poppins_medium"
-                    android:layout_marginRight="20dp"/>
-                <RadioButton
-                    android:id="@+id/radEmployer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nhà tuyển dụng"
-                    android:fontFamily="@font/poppins_medium"/>
-            </RadioGroup>
-        </RelativeLayout>
-
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/relRole"
+            app:layout_constraintTop_toBottomOf="@id/edtRePassword"
             android:layout_marginTop="40dp"
             android:text="Create an Account"
             style="@style/MyButton"
@@ -146,5 +103,57 @@
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="20dp"
             android:id="@+id/txtLogin"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/txtLogin"
+            android:layout_marginTop="50dp"
+            android:padding="10dp"
+            android:background="@drawable/rounded_corner_10"
+            android:backgroundTint="@color/white"
+            android:elevation="3dp"
+            android:id="@+id/relLoginGoogle">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/google"
+                android:id="@+id/imgGoogle"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Đăng ký bằng Google"
+                android:layout_toRightOf="@id/imgGoogle"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/relLoginGoogle"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:background="@drawable/rounded_corner_10"
+            android:backgroundTint="#1877f2"
+            android:elevation="3dp"
+            android:id="@+id/btnLoginFacebook">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/facebook"
+                android:id="@+id/imgFacebook"/>
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Đăng ký bằng Facebook"
+                android:layout_toRightOf="@id/imgFacebook"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:textColor="@color/white"/>
+        </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

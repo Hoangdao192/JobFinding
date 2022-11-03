@@ -19,6 +19,7 @@ android {
 
     buildTypes {
         release {
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -67,4 +68,10 @@ dependencies {
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
     implementation "androidx.navigation:navigation-compose:$nav_version"
+
+    //  Volley for handle network request
+    implementation 'com.android.volley:volley:1.2.1'
+
+    //  Facebook android SDK -> for login with facebook feature
+    implementation 'com.facebook.android:facebook-login:latest.release'
 }

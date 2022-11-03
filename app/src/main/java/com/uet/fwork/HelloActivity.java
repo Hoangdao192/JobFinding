@@ -1,5 +1,6 @@
 package com.uet.fwork;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.uet.fwork.account.login.LoginActivity;
 
 public class HelloActivity extends AppCompatActivity {
     @Override
@@ -20,6 +22,8 @@ public class HelloActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(HelloActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
     }

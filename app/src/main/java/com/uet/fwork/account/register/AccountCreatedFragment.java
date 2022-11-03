@@ -1,4 +1,4 @@
-package com.uet.fwork;
+package com.uet.fwork.account.register;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,16 +8,18 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
+
+import com.uet.fwork.R;
+import com.uet.fwork.account.login.LoginActivity;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class RegisterVerifyDoneFragment extends Fragment {
+public class AccountCreatedFragment extends Fragment {
     private Button btnLogin;
 
-    public RegisterVerifyDoneFragment() {
+    public AccountCreatedFragment() {
         super(R.layout.fragment_register_verify_done);
     }
 
