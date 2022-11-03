@@ -1,0 +1,11 @@
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:maxLines="1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:ellipsize="marquee"
+    android:textAlignment="viewStart"
+    android:fontFamily="@font/lexenddeca_light"
+    android:textSize="18sp"
+    android:padding="10dp"
+    android:textColor="@color/purple"/>

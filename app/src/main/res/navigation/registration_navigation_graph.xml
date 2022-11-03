@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/registration_navigation_graph"
+    app:startDestination="@id/registerMainFragment">
+
+    <fragment
+        android:id="@+id/registerMainFragment"
+        android:name="com.uet.fwork.account.register.RegisterMainFragment"
+        android:label="fragment_register_main"
+        tools:layout="@layout/fragment_register_main" >
+        <action
+            android:id="@+id/action_registerMainFragment_to_registerVerifyRequestFragment"
+            app:destination="@id/registerVerifyRequestFragment" />
+        <action
+            android:id="@+id/action_registerMainFragment_to_selectUserRoleFragment"
+            app:destination="@id/selectUserRoleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerVerifyRequestFragment"
+        android:name="com.uet.fwork.account.register.EmailVerifyRequestFragment"
+        android:label="fragment_register_verify_request"
+        tools:layout="@layout/fragment_register_verify_request" >
+        <action
+            app:popUpTo="@id/registerMainFragment"
+            app:popUpToInclusive="false"
+            android:id="@+id/action_registerVerifyRequestFragment_to_selectUserRoleFragment"
+            app:destination="@id/selectUserRoleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerVerifyDoneFragment"
+        android:name="com.uet.fwork.account.register.AccountCreatedFragment"
+        android:label="fragment_register_verify_done"
+        tools:layout="@layout/fragment_register_verify_done" />
+    <fragment
+        android:id="@+id/registerCreateProfileFragment"
+        android:name="com.uet.fwork.account.register.CreateCandidateProfileFragment"
+        android:label="fragment_enter_profile"
+        tools:layout="@layout/fragment_enter_profile" >
+        <action
+            app:popUpTo="@id/registerMainFragment"
+            app:popUpToInclusive="false"
+            android:id="@+id/action_registerCreateProfileFragment_to_registerVerifyDoneFragment"
+            app:destination="@id/registerVerifyDoneFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/createCompanyProfileFragment"
+        android:name="com.uet.fwork.account.register.CreateCompanyProfileFragment"
+        android:label="CreateCompanyProfileFragment"
+        tools:layout="@layout/fragment_enter_profile_company">
+        <action
+            app:popUpTo="@id/registerMainFragment"
+            app:popUpToInclusive="false"
+            android:id="@+id/action_createCompanyProfileFragment_to_registerVerifyDoneFragment"
+            app:destination="@id/registerVerifyDoneFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/selectUserRoleFragment"
+        android:name="com.uet.fwork.account.register.SelectUserRoleFragment"
+        android:label="fragment_select_user_role"
+        tools:layout="@layout/fragment_select_user_role" >
+        <action
+            app:popUpTo="@id/registerMainFragment"
+            app:popUpToInclusive="false"
+            android:id="@+id/action_selectUserRoleFragment_to_registerCreateProfileFragment"
+            app:destination="@id/registerCreateProfileFragment" />
+        <action
+            app:popUpTo="@id/registerMainFragment"
+            app:popUpToInclusive="false"
+            android:id="@+id/action_selectUserRoleFragment_to_createCompanyProfileFragment"
+            app:destination="@id/createCompanyProfileFragment" />
+    </fragment>
+</navigation>

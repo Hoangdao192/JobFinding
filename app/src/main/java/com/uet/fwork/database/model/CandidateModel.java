@@ -5,7 +5,9 @@ import java.time.format.DateTimeFormatter;
 
 public class CandidateModel extends UserModel {
     private String sex;
-    private LocalDate dateOfBirth;
+    private String dateOfBirth;
+    private String major;
+    private double yearOfExperience;
 
     public CandidateModel() {
         super();
@@ -14,14 +16,41 @@ public class CandidateModel extends UserModel {
     public CandidateModel(
             String id, String email,
             String avatar, String fullName, String phoneNumber,
-            String contactEmail, String sex, /*dd/MM/yyyy*/ String dateOfBirth
+            String contactEmail, String sex, /*dd/MM/yyyy*/ String dateOfBirth,
+            String major, double yearOfExperience
     ) {
         super(id, email, avatar, fullName, phoneNumber, contactEmail, UserRole.CANDIDATE);
         this.sex = sex;
-        this.dateOfBirth = LocalDate.parse(
-                dateOfBirth,
-                DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        );
+        this.dateOfBirth = dateOfBirth;
+        this.major = major;
+        this.yearOfExperience = yearOfExperience;
+    }
+
+    public CandidateModel(
+            String id, String email,
+            String avatar, String fullName, String phoneNumber,
+            String contactEmail, String sex, /*dd/MM/yyyy*/ String dateOfBirth,
+            String major, double yearOfExperience, long lastUpdate
+    ) {
+        this(id, email, avatar, fullName, phoneNumber, contactEmail, sex, dateOfBirth,major, yearOfExperience);
+        this.setLastUpdate(lastUpdate);
+    }
+
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    public double getYearOfExperience() {
+        return yearOfExperience;
+    }
+
+    public void setYearOfExperience(double yearOfExperience) {
+        this.yearOfExperience = yearOfExperience;
     }
 
     public String getSex() {
@@ -33,18 +62,11 @@ public class CandidateModel extends UserModel {
     }
 
     public String getDateOfBirth() {
-        return dateOfBirth.getDayOfMonth() + "/" + dateOfBirth.getMonthValue() + "/" + dateOfBirth.getYear();
+        return this.dateOfBirth;
     }
 
-//    public void setDateOfBirth(LocalDate dateOfBirth) {
-//        this.dateOfBirth = dateOfBirth;
-//    }
-
     public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = LocalDate.parse(
-                dateOfBirth,
-                DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        );
+        this.dateOfBirth = dateOfBirth;
     }
 
     @Override

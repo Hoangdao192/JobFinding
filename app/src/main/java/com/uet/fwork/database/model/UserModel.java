@@ -8,6 +8,7 @@ public class UserModel {
     protected String phoneNumber;
     protected String contactEmail;
     protected String role;
+    protected long lastUpdate;
 
     public UserModel() {
     }
@@ -24,6 +25,29 @@ public class UserModel {
         this.phoneNumber = phoneNumber;
         this.contactEmail = contactEmail;
         this.role = role;
+    }
+
+    public UserModel(
+            String id, String email, String avatar,
+            String fullName, String phoneNumber, String contactEmail,
+            String role, long lastUpdate
+    ) {
+        this.id = id;
+        this.email = email;
+        this.avatar = avatar;
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.contactEmail = contactEmail;
+        this.role = role;
+        this.lastUpdate = lastUpdate;
+    }
+
+    public long getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(long lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 
     public String getId() {
@@ -80,5 +104,18 @@ public class UserModel {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "id='" + id + '\'' +
+                ", email='" + email + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", contactEmail='" + contactEmail + '\'' +
+                ", role='" + role + '\'' +
+                '}';
     }
 }
