@@ -176,26 +176,14 @@
                 app:layout_constraintTop_toBottomOf="@id/edtMajor"
                 android:layout_marginTop="40dp"
                 android:layout_marginLeft="3dp"
-                app:layout_constraintLeft_toLeftOf="@id/edtYearExperience"/>
-
-            <EditText
-                android:id="@+id/edtYearExperience"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lexenddeca_light"
-                android:hint="Nhập số năm kinh nghiệm"
-                android:textColor="@color/purple"
-                android:paddingBottom="20dp"
-                android:inputType="numberSigned"
-                app:layout_constraintTop_toBottomOf="@id/txtYearExperience"
-                tools:layout_editor_absoluteX="40dp" />
+                app:layout_constraintLeft_toLeftOf="@id/txtMajor"/>
 
             <Spinner
                 style="@style/MySpinner"
                 android:id="@+id/spnYearExperience"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/edtYearExperience"/>
+                app:layout_constraintTop_toBottomOf="@id/txtYearExperience"/>
 
             <Button
                 android:layout_width="match_parent"

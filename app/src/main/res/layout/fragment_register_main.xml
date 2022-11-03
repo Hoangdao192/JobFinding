@@ -122,7 +122,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Đăng nhập bằng Google"
+                android:text="Đăng ký bằng Google"
                 android:layout_toRightOf="@id/imgGoogle"
                 android:fontFamily="@font/poppins_semibold"
                 android:layout_centerVertical="true"
@@ -148,7 +148,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Đăng nhập bằng Facebook"
+                android:text="Đăng ký bằng Facebook"
                 android:layout_toRightOf="@id/imgFacebook"
                 android:fontFamily="@font/poppins_semibold"
                 android:layout_centerVertical="true"
