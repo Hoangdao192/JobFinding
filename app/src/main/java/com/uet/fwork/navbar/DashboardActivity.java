@@ -14,7 +14,7 @@ public class DashboardActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     HomeFragment homeFragment = new HomeFragment();
     ProfileFragment profileFragment = new ProfileFragment();
-    UsersFragment usersFragment = new UsersFragment();
+    SearchFragment searchFragment = new SearchFragment();
     NotificationsFragment notificationsFragment = new NotificationsFragment();
     InboxFragment inboxFragment = new InboxFragment();
 
@@ -36,8 +36,8 @@ public class DashboardActivity extends AppCompatActivity {
                     case R.id.nav_profile:
                         getSupportFragmentManager().beginTransaction().replace(R.id.content,profileFragment).commit();
                         return true;
-                    case R.id.nav_users:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content,usersFragment).commit();
+                    case R.id.nav_search:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content, searchFragment).commit();
                         return true;
                     case R.id.nav_notifications:
                         getSupportFragmentManager().beginTransaction().replace(R.id.content,notificationsFragment).commit();
