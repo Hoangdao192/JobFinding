@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".DashboardActivity">
+    tools:context=".navbar.DashboardActivity">
 
     <FrameLayout
         android:id="@+id/content"

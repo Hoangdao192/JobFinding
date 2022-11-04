@@ -1,4 +1,4 @@
-package com.uet.fwork;
+package com.uet.fwork.navbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +22,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.uet.fwork.R;
+import com.uet.fwork.UpdateProfileActivity;
+import com.uet.fwork.account.login.LoginActivity;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener{
 
@@ -40,6 +43,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         user = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users");
+
+        Button logout_btn =(Button) view.findViewById(R.id.logout_button);
+        logout_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent =new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
 
         Button edit_profile_button =(Button) view.findViewById(R.id.edtProfile_button);
         edit_profile_button.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +85,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                     emailTv.setText(email);
                     phoneTv.setText(phoneNumber);
 
-//                    Picasso.get().load(image).into(avatarIv);
+
+                        //Picasso.get().load(image).into(avatarIv);
                 }
 
             }

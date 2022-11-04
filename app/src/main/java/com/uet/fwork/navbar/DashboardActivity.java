@@ -1,6 +1,5 @@
-package com.uet.fwork;
+package com.uet.fwork.navbar;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -8,6 +7,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.uet.fwork.R;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -15,6 +15,8 @@ public class DashboardActivity extends AppCompatActivity {
     HomeFragment homeFragment = new HomeFragment();
     ProfileFragment profileFragment = new ProfileFragment();
     UsersFragment usersFragment = new UsersFragment();
+    NotificationsFragment notificationsFragment = new NotificationsFragment();
+    InboxFragment inboxFragment = new InboxFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,12 @@ public class DashboardActivity extends AppCompatActivity {
                         return true;
                     case R.id.nav_users:
                         getSupportFragmentManager().beginTransaction().replace(R.id.content,usersFragment).commit();
+                        return true;
+                    case R.id.nav_notifications:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content,notificationsFragment).commit();
+                        return true;
+                    case R.id.nav_inbox:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content,inboxFragment).commit();
                         return true;
                 }
                 return false;
