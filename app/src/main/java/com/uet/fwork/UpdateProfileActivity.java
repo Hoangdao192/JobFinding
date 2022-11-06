@@ -1,33 +1,54 @@
 package com.uet.fwork;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 //import com.google.firebase.firestore.DocumentReference;
 //import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 public class UpdateProfileActivity extends AppCompatActivity {
 
-    EditText edtName, edtEmail, edtPhone, edtJob;
+    EditText edtName, edtEmail, edtPhone, edtJob, edtBirth, edtExp;
+    RadioButton radioMale, radioFemale;
     Button button;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference reference;
+    RadioGroup radioGroup;
 //    DocumentReference documentReference;
 //    FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String currentUid = user.getUid();
+    String name;
+    String email;
+    String phone;
+    String job;
+    String image;
+    String sex;
+    String dateOfBirth;
+    String expeYears;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,21 +60,82 @@ public class UpdateProfileActivity extends AppCompatActivity {
         edtEmail = findViewById(R.id.contactEdit);
         edtPhone = findViewById(R.id.phoneEdit);
         edtJob = findViewById(R.id.jobEdit);
+        edtBirth = findViewById(R.id.dateOfBirthEdit);
+        edtExp = findViewById(R.id.expEdit);
+        radioMale = (RadioButton) findViewById(R.id.radioMale);
+        radioFemale = (RadioButton) findViewById(R.id.radioFemale);
+        radioGroup = findViewById(R.id.radioGroup);
         button = findViewById(R.id.saveEdit);
+
+        Query query = reference.orderByChild("email").equalTo(user.getEmail());
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    name = ""+ ds.child("fullName").getValue().toString();
+                    email = ""+ ds.child("email").getValue().toString();
+                    phone = ""+ ds.child("phoneNumber").getValue().toString();
+                    image = ""+ ds.child("avatar").getValue().toString();
+                    job = "" + ds.child("major").getValue().toString();
+                    dateOfBirth = "" + ds.child("dateOfBirth").getValue().toString();
+                    sex = "" +ds.child("sex").getValue();
+                    expeYears = "" + ds.child("yearOfExperience").getValue();
+                    edtName.setText(name);
+                    edtEmail.setText(email);
+                    edtPhone.setText(phone);
+                    edtJob.setText(job);
+                    edtExp.setText(expeYears);
+                    edtBirth.setText(dateOfBirth);
+                    if (sex.equals("Nữ")) {
+                        radioFemale.toggle();
+                    } else {
+                        radioMale.toggle();
+                    }
+                    //Picasso.get().load(image).into(avatarIv);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.radioMale:
+                        sex = "Nam";
+                        System.out.println(sex);
+                    break;
+                    case R.id.radioFemale: sex = "Nữ";
+                        System.out.println(sex);
+                    break;
+                }
+            }
+        });
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = edtName.getText().toString();
-                String email = edtEmail.getText().toString();
-                String phone = edtPhone.getText().toString();
-                String job = edtJob.getText().toString();
+                name = edtName.getText().toString();
+                email = edtEmail.getText().toString();
+                phone = edtPhone.getText().toString();
+                job = edtJob.getText().toString();
+                expeYears = edtExp.getText().toString();
+                dateOfBirth = edtBirth.getText().toString();
+
 
                 HashMap result = new HashMap<>();
                 result.put("fullName", name);
                 result.put("contactEmail", email);
                 result.put("phoneNumber", phone);
                 result.put("major", job);
+                result.put("dateOfBirth",dateOfBirth);
+                result.put("sex",sex);
+                result.put("yearOfExperience", Double.parseDouble(expeYears));
                 reference.child(currentUid).updateChildren(result);
             }
         });
@@ -82,7 +164,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     edtJob.setText(jobResult);
 
                 }
-            }
+            },
         });
     }
 
