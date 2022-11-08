@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="left">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/user"
+        android:id="@+id/imgUserAvatar"
+        android:layout_alignBottom="@id/txtMessage"
+        android:layout_marginRight="15dp"/>
+
+    <TextView
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/imgUserAvatar"
+        android:padding="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17dp"
+        android:text="Xin chào"
+        android:background="@drawable/rounded_corner_10"
+        android:backgroundTint="@color/light_blue_600"
+        android:textStyle="bold"
+        android:fontFamily="@font/lexenddeca_extralight"
+        android:textColor="@color/white"
+        android:id="@+id/txtMessage"
+        android:layout_marginBottom="10dp"/>
+</RelativeLayout>

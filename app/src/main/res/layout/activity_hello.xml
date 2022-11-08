@@ -18,9 +18,11 @@
 
     <Button
         android:id="@+id/btnLogout"
+        style="@style/MyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Logout"
+        android:backgroundTint="@color/purple"
         app:layout_constraintTop_toBottomOf="@id/txtHello"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>

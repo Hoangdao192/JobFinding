@@ -35,6 +35,7 @@ import com.uet.fwork.HelloActivity;
 import com.uet.fwork.R;
 import com.uet.fwork.account.register.RegisterActivity;
 import com.uet.fwork.account.resetpassword.ResetPasswordActivity;
+import com.uet.fwork.chat.ChatActivity;
 import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
@@ -174,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startDashboardActivity() {
-        Intent intent = new Intent(this, DashboardActivity.class);
+        Intent intent = new Intent(this, ChatActivity.class);
         startActivity(intent);
     }
 

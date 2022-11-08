@@ -1,20 +1,36 @@
 package com.uet.fwork.database.repository;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.algolia.search.saas.AlgoliaException;
+import com.algolia.search.saas.Client;
+import com.algolia.search.saas.CompletionHandler;
+import com.algolia.search.saas.Index;
+import com.algolia.search.saas.Query;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.uet.fwork.Constants;
 import com.uet.fwork.database.model.CandidateModel;
 import com.uet.fwork.database.model.EmployerModel;
 import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.model.UserRole;
 
-import java.util.HashMap;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class UserRepository extends Repository {
 
@@ -24,7 +40,11 @@ public class UserRepository extends Repository {
     public static final String databaseReferencePath = "users/";
 
     public UserRepository(FirebaseDatabase firebaseDatabase) {
-        super(firebaseDatabase, databaseReferencePath);
+        super(firebaseDatabase, FirebaseFirestore.getInstance(), databaseReferencePath);
+    }
+
+    public UserRepository(FirebaseDatabase firebaseDatabase, FirebaseFirestore firebaseFirestore) {
+        super(firebaseDatabase, firebaseFirestore, databaseReferencePath);
     }
 
     public void isUserExists(String userUID, OnQuerySuccessListener<Boolean> onQuerySuccessListener) {
@@ -97,6 +117,19 @@ public class UserRepository extends Repository {
         } else {
             rootDatabaseReference.child(userUID).setValue(userModel);
         }
+
+        //  Update vào FireStore
+        rootCollectionReference.document(userUID).set(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void insertUser(
@@ -109,6 +142,7 @@ public class UserRepository extends Repository {
 
     public void updateUser(String userUID, Map<String, Object> updateDataMap) {
         rootDatabaseReference.child(userUID).updateChildren(updateDataMap);
+        rootCollectionReference.document(userUID).update(updateDataMap);
     }
 
     public void updateUser(String userUID, UserModel userModel) {
@@ -117,5 +151,72 @@ public class UserRepository extends Repository {
         } else if (userModel.getRole().equals(UserRole.EMPLOYER)) {
             rootDatabaseReference.child(userUID).setValue(((EmployerModel) userModel));
         }
+
+        if (userModel.getRole().equals(UserRole.CANDIDATE)) {
+            rootCollectionReference.document(userUID).set(((CandidateModel) userModel));
+        } else if (userModel.getRole().equals(UserRole.EMPLOYER)) {
+            rootCollectionReference.document(userUID).set(((EmployerModel) userModel));
+        }
+    }
+
+    public void getAllUserFullNameSimilarTo(String target, Integer limit, OnQuerySuccessListener<List<UserModel>> listener) {
+        Client client = new Client(Constants.ALGOLIA_APPLICATION_ID, Constants.ALGOLIA_SEARCH_API_KEY);
+        Index index = client.getIndex("users");
+
+        Query query = new Query(target);
+
+        index.searchAsync(query, new CompletionHandler() {
+            @Override
+            public void requestCompleted(JSONObject content, AlgoliaException error) {
+                try {
+                    JSONArray hitsArray = content.getJSONArray("hits");
+                    List<UserModel> userList = new ArrayList<>();
+                    for (int i = 0; i < hitsArray.length(); ++i) {
+                        JSONObject userData = hitsArray.getJSONObject(i);
+                        UserModel userModel = new UserModel();
+                        userModel.setId((String) userData.get("id"));
+                        userModel.setEmail(userData.getString("email"));
+                        userModel.setContactEmail(userData.getString("contactEmail"));
+                        userModel.setFullName(userData.getString("fullName"));
+                        userModel.setLastUpdate(userData.getLong("lastUpdate"));
+                        userModel.setPhoneNumber(userData.getString("phoneNumber"));
+                        userModel.setRole(userData.getString("role"));
+                        userModel.setAvatar(userData.getString("avatar"));
+                        userList.add(userModel);
+                    }
+                    listener.onSuccess(userList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+//        SearchClient client = DefaultSearchClient.create(
+//                Constants.ALGOLIA_APPLICATION_ID, Constants.ALGOLIA_SEARCH_API_KEY);
+//
+//        ExecutorService executor = Executors.newSingleThreadExecutor();
+//        Handler handler = new Handler(Looper.getMainLooper());
+//
+//        executor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                SearchIndex<UserModel> index = client.initIndex("users", UserModel.class);
+//                SearchResult<UserModel> result = index.search(new Query(target)).setHitsPerPage(limit);
+//                result.getHits().forEach(System.out::println);
+//                System.out.println(result.getHits().size());
+//                handler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        listener.onSuccess(result.getHits());
+//                    }
+//                });
+//            }
+//        });
+
+
+//        index.searchAsync(new Query(target).setHitsPerPage(limit)).thenAccept((results) -> {
+//            System.out.println(results.getHits().size());
+//           results.getHits().forEach(System.out::println);
+//        });
     }
 }
