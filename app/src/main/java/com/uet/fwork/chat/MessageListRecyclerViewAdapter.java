@@ -3,6 +3,7 @@ package com.uet.fwork.chat;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<Message
 
     private final static int MAX_IMAGE_WIDTH = 250;
     private final static int MAX_IMAGE_HEIGHT = 400;
+    private DisplayMetrics displayMetrics;
 
     private Target userAvatarTarget = new Target() {
         @Override
@@ -89,6 +91,7 @@ public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<Message
     public MessageListRecyclerViewAdapter(
             FirebaseDatabase firebaseDatabase, Context context, List<MessageModel> messageList,
             String chatChanelId, UserModel user, UserModel partner) {
+        this.displayMetrics = context.getResources().getDisplayMetrics();
         this.context = context;
         this.messageList = messageList;
         this.user = user;
@@ -157,15 +160,18 @@ public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<Message
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                         Bitmap resizeBitmap = bitmap;
-                        if (bitmap.getWidth() > MAX_IMAGE_WIDTH) {
-                            resizeBitmap = Bitmap.createScaledBitmap(bitmap, MAX_IMAGE_WIDTH,
-                                    MAX_IMAGE_WIDTH * bitmap.getHeight() / bitmap.getWidth(), false);
-                        } else if (bitmap.getHeight() > MAX_IMAGE_HEIGHT) {
+
+                        int maxWidthInPixel = MAX_IMAGE_WIDTH * displayMetrics.densityDpi;
+                        int maxHeightInPixel = MAX_IMAGE_HEIGHT * displayMetrics.densityDpi;
+
+                        if (bitmap.getWidth() > maxWidthInPixel) {
+                            resizeBitmap = Bitmap.createScaledBitmap(bitmap, maxWidthInPixel,
+                                    maxWidthInPixel * bitmap.getHeight() / bitmap.getWidth(), false);
+                        } else if (bitmap.getHeight() > maxHeightInPixel) {
                             resizeBitmap = Bitmap.createScaledBitmap(bitmap,
-                                    MAX_IMAGE_HEIGHT * bitmap.getWidth() / bitmap.getHeight(),
-                                    MAX_IMAGE_HEIGHT, false);
+                                    maxHeightInPixel * bitmap.getWidth() / bitmap.getHeight(),
+                                    maxHeightInPixel, false);
                         }
-                        System.out.println("RUNNED");
                         holder.imgImage.setImageBitmap(resizeBitmap);
                     }
 
