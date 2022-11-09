@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileFragment"
+    android:background="#DDEFFF">
+
+    <View
+        android:id="@+id/group_37160"
+        android:layout_width="354dp"
+        android:layout_height="431dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="141dp"
+        android:background="#00000000" />
+
+    <ImageView
+        android:id="@+id/nextPage2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView5"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="409dp"
+        android:layout_marginEnd="175dp"
+        android:layout_marginBottom="500dp"
+        app:srcCompat="@drawable/next" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignEnd="@+id/group_37160"
+        android:layout_alignBottom="@+id/group_37160"
+        android:layout_marginEnd="190dp"
+        android:layout_marginBottom="265dp"
+        android:src="@drawable/job1" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignEnd="@+id/group_37160"
+        android:layout_alignBottom="@+id/group_37160"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="52dp"
+        android:src="@drawable/job2" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignEnd="@+id/group_37160"
+        android:layout_alignBottom="@+id/group_37160"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="265dp"
+        android:src="@drawable/job0" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignEnd="@+id/group_37160"
+        android:layout_alignBottom="@+id/group_37160"
+        android:layout_marginEnd="190dp"
+        android:layout_marginBottom="52dp"
+        android:src="@drawable/job3" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="match_parent"
+        android:layout_height="205dp"
+        android:layout_marginTop="-6.5dp"
+        app:srcCompat="@drawable/ic_vector_116"></ImageView>
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="143dp"
+        android:layout_alignBottom="@+id/imageView5"
+        android:layout_marginBottom="54dp"
+        app:srcCompat="@drawable/ic_group_37062" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/group_37160"
+        android:layout_alignBottom="@+id/group_37160"
+        android:layout_marginEnd="194dp"
+        android:layout_marginBottom="233dp"
+        android:text="Tìm việc dễ dàng"
+        android:textColor="#5A2D22"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/group_37160"
+        android:layout_alignBottom="@+id/group_37160"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="235dp"
+        android:text="Phù hợp trình độ"
+        android:textColor="#5A2D22"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="117dp"
+        android:layout_height="49dp"
+        android:layout_alignEnd="@+id/group_37160"
+        android:layout_alignBottom="@+id/group_37160"
+        android:layout_marginEnd="195dp"
+        android:layout_marginBottom="-7dp"
+        android:gravity="center"
+        android:text="Nhanh chóng, hiệu quả"
+        android:textColor="#5A2D22"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="91dp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/group_37160"
+        android:layout_alignBottom="@+id/group_37160"
+        android:layout_marginEnd="37dp"
+        android:layout_marginBottom="2dp"
+        android:gravity="center"
+        android:text="Phỏng vấn trực tuyến"
+        android:textColor="#5A2D22"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
+

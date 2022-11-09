@@ -20,6 +20,8 @@ import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.firebasehelper.FirebaseSignInMethod;
+import com.uet.fwork.landingpage.LandingPage1;
+import com.uet.fwork.landingpage.LandingPage2;
 
 import java.util.List;
 
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         } else {
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, LandingPage1.class);
             startActivity(intent);
         }
     }
