@@ -42,6 +42,7 @@ import com.uet.fwork.database.repository.ChatRepository;
 import com.uet.fwork.database.repository.MessageRepository;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
+import com.uet.fwork.util.ImageHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -106,6 +107,21 @@ public class ChatMainFragment extends Fragment {
         imgImage = view.findViewById(R.id.imgImage);
         createImagePicker();
 
+        recMessageList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(-1)) {
+                    System.out.println("LOAD MORE");
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
         imgImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,12 +182,26 @@ public class ChatMainFragment extends Fragment {
                         .addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                                loadMessages();
+                                messageList.add(snapshot.getValue(MessageModel.class));
+                                adapter.notifyItemInserted(messageList.size() - 1);
+                                recMessageList.scrollToPosition(recMessageList.getAdapter().getItemCount() - 1);
+                                System.out.println("CHILD ADD CALLED");
+//                                loadMessages();
                             }
 
                             @Override
                             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                               loadMessages();
+                                System.out.println("CHILD CHANGE CALLED");
+                                MessageModel messageModel = snapshot.getValue(MessageModel.class);
+                                for (int i = 0; i < messageList.size(); ++i) {
+                                    if (messageModel.getId().equals(messageList.get(i).getId())) {
+                                        messageList.set(i, messageModel);
+                                        adapter.notifyItemChanged(i);
+                                        recMessageList.scrollToPosition(recMessageList.getAdapter().getItemCount() - 1);
+                                        break;
+                                    }
+                                }
+//                               loadMessages();
                             }
 
                             @Override
@@ -190,10 +220,10 @@ public class ChatMainFragment extends Fragment {
                             }
 
                             public void loadMessages() {
-                                messageRepository.getAllMessageOrderBySentTimeLimit(chatChanelId,20L, messages -> {
-                                    adapter.updateMessageList(messages);
-                                    recMessageList.scrollToPosition(recMessageList.getAdapter().getItemCount() - 1);
-                                });
+//                                messageRepository.getAllMessageOrderBySentTimeLimit(chatChanelId,20L, messages -> {
+//                                    adapter.updateMessageList(messages);
+//                                    recMessageList.scrollToPosition(recMessageList.getAdapter().getItemCount() - 1);
+//                                });
                             }
                         });
             }
@@ -230,7 +260,12 @@ public class ChatMainFragment extends Fragment {
         messageRepository.insertMessage(chatChanelId, messageModel, result -> {
             StorageReference storageReference = firebaseStorage.getReference("chats/" + chatChanelId + "/" + result);
             StorageReference imageReference = storageReference.child(firebaseAuth.getUid());
-            imageReference.putFile(imageUri)
+
+            Bitmap bitmap = ImageHelper.loadBitmapFromUri(getContext(), imageUri);
+            bitmap = ImageHelper.reduceImageSize(bitmap);
+            byte[] byteArray = ImageHelper.convertBitmapToByteArray(bitmap);
+
+            imageReference.putBytes(byteArray)
                     .addOnSuccessListener(taskSnapshot -> {
                         imageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override

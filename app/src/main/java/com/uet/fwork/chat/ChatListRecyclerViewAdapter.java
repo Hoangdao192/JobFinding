@@ -70,6 +70,7 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
                 chanel.getMembers().forEach((key, value) -> {
                     if (!key.equals(currentUserId)) {
                         if (!userMap.containsKey(key)) {
+                            System.out.println("RECREATE");
                             userRepository.getUserByUID(key, user -> {
                                 userMap.put(key, user);
                                 if (user.getAvatar() != null && !user.getAvatar().equals("")) {

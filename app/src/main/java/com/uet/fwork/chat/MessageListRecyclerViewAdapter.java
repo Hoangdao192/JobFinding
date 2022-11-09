@@ -46,6 +46,7 @@ public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<Message
     private Bitmap userBitmap = null, partnerBitmap = null;
 
     private List<Target> imageMessageTargetList = new ArrayList<>();
+    private Map<String, Bitmap> messageImageMap = new HashMap<>();
 
     private final static int MAX_IMAGE_WIDTH = 250;
     private final static int MAX_IMAGE_HEIGHT = 400;
@@ -143,6 +144,8 @@ public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<Message
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        System.out.println("ON BIND CALLED");
+
         MessageModel messageModel = messageList.get(position);
         if (messageModel.getContents().get(0).getType().equals("Text")) {
             String message = "";
@@ -155,40 +158,46 @@ public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<Message
             String imagePath = messageModel.getContents().get(0).getContent();
             if (imagePath != null || !imagePath.isEmpty()) {
                 System.out.println(imagePath);
-                Picasso.Builder builder = new Picasso.Builder(context);
-                Target target = new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        Bitmap resizeBitmap = bitmap;
+                if (messageImageMap.containsKey(messageModel.getId())) {
+                    holder.imgImage.setImageBitmap(messageImageMap.get(messageModel.getId()));
+                } else {
+                    Picasso.Builder builder = new Picasso.Builder(context);
+                    Target target = new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            Bitmap resizeBitmap = bitmap;
 
-                        int maxWidthInPixel = MAX_IMAGE_WIDTH * displayMetrics.densityDpi;
-                        int maxHeightInPixel = MAX_IMAGE_HEIGHT * displayMetrics.densityDpi;
+                            int maxWidthInPixel = MAX_IMAGE_WIDTH * displayMetrics.densityDpi;
+                            int maxHeightInPixel = MAX_IMAGE_HEIGHT * displayMetrics.densityDpi;
 
-                        if (bitmap.getWidth() > maxWidthInPixel) {
-                            resizeBitmap = Bitmap.createScaledBitmap(bitmap, maxWidthInPixel,
-                                    maxWidthInPixel * bitmap.getHeight() / bitmap.getWidth(), false);
-                        } else if (bitmap.getHeight() > maxHeightInPixel) {
-                            resizeBitmap = Bitmap.createScaledBitmap(bitmap,
-                                    maxHeightInPixel * bitmap.getWidth() / bitmap.getHeight(),
-                                    maxHeightInPixel, false);
+                            if (bitmap.getWidth() > maxWidthInPixel) {
+                                resizeBitmap = Bitmap.createScaledBitmap(bitmap, maxWidthInPixel,
+                                        maxWidthInPixel * bitmap.getHeight() / bitmap.getWidth(), false);
+                            } else if (bitmap.getHeight() > maxHeightInPixel) {
+                                resizeBitmap = Bitmap.createScaledBitmap(bitmap,
+                                        maxHeightInPixel * bitmap.getWidth() / bitmap.getHeight(),
+                                        maxHeightInPixel, false);
+                            }
+                            holder.imgImage.setImageBitmap(resizeBitmap);
+                            messageImageMap.put(messageModel.getId(), resizeBitmap);
                         }
-                        holder.imgImage.setImageBitmap(resizeBitmap);
-                    }
 
-                    @Override
-                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                        @Override
+                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
 
-                    }
-                };
-                imageMessageTargetList.add(target);
-                builder.build().load(imagePath)
-                        .placeholder(R.drawable.loading_animation)
-                        .into(target);
+                        }
+                    };
+                    imageMessageTargetList.add(target);
+                    holder.imgImage.setImageDrawable(context.getDrawable(R.drawable.image_holder));
+                    builder.build().load(imagePath)
+                            .placeholder(R.drawable.image_holder)
+                            .into(target);
+                }
             }
         }
 
