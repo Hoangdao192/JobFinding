@@ -1,6 +1,8 @@
 package com.uet.fwork.database.model;
 
-public class AddressModel {
+import java.io.Serializable;
+
+public class AddressModel implements Serializable {
     private String province;
     private String district;
     private String ward;

@@ -53,7 +53,6 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatMainFragment extends Fragment {
-    private NestedScrollView scrMessageList;
     private RecyclerView recMessageList;
     private TextView txtPartnerFullName;
     private EditText edtMessage;
@@ -107,21 +106,6 @@ public class ChatMainFragment extends Fragment {
         imgImage = view.findViewById(R.id.imgImage);
         createImagePicker();
 
-        recMessageList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (!recyclerView.canScrollVertically(-1)) {
-                    System.out.println("LOAD MORE");
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-
         imgImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,10 +122,9 @@ public class ChatMainFragment extends Fragment {
                 if (!edtMessage.getText().toString().isEmpty()) {
                     String message = edtMessage.getText().toString();
                     edtMessage.getText().clear();
-                    List<MessageContentModel> messageContents = new ArrayList<>();
-                    messageContents.add(new MessageContentModel("0", "Text", message));
                     MessageModel messageModel = new MessageModel(
-                            messageContents,
+                            "Text",
+                            message,
                             firebaseUser.getUid(),
                             System.currentTimeMillis() / 1000);
                     messageRepository.insertMessage(chatChanelId, messageModel, null);
@@ -151,20 +134,18 @@ public class ChatMainFragment extends Fragment {
 
         //  Load data của user đối diện
         txtPartnerFullName.setText(partnerUser.getFullName());
-        System.out.println(partnerUser.getFullName());
-        System.out.println(partnerUser.getAvatar());
         if (partnerUser.getAvatar() != null && !partnerUser.getAvatar().equals("")) {
             Picasso.Builder builder = new Picasso.Builder(getContext());
             builder.listener(new Picasso.Listener() {
                 @Override
                 public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
-                    System.out.println("PICASSO LOAD USER AVATAR ERROR");
                     builder.build().load(R.drawable.blank_user_avatar).into(imgUserAvatar);
                 }
             });
-            System.out.println("PICASSO LOAD PARTNER AVATAR");
             builder.build().load(partnerUser.getAvatar()).resize(100, 100).into(imgUserAvatar);
-        } else {
+        }
+        //  Sử dụng ảnh mặc định nếu userAvatar không tồn tại
+        else {
             Picasso.get().load(R.drawable.blank_user_avatar).resize(100, 100).into(imgUserAvatar);
         }
 
@@ -185,13 +166,10 @@ public class ChatMainFragment extends Fragment {
                                 messageList.add(snapshot.getValue(MessageModel.class));
                                 adapter.notifyItemInserted(messageList.size() - 1);
                                 recMessageList.scrollToPosition(recMessageList.getAdapter().getItemCount() - 1);
-                                System.out.println("CHILD ADD CALLED");
-//                                loadMessages();
                             }
 
                             @Override
                             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                                System.out.println("CHILD CHANGE CALLED");
                                 MessageModel messageModel = snapshot.getValue(MessageModel.class);
                                 for (int i = 0; i < messageList.size(); ++i) {
                                     if (messageModel.getId().equals(messageList.get(i).getId())) {
@@ -201,7 +179,6 @@ public class ChatMainFragment extends Fragment {
                                         break;
                                     }
                                 }
-//                               loadMessages();
                             }
 
                             @Override
@@ -217,13 +194,6 @@ public class ChatMainFragment extends Fragment {
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
 
-                            }
-
-                            public void loadMessages() {
-//                                messageRepository.getAllMessageOrderBySentTimeLimit(chatChanelId,20L, messages -> {
-//                                    adapter.updateMessageList(messages);
-//                                    recMessageList.scrollToPosition(recMessageList.getAdapter().getItemCount() - 1);
-//                                });
                             }
                         });
             }
@@ -251,40 +221,33 @@ public class ChatMainFragment extends Fragment {
             return;
         }
 
-        List<MessageContentModel> messageContents = new ArrayList<>();
-        messageContents.add(new MessageContentModel("0", "Text", ""));
         MessageModel messageModel = new MessageModel(
-                messageContents,
+                "Image",
+                "",
                 firebaseUser.getUid(),
                 System.currentTimeMillis() / 1000);
-        messageRepository.insertMessage(chatChanelId, messageModel, result -> {
-            StorageReference storageReference = firebaseStorage.getReference("chats/" + chatChanelId + "/" + result);
-            StorageReference imageReference = storageReference.child(firebaseAuth.getUid());
+        messageRepository.insertMessage(chatChanelId, messageModel, messageId -> {
+            StorageReference storageReference = firebaseStorage.getReference("chats/" + chatChanelId + "/" + messageId);
+            StorageReference imageReference = storageReference.child(firebaseUser.getUid());
 
+            //  Giảm kích thước ảnh và convert sang bytes array
             Bitmap bitmap = ImageHelper.loadBitmapFromUri(getContext(), imageUri);
             bitmap = ImageHelper.reduceImageSize(bitmap);
             byte[] byteArray = ImageHelper.convertBitmapToByteArray(bitmap);
 
+            //  Upload ảnh lên Firebase
             imageReference.putBytes(byteArray)
                     .addOnSuccessListener(taskSnapshot -> {
                         imageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                List<MessageContentModel> messageContents = new ArrayList<>();
-                                messageContents.add(new MessageContentModel("0", "Image", uri.toString()));
                                 Map<String, Object> updateData = new HashMap<>();
-                                updateData.put("contents", messageContents);
-                                messageRepository.updateMessage(chatChanelId, result, updateData);
+                                updateData.put("content", uri.toString());
+                                messageRepository.updateMessage(chatChanelId, messageId, updateData);
                             }
                         });
                     })
                     .addOnFailureListener(Throwable::printStackTrace);
         });
-
-
-    }
-
-    public interface OnImagePickedListener {
-        void onPicked(Uri imageUri);
     }
 }

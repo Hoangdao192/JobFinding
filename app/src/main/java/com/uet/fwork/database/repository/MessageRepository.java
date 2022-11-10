@@ -79,12 +79,6 @@ public class MessageRepository extends Repository {
                     });
                     listener.onSuccess(messageList);
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        System.out.print("GET ALL MESSAGE:");
-                        e.printStackTrace();
-                    }
-                });
+                .addOnFailureListener(System.out::println);
     }
 }

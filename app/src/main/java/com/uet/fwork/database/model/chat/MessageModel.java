@@ -1,75 +1,65 @@
 package com.uet.fwork.database.model.chat;
 
-import java.util.List;
-import java.util.Map;
+import androidx.annotation.NonNull;
 
 public class MessageModel {
-    private String id;
-    private List<MessageContentModel> contents;
-    private String senderId;
-    private Long sentTime;
-    private String status = MessageStatus.NOT_SET;
+    private @NonNull String id;
+    private @NonNull String type;
+    private @NonNull String content;
+    private @NonNull String senderId;
+    private @NonNull Long sentTime;
 
     public MessageModel() {
     }
 
-    public MessageModel(List<MessageContentModel> contents, String senderId, Long sentTime) {
-        this.contents = contents;
+    public MessageModel(
+            @NonNull String type, @NonNull String content,
+            @NonNull String senderId, @NonNull Long sentTime) {
+        this.type = type;
+        this.content = content;
         this.senderId = senderId;
         this.sentTime = sentTime;
     }
 
-    public MessageModel(List<MessageContentModel> contents, String senderId, Long sentTime, String status) {
-        this.contents = contents;
-        this.senderId = senderId;
-        this.sentTime = sentTime;
-        this.status = status;
-    }
-
-    public MessageModel(String id, List<MessageContentModel> contents, String senderId, Long sentTime) {
+    public MessageModel(
+            @NonNull String id, @NonNull String type,
+            @NonNull String content, @NonNull String senderId, @NonNull Long sentTime) {
         this.id = id;
-        this.contents = contents;
+        this.type = type;
+        this.content = content;
         this.senderId = senderId;
         this.sentTime = sentTime;
-    }
-
-    public MessageModel(String id, List<MessageContentModel> contents, String senderId, Long sentTime, String status) {
-        this.id = id;
-        this.contents = contents;
-        this.senderId = senderId;
-        this.sentTime = sentTime;
-        this.status = status;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
-    public List<MessageContentModel> getContents() {
-        return contents;
+    public String getType() {
+        return type;
     }
 
-    public void setContents(List<MessageContentModel> contents) {
-        this.contents = contents;
+    public void setType(@NonNull String type) {
+        this.type = type;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(@NonNull String content) {
+        this.content = content;
     }
 
     public String getSenderId() {
         return senderId;
     }
 
-    public void setSenderId(String senderId) {
+    public void setSenderId(@NonNull String senderId) {
         this.senderId = senderId;
     }
 
@@ -77,7 +67,7 @@ public class MessageModel {
         return sentTime;
     }
 
-    public void setSentTime(Long sentTime) {
+    public void setSentTime(@NonNull Long sentTime) {
         this.sentTime = sentTime;
     }
 }

@@ -48,18 +48,6 @@ public class MainActivity extends AppCompatActivity {
         checking();
     }
 
-    private void test() {
-        List<MessageContentModel> messageContents = new ArrayList<>();
-        messageContents.add(new MessageContentModel("0", "Text", "Message"));
-        MessageModel messageModel = new MessageModel(
-                messageContents,
-                "123",
-                System.currentTimeMillis() / 1000);
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseDatabase.getReference("chats/messages/-NG9fA0H_uMb39S1qbYr")
-                .child("0").setValue(messageModel);
-    }
-
     private void checking() {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {

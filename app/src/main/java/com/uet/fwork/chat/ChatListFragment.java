@@ -60,9 +60,9 @@ public class ChatListFragment extends Fragment {
                 new ChatListRecyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onClick(ChanelModel chanel) {
-                        chanel.getMembers().forEach((key, value) -> {
-                            if (!key.equals(firebaseUser.getUid())) {
-                                userRepository.getUserByUID(key, new Repository.OnQuerySuccessListener<UserModel>() {
+                        chanel.getMembers().forEach(userId -> {
+                            if (!userId.equals(firebaseUser.getUid())) {
+                                userRepository.getUserByUID(userId, new Repository.OnQuerySuccessListener<UserModel>() {
                                     @Override
                                     public void onSuccess(UserModel result) {
                                         Bundle bundle = new Bundle();
@@ -80,7 +80,6 @@ public class ChatListFragment extends Fragment {
         chatRepository.getAllChatIdByUserId(firebaseUser.getUid(), new Repository.OnQuerySuccessListener<List<String>>() {
             @Override
             public void onSuccess(List<String> chanelIdList) {
-                System.out.println("FRAGMENT " + chanelIdList);
                 adapter.updateChanelList(chanelIdList);
             }
         });

@@ -67,12 +67,12 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
         chatRepository.getChatChanelById(chanelIdList.get(position), new Repository.OnQuerySuccessListener<ChanelModel>() {
             @Override
             public void onSuccess(ChanelModel chanel) {
-                chanel.getMembers().forEach((key, value) -> {
-                    if (!key.equals(currentUserId)) {
-                        if (!userMap.containsKey(key)) {
+                chanel.getMembers().forEach(memberId -> {
+                    if (!memberId.equals(currentUserId)) {
+                        if (!userMap.containsKey(memberId)) {
                             System.out.println("RECREATE");
-                            userRepository.getUserByUID(key, user -> {
-                                userMap.put(key, user);
+                            userRepository.getUserByUID(memberId, user -> {
+                                userMap.put(memberId, user);
                                 if (user.getAvatar() != null && !user.getAvatar().equals("")) {
                                     Picasso.get().load(user.getAvatar())
                                             .resize(100, 100)
@@ -80,7 +80,7 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
                                                 @Override
                                                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                                                     holder.imgAvatar.setImageBitmap(bitmap);
-                                                    userAvatarMap.put(key, bitmap);
+                                                    userAvatarMap.put(memberId, bitmap);
                                                 }
 
                                                 @Override
@@ -97,9 +97,9 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
                                 holder.userName.setText(user.getFullName());
                             });
                         } else {
-                            holder.userName.setText(userMap.get(key).getFullName());
-                            if (userAvatarMap.containsKey(key)) {
-                                holder.imgAvatar.setImageBitmap(userAvatarMap.get(key));
+                            holder.userName.setText(userMap.get(memberId).getFullName());
+                            if (userAvatarMap.containsKey(memberId)) {
+                                holder.imgAvatar.setImageBitmap(userAvatarMap.get(memberId));
                             }
                         }
                     }

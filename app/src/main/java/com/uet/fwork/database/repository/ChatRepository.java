@@ -28,21 +28,15 @@ public class ChatRepository extends Repository {
     }
 
     public void createNewChat(List<String> chatMembersUID, @Nullable OnQuerySuccessListener<ChanelModel> listener) {
-        Map<String, String> memberMap = new HashMap<>();
-        chatMembersUID.forEach((userUID) -> {
-            memberMap.put(userUID, "");
-        });
-
         ChanelModel chanelModel = new ChanelModel();
-        chanelModel.setMembers(memberMap);
+        chanelModel.setMembers(chatMembersUID);
         DatabaseReference newChanelRef = rootDatabaseReference.push();
         chanelModel.setId(newChanelRef.getKey());
         newChanelRef.setValue(chanelModel)
                 .addOnSuccessListener(unused -> {
-                    memberMap.forEach((userId, status) -> {
+                    chatMembersUID.forEach(userId -> {
                         firebaseDatabase.getReference("chats/userChats").child(userId)
-                                .child(chanelModel.getId())
-                                .child("members").setValue(memberMap);
+                                .child(chanelModel.getId()).setValue(chanelModel);
                     });
                     if (listener != null) {
                         listener.onSuccess(chanelModel);
@@ -55,12 +49,9 @@ public class ChatRepository extends Repository {
 
     public void getChatChanelById(String id, OnQuerySuccessListener<ChanelModel> listener) {
         rootDatabaseReference.child(id).get()
-                .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-                    @Override
-                    public void onSuccess(DataSnapshot dataSnapshot) {
-                        ChanelModel chanel = dataSnapshot.getValue(ChanelModel.class);
-                        listener.onSuccess(chanel);
-                    }
+                .addOnSuccessListener(dataSnapshot -> {
+                    ChanelModel chanel = dataSnapshot.getValue(ChanelModel.class);
+                    listener.onSuccess(chanel);
                 })
                 .addOnFailureListener(System.out::println);
     }
@@ -97,7 +88,7 @@ public class ChatRepository extends Repository {
                         while (dataSnapshots.hasNext()) {
                             DataSnapshot chanelSnapshot = dataSnapshots.next();
                             ChanelModel chanel = chanelSnapshot.getValue(ChanelModel.class);
-                            if (chanel.getMembers().containsKey(secondUserId)) {
+                            if (chanel.getMembers().contains(secondUserId)) {
                                 listener.onSuccess(chanelSnapshot.getKey());
                                 return;
                             }
@@ -106,25 +97,6 @@ public class ChatRepository extends Repository {
                     }
                 });
     }
-
-//    public void getAllChatByUserId(String userId, OnQuerySuccessListener<List<ChanelModel>> listener) {
-//        getAllChatIdByUserId(userId, new OnQuerySuccessListener<List<String>>() {
-//            @Override
-//            public void onSuccess(List<String> chanelIdList) {
-//                List<ChanelModel> chanelList = new ArrayList<>();
-//                chanelIdList.forEach(chanelId -> {
-//                    rootDatabaseReference.child(chanelId).get()
-//                            .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-//                                @Override
-//                                public void onSuccess(DataSnapshot dataSnapshot) {
-//                                    chanelList.add(dataSnapshot.getValue(ChanelModel.class));
-//                                }
-//                            })
-//                            .addOnFailureListener(System.out::println);
-//                });
-//            }
-//        });
-//    }
 
     public void getAllChatIdByUserId(String userId, OnQuerySuccessListener<List<String>> listener) {
         DatabaseReference userChatsRef = firebaseDatabase.getReference("chats/userChats/" + userId);
@@ -135,7 +107,6 @@ public class ChatRepository extends Repository {
                 dataSnapshot.getChildren().forEach((snapshot) -> {
                     chatChanelIdList.add(snapshot.getKey());
                 });
-                System.out.println(chatChanelIdList);
                 listener.onSuccess(chatChanelIdList);
             }
         });

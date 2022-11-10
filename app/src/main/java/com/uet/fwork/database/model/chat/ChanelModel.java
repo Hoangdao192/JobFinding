@@ -1,16 +1,18 @@
 package com.uet.fwork.database.model.chat;
 
-import java.util.Map;
+import androidx.annotation.NonNull;
+
+import java.util.List;
 
 public class ChanelModel {
-    private String id;
-    private Long lastUpdate = 0L;
-    private Map<String, String> members;
+    private @NonNull String id;
+    private @NonNull Long lastUpdate = 0L;
+    private @NonNull List<String> members;
 
     public ChanelModel() {
     }
 
-    public ChanelModel(String id, Long lastUpdate, Map<String, String> members) {
+    public ChanelModel(@NonNull String id, @NonNull Long lastUpdate, @NonNull List<String> members) {
         this.id = id;
         this.lastUpdate = lastUpdate;
         this.members = members;
@@ -20,7 +22,7 @@ public class ChanelModel {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
@@ -28,15 +30,15 @@ public class ChanelModel {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Long lastUpdate) {
+    public void setLastUpdate(@NonNull Long lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
-    public Map<String, String> getMembers() {
+    public List<String> getMembers() {
         return members;
     }
 
-    public void setMembers(Map<String, String> members) {
+    public void setMembers(@NonNull List<String> members) {
         this.members = members;
     }
 }

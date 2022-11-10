@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +14,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.uet.fwork.R;
 import com.uet.fwork.database.model.UserModel;
-import com.uet.fwork.database.model.chat.MessageContentModel;
 import com.uet.fwork.database.model.chat.MessageModel;
-import com.uet.fwork.database.model.chat.MessageStatus;
 import com.uet.fwork.database.repository.MessageRepository;
 import com.uet.fwork.database.repository.UserRepository;
 
@@ -35,57 +32,23 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<MessageListRecyclerViewAdapter.ViewHolder> {
 
-    private Context context;
-    private List<MessageModel> messageList;
-    private FirebaseDatabase firebaseDatabase;
-    private MessageRepository messageRepository;
+    private final Context context;
+    private final List<MessageModel> messageList;
     private UserRepository userRepository;
     private String chatChanelId;
-    private MessageModel lastSeenMessage = null;
-    private Drawable userAvatar = null, partnerAvatar = null;
     private Bitmap userBitmap = null, partnerBitmap = null;
 
     private List<Target> imageMessageTargetList = new ArrayList<>();
     private Map<String, Bitmap> messageImageMap = new HashMap<>();
 
-    private final static int MAX_IMAGE_WIDTH = 250;
-    private final static int MAX_IMAGE_HEIGHT = 400;
+    private final int MAX_IMAGE_WIDTH;
+    private final int MAX_IMAGE_HEIGHT;
+    private final int MAX_MESSAGE_WIDTH;
+
     private DisplayMetrics displayMetrics;
 
-    private Target userAvatarTarget = new Target() {
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            userBitmap = bitmap;
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-            System.out.println("BITMAP FAILED");
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-        }
-    };
-    private Target partnerAvatarTarget = new Target() {
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            partnerBitmap = bitmap;
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-        }
-    };
+    private Target userAvatarTarget;
+    private Target partnerAvatarTarget;
 
     private UserModel user, partner;
 
@@ -97,31 +60,62 @@ public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<Message
         this.messageList = messageList;
         this.user = user;
         this.partner = partner;
-        this.firebaseDatabase = firebaseDatabase;
         this.chatChanelId = chatChanelId;
-        this.messageRepository = new MessageRepository(firebaseDatabase);
         this.userRepository = new UserRepository(firebaseDatabase);
 
+        userAvatarTarget = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                userBitmap = bitmap;
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        };
+        partnerAvatarTarget = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                partnerBitmap = bitmap;
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        };
+
         if (user.getAvatar() != null && !user.getAvatar().equals("")) {
-            System.out.println("LOAD BITMAP");
             Picasso.get().load(user.getAvatar()).into(userAvatarTarget);
         }
 
         if (partner.getAvatar() != null && !partner.getAvatar().equals("")) {
             Picasso.get().load(partner.getAvatar()).into(partnerAvatarTarget);
         }
-    }
 
-    public void setLastSeenMessage(MessageModel lastSeenMessage) {
-        this.lastSeenMessage = lastSeenMessage;
+        MAX_MESSAGE_WIDTH = this.displayMetrics.widthPixels * 3 / 5;
+        MAX_IMAGE_WIDTH = MAX_MESSAGE_WIDTH;
+        MAX_IMAGE_HEIGHT = 400 * this.displayMetrics.densityDpi;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (messageList.get(position).getContents().get(0).getType().equals("Text")) {
+        if (messageList.get(position).getType().equals("Text")) {
             if (messageList.get(position).getSenderId().equals(user.getId())) return 1;
             return 2;
-        } else if (messageList.get(position).getContents().get(0).getType().equals("Image")) {
+        } else if (messageList.get(position).getType().equals("Image")) {
             if (messageList.get(position).getSenderId().equals(user.getId())) return 3;
             else return 4;
         }
@@ -144,40 +138,42 @@ public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<Message
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        System.out.println("ON BIND CALLED");
+        Log.d("CHAT", "Load message list.");
 
         MessageModel messageModel = messageList.get(position);
-        if (messageModel.getContents().get(0).getType().equals("Text")) {
-            String message = "";
-            StringBuilder stringBuilder = new StringBuilder();
-            messageModel.getContents().forEach(contentModel -> {
-                stringBuilder.append(contentModel.getContent());
-            });
-            holder.txtMessage.setText(stringBuilder.toString());
-        } else if (messageModel.getContents().get(0).getType().equals("Image") && holder.imgImage != null) {
-            String imagePath = messageModel.getContents().get(0).getContent();
-            if (imagePath != null || !imagePath.isEmpty()) {
-                System.out.println(imagePath);
+        //  Nếu tin nhắn là dạng Text
+        if (messageModel.getType().equals("Text") && holder.txtMessage != null) {
+            holder.txtMessage.setText(messageModel.getContent());
+            holder.txtMessage.setMaxWidth(MAX_MESSAGE_WIDTH);
+        }
+        //  Nếu tin nhắn ở dạng Image
+        else if (messageModel.getType().equals("Image") && holder.imgImage != null) {
+            String imagePath = messageModel.getContent();
+            if (imagePath != null && !imagePath.isEmpty()) {
+                //  Nếu ảnh đã được tải về
                 if (messageImageMap.containsKey(messageModel.getId())) {
                     holder.imgImage.setImageBitmap(messageImageMap.get(messageModel.getId()));
-                } else {
+                }
+                //  Ảnh chưa được tải về
+                else {
                     Picasso.Builder builder = new Picasso.Builder(context);
                     Target target = new Target() {
+                        /**
+                         * Resize image
+                         */
                         @Override
                         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                            Bitmap resizeBitmap = bitmap;
+                            int resizeImageWidth = MAX_IMAGE_WIDTH;
+                            int resizeImageHeight = MAX_IMAGE_HEIGHT;
 
-                            int maxWidthInPixel = MAX_IMAGE_WIDTH * displayMetrics.densityDpi;
-                            int maxHeightInPixel = MAX_IMAGE_HEIGHT * displayMetrics.densityDpi;
-
-                            if (bitmap.getWidth() > maxWidthInPixel) {
-                                resizeBitmap = Bitmap.createScaledBitmap(bitmap, maxWidthInPixel,
-                                        maxWidthInPixel * bitmap.getHeight() / bitmap.getWidth(), false);
-                            } else if (bitmap.getHeight() > maxHeightInPixel) {
-                                resizeBitmap = Bitmap.createScaledBitmap(bitmap,
-                                        maxHeightInPixel * bitmap.getWidth() / bitmap.getHeight(),
-                                        maxHeightInPixel, false);
+                            if (bitmap.getWidth() > MAX_MESSAGE_WIDTH) {
+                                resizeImageHeight = MAX_MESSAGE_WIDTH * bitmap.getHeight() / bitmap.getWidth();
+                            } else if (bitmap.getHeight() > MAX_IMAGE_HEIGHT) {
+                                resizeImageWidth = MAX_IMAGE_HEIGHT * bitmap.getWidth() / bitmap.getHeight();
                             }
+
+                            Bitmap resizeBitmap = Bitmap.createScaledBitmap(bitmap,
+                                    resizeImageWidth, resizeImageHeight, false);
                             holder.imgImage.setImageBitmap(resizeBitmap);
                             messageImageMap.put(messageModel.getId(), resizeBitmap);
                         }
@@ -194,26 +190,17 @@ public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<Message
                     };
                     imageMessageTargetList.add(target);
                     holder.imgImage.setImageDrawable(context.getDrawable(R.drawable.image_holder));
-                    builder.build().load(imagePath)
-                            .placeholder(R.drawable.image_holder)
-                            .into(target);
+                    builder.build().load(imagePath).into(target);
                 }
             }
         }
 
-
+        //  Đặt ảnh avatar của người gửi cho message
         if (messageModel.getSenderId().equals(user.getId()) && userBitmap != null) {
             holder.imgAvatar.setImageBitmap(userBitmap);
-        } else if (partnerBitmap != null) {
+        } else if (!messageModel.getSenderId().equals(user.getId()) && partnerBitmap != null) {
             holder.imgAvatar.setImageBitmap(partnerBitmap);
         }
-    }
-
-    public void updateMessageList(List<MessageModel> messageList) {
-        this.messageList.clear();
-        this.imageMessageTargetList.clear();
-        this.messageList.addAll(messageList);
-        notifyDataSetChanged();
     }
 
     @Override
