@@ -325,6 +325,4 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent" />
-
-
 </RelativeLayout>
