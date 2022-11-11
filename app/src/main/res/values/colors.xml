@@ -18,4 +18,7 @@
     <color name="gray">#aaaaaa</color>
     <color name="dark_gary">#777</color>
     <color name="purple">#213343</color>
+    <color name="background_color">#DDEFFF</color>
+    <color name="a" />
+    <color name="topview_color">#6B8CFF</color>
 </resources>
