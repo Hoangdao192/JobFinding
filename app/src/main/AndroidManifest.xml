@@ -35,7 +35,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".DashboardActivity"
+            android:name=".navbar.DashboardActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

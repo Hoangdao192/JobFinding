@@ -2,7 +2,6 @@ package com.uet.fwork;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,22 +12,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 import com.uet.fwork.account.login.LoginActivity;
 import com.uet.fwork.account.register.RegisterActivity;
 import com.uet.fwork.chat.ChatActivity;
 import com.uet.fwork.database.model.UserModel;
-import com.uet.fwork.database.model.chat.MessageContentModel;
-import com.uet.fwork.database.model.chat.MessageModel;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.firebasehelper.FirebaseSignInMethod;
-import com.uet.fwork.test.Message;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;

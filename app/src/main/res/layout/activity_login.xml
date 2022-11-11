@@ -30,8 +30,7 @@
         android:hint="Email"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtTitle"
-        app:startIconDrawable="@drawable/envelope">
+        app:layout_constraintTop_toBottomOf="@id/txtTitle">
 
         <EditText
             android:layout_width="match_parent"
