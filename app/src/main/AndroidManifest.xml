@@ -21,6 +21,20 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".landingpage.LandingPage1"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".landingpage.LandingPage2"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".account.ChangePasswordActivity"
             android:exported="false">
             <meta-data
