@@ -126,4 +126,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
+
+    private void startFirstLaunch() {
+        Intent intent = new Intent(this, LandingPage1.class);
+        startActivity(intent);
+    }
 }
