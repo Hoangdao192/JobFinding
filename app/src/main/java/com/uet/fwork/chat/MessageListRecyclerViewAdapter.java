@@ -163,13 +163,15 @@ public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<Message
                          */
                         @Override
                         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                            int resizeImageWidth = MAX_IMAGE_WIDTH;
-                            int resizeImageHeight = MAX_IMAGE_HEIGHT;
+                            int resizeImageWidth = bitmap.getWidth();
+                            int resizeImageHeight = bitmap.getHeight();
 
                             if (bitmap.getWidth() > MAX_MESSAGE_WIDTH) {
+                                resizeImageWidth = MAX_IMAGE_WIDTH;
                                 resizeImageHeight = MAX_MESSAGE_WIDTH * bitmap.getHeight() / bitmap.getWidth();
                             } else if (bitmap.getHeight() > MAX_IMAGE_HEIGHT) {
                                 resizeImageWidth = MAX_IMAGE_HEIGHT * bitmap.getWidth() / bitmap.getHeight();
+                                resizeImageHeight = MAX_IMAGE_HEIGHT;
                             }
 
                             Bitmap resizeBitmap = Bitmap.createScaledBitmap(bitmap,

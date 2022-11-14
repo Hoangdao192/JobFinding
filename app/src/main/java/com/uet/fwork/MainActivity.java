@@ -1,5 +1,7 @@
 package com.uet.fwork;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initNotificationChanel();
 
         checking();
     }
@@ -130,5 +134,16 @@ public class MainActivity extends AppCompatActivity {
     private void startFirstLaunch() {
         Intent intent = new Intent(this, LandingPage1.class);
         startActivity(intent);
+    }
+
+    private void initNotificationChanel() {
+        CharSequence name = "Tin nhắn";
+        String description = "Thông báo khi có tin nhắn gửi đến";
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        String CHANNEL_ID = "Message";
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+        channel.setDescription(description);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
     }
 }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.CallbackManager;
@@ -23,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
@@ -30,6 +32,9 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.uet.fwork.database.model.UserDeviceModel;
+import com.uet.fwork.database.repository.UserDeviceRepository;
 import com.uet.fwork.navbar.DashboardActivity;
 import com.uet.fwork.R;
 import com.uet.fwork.account.register.RegisterActivity;
@@ -50,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private RelativeLayout btnLoginWithGoogle;
     private RelativeLayout btnLoginWithFacebook;
+    private UserDeviceRepository userDeviceRepository;
     //    private LoginButton btnLoginWithFacebook;
     private TextView txtCreateAccount;
     private TextView txtForgotPassword;
@@ -68,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuthHelper = new FirebaseAuthHelper(firebaseAuth);
 //        FacebookSdk.sdkInitialize(getApplicationContext());
         userRepository = new UserRepository(FirebaseDatabase.getInstance());
-
+        userDeviceRepository = new UserDeviceRepository(FirebaseDatabase.getInstance());
     }
 
     @Override
@@ -147,33 +153,41 @@ public class LoginActivity extends AppCompatActivity {
             firebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnFailureListener(exception -> edtEmail.setError("Email or password is invalid."))
                     .addOnSuccessListener(authResult -> {
-                        //  Kiểm tra email người dùng đã được xác mình chưa
-                        if (!firebaseAuth.getCurrentUser().isEmailVerified()) {
-                            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                            intent.putExtra("startDestinationId", R.id.registerVerifyRequestFragment);
-                            startActivity(intent);
-                        }
-                        //  Kiểm tra người dùng đã khai báo thông tin cá nhân chưa
-                        else {
-                            userRepository.getUserByUID(firebaseAuth.getUid(), new Repository.OnQuerySuccessListener<UserModel>() {
-                                @Override
-                                public void onSuccess(UserModel result) {
-                                    //  Người dùng chưa khai báo thông tin cá nhân
-                                    if (result.getLastUpdate() == 0) {
-                                        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                                        intent.putExtra("startDestinationId", R.id.selectUserRoleFragment);
-                                        startActivity(intent);
-                                    } else {
-                                        startDashboardActivity();
-                                    }
-                                }
-                            });
-                        }
+                        onFirebaseLoginSuccess();
                     });
         }
     }
 
     private void startDashboardActivity() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("FIREBASE_MESSAGING", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+                        userDeviceRepository.isUserDeviceExists(firebaseAuth.getUid(), new Repository.OnQuerySuccessListener<Boolean>() {
+                            @Override
+                            public void onSuccess(Boolean result) {
+                                System.out.println("Call");
+                                UserDeviceModel userDevice= new UserDeviceModel(
+                                        firebaseAuth.getUid(),
+                                        token
+                                );
+                                if (!result) {
+                                    userDeviceRepository.insert(userDevice);
+                                } else {
+                                    userDeviceRepository.update(userDevice);
+                                }
+                            }
+                        });
+                        Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
+                    }
+                });
         Intent intent = new Intent(this, ChatActivity.class);
         startActivity(intent);
     }
@@ -210,10 +224,12 @@ public class LoginActivity extends AppCompatActivity {
 
                         signInAccountTask.addOnSuccessListener(googleSignInAccount -> {
                             if (googleSignInAccount != null) {
+                                System.out.println("GOOGLE ACCOUNT GET");
                                 String email = googleSignInAccount.getEmail();
                                 firebaseAuthHelper.isUserWithEmailAndSignInMethodExists(
                                         email, FirebaseSignInMethod.GOOGLE,
                                         result -> {
+                                            System.out.println("IS ACCOUNT EXISTS " + result);
                                             if (result) {
                                                 String googleIdToken = googleSignInAccount.getIdToken();
                                                 AuthCredential authCredential =
@@ -222,7 +238,7 @@ public class LoginActivity extends AppCompatActivity {
                                             } else {
                                                 //  UI thông báo lỗi
                                                 Toast.makeText(LoginActivity.this,
-                                                        "Tài khoản này không tồn tại", Toast.LENGTH_SHORT)
+                                                        "Tài khoản này không tồn tại", Toast.LENGTH_LONG)
                                                         .show();
                                             }
                                         }
