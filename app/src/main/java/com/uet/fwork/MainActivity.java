@@ -24,6 +24,7 @@ import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.firebasehelper.FirebaseSignInMethod;
 import com.uet.fwork.landingpage.LandingPage1;
 import com.uet.fwork.landingpage.LandingPage2;
+import com.uet.fwork.util.ImagePicker;
 
 import java.util.List;
 
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initNotificationChanel();
-
         checking();
     }
 

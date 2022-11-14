@@ -39,6 +39,8 @@ import com.uet.fwork.database.model.EmployerModel;
 import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
+import com.uet.fwork.util.ImageHelper;
+import com.uet.fwork.util.ImagePicker;
 import com.uet.fwork.util.VietNameAdministrativeDivisionAPI;
 
 import org.json.JSONArray;
@@ -73,6 +75,7 @@ public class CreateCompanyProfileFragment extends Fragment {
     private UserRepository userRepository;
     private FirebaseAuth firebaseAuth;
     private FirebaseStorage firebaseStorage;
+    private Bitmap avatarImageBitmap;
 
     private ActivityResultLauncher<Intent> getImageActivityLauncher;
     private Uri avatarImageUri;
@@ -93,21 +96,9 @@ public class CreateCompanyProfileFragment extends Fragment {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        if (data != null && data.getData() != null) {
-                            avatarImageUri = data.getData();
-                            Bitmap selectedImageBitmap = null;
-                            try {
-                                selectedImageBitmap
-                                        = MediaStore.Images.Media.getBitmap(
-                                        getActivity().getContentResolver(),
-                                        avatarImageUri);
-                            }
-                            catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            cirImgAvatar.setImageBitmap(selectedImageBitmap);
-                        }
+                        Bitmap bitmap = ImagePicker.getImageFromResult(getContext(), result);
+                        avatarImageBitmap = ImageHelper.reduceImageSize(bitmap, 400, 400);
+                        cirImgAvatar.setImageBitmap(avatarImageBitmap);
                     }
                 }
         );
@@ -130,9 +121,7 @@ public class CreateCompanyProfileFragment extends Fragment {
         spnWard = view.findViewById(R.id.spnWard);
 
         imgCamera.setOnClickListener(imgCameraView -> {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
+            Intent intent = ImagePicker.getPickImageIntent(getContext());
             getImageActivityLauncher.launch(intent);
         });
 
@@ -286,7 +275,7 @@ public class CreateCompanyProfileFragment extends Fragment {
      * Upload ảnh lên Firebase Storage và update database của user
      */
     private void uploadAvatarImage() {
-        if (avatarImageUri == null) {
+        if (avatarImageBitmap == null) {
             Navigation.findNavController(getActivity(), R.id.navigation_host)
                     .navigate(R.id.action_createCompanyProfileFragment_to_registerVerifyDoneFragment);
             return;
@@ -297,7 +286,8 @@ public class CreateCompanyProfileFragment extends Fragment {
 
         StorageReference storageReference = firebaseStorage.getReference("users/avatars");
         StorageReference imageReference = storageReference.child(firebaseAuth.getUid());
-        imageReference.putFile(avatarImageUri)
+        byte[] bytes = ImageHelper.convertBitmapToByteArray(avatarImageBitmap);
+        imageReference.putBytes(bytes)
                 .addOnSuccessListener(taskSnapshot -> {
                     imageReference.getDownloadUrl().addOnCompleteListener(task -> {
                         String userUID = firebaseAuth.getCurrentUser().getUid();

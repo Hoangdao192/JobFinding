@@ -81,7 +81,7 @@
                 app:layout_constraintTop_toBottomOf="@id/edtFullName"
                 android:layout_marginTop="40dp"
                 android:layout_marginLeft="3dp"
-                app:layout_constraintLeft_toLeftOf="@id/edtMajor"/>
+                app:layout_constraintLeft_toLeftOf="@id/spnMajor"/>
 
             <Spinner
                 style="@style/MySpinner"
@@ -101,7 +101,7 @@
                 app:layout_constraintTop_toBottomOf="@id/spnSex"
                 android:layout_marginTop="40dp"
                 android:layout_marginLeft="3dp"
-                app:layout_constraintLeft_toLeftOf="@id/edtMajor"/>
+                app:layout_constraintLeft_toLeftOf="@id/spnMajor"/>
 
             <EditText
                 android:id="@+id/edtPhoneNumber"
@@ -125,7 +125,7 @@
                 app:layout_constraintTop_toBottomOf="@id/edtPhoneNumber"
                 android:layout_marginTop="40dp"
                 android:layout_marginLeft="3dp"
-                app:layout_constraintLeft_toLeftOf="@id/edtMajor"/>
+                app:layout_constraintLeft_toLeftOf="@id/spnMajor"/>
 
             <EditText
                 android:id="@+id/edtWorkEmail"
@@ -151,18 +151,14 @@
                 app:layout_constraintTop_toBottomOf="@id/edtWorkEmail"
                 android:layout_marginTop="40dp"
                 android:layout_marginLeft="3dp"
-                app:layout_constraintLeft_toLeftOf="@id/edtMajor"/>
+                app:layout_constraintLeft_toLeftOf="@id/spnMajor"/>
 
-            <EditText
-                android:id="@+id/edtMajor"
+            <Spinner
+                style="@style/MySpinner"
+                android:id="@+id/spnMajor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lexenddeca_light"
-                android:hint="Nhập chuyên ngành của bạn"
-                android:textColor="@color/purple"
-                android:paddingBottom="20dp"
-                app:layout_constraintTop_toBottomOf="@id/txtMajor"
-                tools:layout_editor_absoluteX="40dp" />
+                app:layout_constraintTop_toBottomOf="@id/txtMajor"/>
 
             <TextView
                 android:inputType="phone"
@@ -173,7 +169,7 @@
                 android:textSize="20dp"
                 android:textColor="@color/purple"
                 android:id="@+id/txtYearExperience"
-                app:layout_constraintTop_toBottomOf="@id/edtMajor"
+                app:layout_constraintTop_toBottomOf="@id/spnMajor"
                 android:layout_marginTop="40dp"
                 android:layout_marginLeft="3dp"
                 app:layout_constraintLeft_toLeftOf="@id/txtMajor"/>

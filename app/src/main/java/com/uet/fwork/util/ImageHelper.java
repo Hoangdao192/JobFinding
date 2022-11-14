@@ -56,6 +56,41 @@ public class ImageHelper {
         return reduce;
     }
 
+    public static Bitmap reduceImageSize(Bitmap source, int maxWidth, int maxHeight) {
+        int bitmapWidth = source.getWidth();
+        int bitmapHeight = source.getHeight();
+
+        //  Chỉ có chiều rộng vượt ngưỡng cho phép
+        if (bitmapWidth > maxWidth && bitmapHeight <= maxHeight) {
+            bitmapHeight = maxWidth * bitmapHeight / bitmapWidth;
+            bitmapWidth = maxWidth;
+            System.out.println("FIRST");
+        }
+        //  Chỉ có chiều dài vượt ngưỡng cho phép
+        else if (bitmapHeight > maxHeight && bitmapWidth <= maxWidth) {
+            bitmapWidth = maxHeight * bitmapWidth / bitmapHeight;
+            bitmapHeight = maxHeight;
+            System.out.println("SECOND");
+        }
+        //  Cả hai chiều đều vượt mức cho phép
+        else if (bitmapHeight > maxHeight && bitmapWidth > maxWidth) {
+            //  Scale theo chiều rộng
+            if (bitmapWidth > bitmapHeight) {
+                bitmapHeight = maxWidth * bitmapHeight / bitmapWidth;
+                bitmapWidth = maxWidth;
+                System.out.println("3");
+            }
+            //  Scale theo chiều dài
+            else {
+                bitmapWidth = maxHeight * bitmapWidth / bitmapHeight;
+                bitmapHeight = maxHeight;
+                System.out.println("4");
+            }
+        }
+        Bitmap reduce = Bitmap.createScaledBitmap(source, bitmapWidth, bitmapHeight, true);
+        return reduce;
+    }
+
     public static byte[] convertBitmapToByteArray(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG,80,stream);

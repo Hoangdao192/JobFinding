@@ -35,6 +35,7 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.uet.fwork.LoadingScreenDialog;
 import com.uet.fwork.R;
+import com.uet.fwork.account.login.LoginActivity;
 import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.model.chat.MessageContentModel;
 import com.uet.fwork.database.model.chat.MessageModel;
@@ -91,7 +92,7 @@ public class ChatMainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         this.chatChanelId = bundle.getString("chatChanelId");
-        System.out.println("CHATS: " + bundle.getSerializable("partner"));
+        ChatActivity.currentChatChanelId = chatChanelId;
         this.partnerUser = (UserModel) bundle.getSerializable("partner");
     }
 

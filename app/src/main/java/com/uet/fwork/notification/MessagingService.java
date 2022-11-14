@@ -15,6 +15,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.uet.fwork.MainActivity;
 import com.uet.fwork.R;
+import com.uet.fwork.chat.ChatActivity;
 import com.uet.fwork.database.model.UserDeviceModel;
 import com.uet.fwork.database.repository.UserDeviceRepository;
 
@@ -44,7 +45,14 @@ public class MessagingService extends FirebaseMessagingService {
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true);
             NotificationManager notificationManager =  (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
-            notificationManager.notify(0, builder.build());
+            if (ChatActivity.isActivityVisible()) {
+                if (ChatActivity.currentChatChanelId.equals((String) data.get("chanelId"))) {
+                    notificationManager.notify(0, builder.build());
+                }
+            } else {
+                notificationManager.notify(0, builder.build());
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

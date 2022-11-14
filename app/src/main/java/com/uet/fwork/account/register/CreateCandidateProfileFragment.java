@@ -1,6 +1,7 @@
 package com.uet.fwork.account.register;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -22,9 +23,12 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.uet.fwork.LoadingScreenDialog;
@@ -32,6 +36,8 @@ import com.uet.fwork.R;
 import com.uet.fwork.adapter.SpinnerAdapter;
 import com.uet.fwork.database.model.CandidateModel;
 import com.uet.fwork.database.repository.UserRepository;
+import com.uet.fwork.util.ImageHelper;
+import com.uet.fwork.util.ImagePicker;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,49 +50,41 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CreateCandidateProfileFragment extends Fragment {
 
     private EditText edtFullName, edtPhoneNumber, edtWorkEmail, edtMajor;
-    private Spinner spnSex, spnYearExperience;
+    private Spinner spnSex, spnYearExperience, spnMajor;
     private Button btnSubmit;
     private ImageView imgCamera;
     private CircleImageView cirImgAvatar;
     private NavController navController;
     private ActivityResultLauncher<Intent> getImageActivityLauncher;
     private Uri avatarImageUri = null;
+    private ImagePicker imagePicker;
+    private Bitmap avatarImageBitmap = null;
+
+    private List<String> majorList = new ArrayList<>();
 
     private final FirebaseAuth firebaseAuth;
     private final FirebaseStorage firebaseStorage;
     private final UserRepository userRepository;
+    private final FirebaseDatabase firebaseDatabase;
 
     public CreateCandidateProfileFragment() {
         super(R.layout.fragment_enter_profile);
+        firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         userRepository = new UserRepository(FirebaseDatabase.getInstance());
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         this.getImageActivityLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        if (data != null && data.getData() != null) {
-                            avatarImageUri = data.getData();
-                            Bitmap selectedImageBitmap = null;
-                            try {
-                                selectedImageBitmap
-                                        = MediaStore.Images.Media.getBitmap(
-                                        getActivity().getContentResolver(),
-                                        avatarImageUri);
-                            }
-                            catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            cirImgAvatar.setImageBitmap(selectedImageBitmap);
-                        }
-                    }
+                    Bitmap bitmap = ImagePicker.getImageFromResult(getContext(), result);
+                    avatarImageBitmap = ImageHelper.reduceImageSize(bitmap, 400, 400);
+                    cirImgAvatar.setImageBitmap(avatarImageBitmap);
                 }
         );
     }
@@ -98,9 +96,9 @@ public class CreateCandidateProfileFragment extends Fragment {
         edtFullName = view.findViewById(R.id.edtFullName);
         edtPhoneNumber = view.findViewById(R.id.edtPhoneNumber);
         edtWorkEmail = view.findViewById(R.id.edtWorkEmail);
-        edtMajor = view.findViewById(R.id.edtMajor);
         spnSex = view.findViewById(R.id.spnSex);
         spnYearExperience = view.findViewById(R.id.spnYearExperience);
+        spnMajor = view.findViewById(R.id.spnMajor);
         btnSubmit = view.findViewById(R.id.btnSubmit);
         imgCamera = view.findViewById(R.id.imgCamera);
         cirImgAvatar = view.findViewById(R.id.cirImgAvatar);
@@ -134,10 +132,10 @@ public class CreateCandidateProfileFragment extends Fragment {
         );
         spnYearExperience.setAdapter(spinnerAdapter);
 
+        loadMajorList();
+
         imgCamera.setOnClickListener(imgCameraView -> {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
+            Intent intent = ImagePicker.getPickImageIntent(getContext());
             getImageActivityLauncher.launch(intent);
         });
 
@@ -147,12 +145,33 @@ public class CreateCandidateProfileFragment extends Fragment {
         });
     }
 
+    private void loadMajorList() {
+        firebaseDatabase.getReference("userMajors")
+                .get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        GenericTypeIndicator<List<String>> genericTypeIndicator =
+                                new GenericTypeIndicator<List<String>>() {};
+                        majorList.addAll(dataSnapshot.getValue(genericTypeIndicator));
+                        SpinnerAdapter<String> spinnerMajorAdapter = new SpinnerAdapter<>(
+                                getContext(), majorList, R.layout.custom_spinner_2,
+                                (itemView, position) -> {
+                                    TextView txtView = itemView.findViewById(R.id.txtView);
+                                    txtView.setText(majorList.get(position));
+                                }
+                        );
+                        spnMajor.setAdapter(spinnerMajorAdapter);
+                    }
+                })
+                .addOnFailureListener(System.out::println);
+    }
+
     private void submitUserData() {
         String fullName = edtFullName.getText().toString();
         String phoneNumber = edtPhoneNumber.getText().toString();
         String workEmail = edtWorkEmail.getText().toString();
         String sex = spnSex.getSelectedItem().toString();
-        String major = edtMajor.getText().toString();
+        String major = (String) spnMajor.getSelectedItem();
         double yearOfExperience = (Double) spnYearExperience.getSelectedItem();
 
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -170,7 +189,7 @@ public class CreateCandidateProfileFragment extends Fragment {
      * Upload ảnh lên Firebase Storage và update database của user
      */
     private void uploadAvatarImage() {
-        if (avatarImageUri == null) {
+        if (avatarImageBitmap == null) {
             Navigation.findNavController(getActivity(), R.id.navigation_host)
                     .navigate(R.id.action_registerCreateProfileFragment_to_registerVerifyDoneFragment);
             return;
@@ -181,7 +200,8 @@ public class CreateCandidateProfileFragment extends Fragment {
 
         StorageReference storageReference = firebaseStorage.getReference("users/avatars");
         StorageReference imageReference = storageReference.child(firebaseAuth.getUid());
-        imageReference.putFile(avatarImageUri)
+        byte[] bytes = ImageHelper.convertBitmapToByteArray(avatarImageBitmap);
+        imageReference.putBytes(bytes)
                 .addOnSuccessListener(taskSnapshot -> {
                     imageReference.getDownloadUrl().addOnCompleteListener(task -> {
                         String userUID = firebaseAuth.getCurrentUser().getUid();
