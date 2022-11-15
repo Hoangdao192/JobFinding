@@ -1,28 +1,26 @@
 package com.uet.fwork.account;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageButton;
 
-import com.google.android.gms.tasks.OnFailureListener;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.uet.fwork.HelloActivity;
 import com.uet.fwork.LoadingScreenDialog;
 import com.uet.fwork.R;
-
-import java.util.Objects;
+import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
+import com.uet.fwork.navbar.DashboardActivity;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
-    private TextInputLayout edtPassword, edtRePassword;
-    private Button btnChangePassword;
+    private FirebaseAuthHelper firebaseAuthHelper;
+    private TextInputLayout edtOldPassword, edtPassword, edtRePassword;
+    private ImageButton btnChangePassword;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -30,34 +28,51 @@ public class ChangePasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuthHelper = new FirebaseAuthHelper(firebaseAuth);
 
-        edtPassword = (TextInputLayout) findViewById(R.id.edtPassword);
-        edtRePassword = (TextInputLayout) findViewById(R.id.edtRePassword);
-        btnChangePassword = (Button) findViewById(R.id.btnChangePassword);
+        edtOldPassword = (TextInputLayout) findViewById(R.id.edtOldPassword);
+        edtPassword = findViewById(R.id.edtPassword);
+        edtRePassword = findViewById(R.id.edtRePassword);
+        btnChangePassword = (ImageButton) findViewById(R.id.imgBtn);
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resetTextInputLayoutError();
                 if (firebaseAuth.getCurrentUser() != null && checkUserInput()) {
                     LoadingScreenDialog dialog = new LoadingScreenDialog(ChangePasswordActivity.this);
                     dialog.show();
-                    firebaseAuth.getCurrentUser().updatePassword(edtPassword.getEditText().getText().toString())
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Intent intent = new Intent(ChangePasswordActivity.this, HelloActivity.class);
-                                    startActivity(intent);
-                                    dialog.dismiss();
-                                }
+
+                    String currentPassword = edtOldPassword.getEditText().getText().toString();
+                    //  Đăng nhập lại người dùng
+                    firebaseAuth.signInWithEmailAndPassword(
+                            firebaseAuth.getCurrentUser().getEmail(),
+                            currentPassword
+                    )
+                            .addOnFailureListener(exception -> {
+                                edtOldPassword.setError("Sai mật khẩu");
+                                dialog.dismiss();
                             })
-                            .addOnFailureListener(new OnFailureListener() {
+                            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    e.printStackTrace();
+                                public void onSuccess(AuthResult authResult) {
+                                    firebaseAuth.getCurrentUser().updatePassword(edtPassword.getEditText().getText().toString())
+                                            .addOnSuccessListener(unused -> {
+                                                Intent intent = new Intent(ChangePasswordActivity.this, DashboardActivity.class);
+                                                startActivity(intent);
+                                                dialog.dismiss();
+                                            })
+                                            .addOnFailureListener(Throwable::printStackTrace);
                                 }
                             });
                 }
             }
         });
+    }
+
+    private void resetTextInputLayoutError() {
+        edtOldPassword.setErrorEnabled(false);
+        edtPassword.setErrorEnabled(false);
+        edtRePassword.setErrorEnabled(false);
     }
 
     private boolean checkUserInput() {

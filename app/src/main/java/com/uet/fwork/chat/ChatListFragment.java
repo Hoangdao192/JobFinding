@@ -68,8 +68,12 @@ public class ChatListFragment extends Fragment {
                                         Bundle bundle = new Bundle();
                                         bundle.putString("chatChanelId", chanel.getId());
                                         bundle.putSerializable("partner", result);
-                                        Navigation.findNavController(getActivity(), R.id.navigation_host)
-                                                .navigate(R.id.action_chatListFragment_to_chatMainFragment, bundle);
+                                        getActivity().getSupportFragmentManager().beginTransaction()
+                                                .replace(
+                                                        R.id.content, ChatMainFragment.class, bundle
+                                                ).addToBackStack(null).commit();
+//                                        Navigation.findNavController(getActivity(), R.id.navigation_host)
+//                                                .navigate(R.id.action_chatListFragment_to_chatMainFragment, bundle);
                                     }
                                 });
                             }
@@ -114,8 +118,12 @@ public class ChatListFragment extends Fragment {
                             bundle.putString("chatChanelId", chanelId);
                             bundle.putSerializable("partner", user);
                             unFocusSearch();
-                            Navigation.findNavController(getActivity(), R.id.navigation_host)
-                                    .navigate(R.id.action_chatListFragment_to_chatMainFragment, bundle);
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(
+                                            R.id.content, ChatMainFragment.class, bundle
+                                    ).addToBackStack(null).commit();
+//                            Navigation.findNavController(getActivity(), R.id.navigation_host)
+//                                    .navigate(R.id.action_chatListFragment_to_chatMainFragment, bundle);
                         } else {
                             List<String> chatMembers = new ArrayList<>();
                             chatMembers.add(firebaseUser.getUid());
@@ -127,8 +135,12 @@ public class ChatListFragment extends Fragment {
                                     bundle.putString("chatChanelId", result.getId());
                                     bundle.putSerializable("partner", user);
                                     unFocusSearch();
-                                    Navigation.findNavController(getActivity(), R.id.navigation_host)
-                                            .navigate(R.id.action_chatListFragment_to_chatMainFragment, bundle);
+                                    getActivity().getSupportFragmentManager().beginTransaction()
+                                            .replace(
+                                                    R.id.content, ChatMainFragment.class, bundle
+                                            ).addToBackStack(null).commit();
+//                                    Navigation.findNavController(getActivity(), R.id.navigation_host)
+//                                            .navigate(R.id.action_chatListFragment_to_chatMainFragment, bundle);
                                 }
                             });
                         }

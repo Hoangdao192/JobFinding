@@ -22,6 +22,30 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="Theme.FWork.Spinner.Underlined" parent="Widget.AppCompat.Spinner.Underlined">
+        <item name="fontFamily">@font/quicksand_medium</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="Theme.FWork.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="hintEnabled">false</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+        <item name="boxStrokeColor">@android:color/transparent</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="strokeColor">@color/white</item>
+        <item name="android:textColorHint">#9B9B9B</item>
+        <item name="startIconTint">#9B9B9B</item>
+        <item name="passwordToggleDrawable">@drawable/ic_password_toggle</item>
+        <item name="passwordToggleTint">#9B9B9B</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="MyTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeColor">@color/text_input_layout_stroke</item>
         <item name="boxCornerRadiusBottomEnd">10dp</item>

@@ -8,7 +8,9 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.SignInMethodQueryResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,6 +85,16 @@ public class FirebaseAuthHelper {
                     }
                 })
                 .addOnFailureListener(Throwable::printStackTrace);
+    }
+
+    public void getUserSignInMethod(String email, OnSuccessListener<List<String>> listener) {
+        firebaseAuth.fetchSignInMethodsForEmail(email)
+                .addOnSuccessListener(new com.google.android.gms.tasks.OnSuccessListener<SignInMethodQueryResult>() {
+                    @Override
+                    public void onSuccess(SignInMethodQueryResult signInMethodQueryResult) {
+                        listener.onSuccess(signInMethodQueryResult.getSignInMethods());
+                    }
+                });
     }
 
     public interface OnSuccessListener<T> {

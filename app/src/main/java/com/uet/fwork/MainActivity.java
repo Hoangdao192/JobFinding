@@ -3,6 +3,7 @@ package com.uet.fwork;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,16 +16,17 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.FirebaseDatabase;
+import com.uet.fwork.account.ChangePasswordActivity;
 import com.uet.fwork.account.login.LoginActivity;
 import com.uet.fwork.account.register.RegisterActivity;
-import com.uet.fwork.chat.ChatActivity;
 import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
+import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
 import com.uet.fwork.firebasehelper.FirebaseSignInMethod;
 import com.uet.fwork.landingpage.LandingPage1;
-import com.uet.fwork.landingpage.LandingPage2;
-import com.uet.fwork.util.ImagePicker;
+import com.uet.fwork.landingpage.FirstLaunchActivity;
+import com.uet.fwork.navbar.DashboardActivity;
 
 import java.util.List;
 
@@ -43,8 +45,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initNotificationChanel();
-        checking();
+        //  Truy cập lần đầu
+        SharedPreferences sharedPreferences = this.getPreferences(MODE_PRIVATE);
+        boolean firstLaunch = sharedPreferences.getBoolean("FIRST_LAUNCH", true);
+        if (firstLaunch) {
+            sharedPreferences.edit().putBoolean("FIRST_LAUNCH", false).apply();
+            startActivity(new Intent(this, FirstLaunchActivity.class));
+        } else {
+            initNotificationChanel();
+            checking();
+        }
+
+//        initNotificationChanel();
+//        checking();
     }
 
     private void checking() {
@@ -109,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
                         public void onFailure(@NonNull Exception e) {
                             e.printStackTrace();
                             if (e instanceof FirebaseAuthInvalidUserException) {
-                                System.out.println("USER HAS BEEN DELETED");
                                 startLoginActivity();
                             }
                         }
@@ -122,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startDashboardActivity() {
-        Intent intent = new Intent(this, ChatActivity.class);
+        Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
     }
 

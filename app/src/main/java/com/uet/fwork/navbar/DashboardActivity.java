@@ -10,6 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.uet.fwork.R;
+import com.uet.fwork.chat.ChatListFragment;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -20,7 +21,7 @@ public class DashboardActivity extends AppCompatActivity {
     ProfileFragment profileFragment = new ProfileFragment();
     SearchFragment searchFragment = new SearchFragment();
     NotificationsFragment notificationsFragment = new NotificationsFragment();
-    InboxFragment inboxFragment = new InboxFragment();
+    ChatListFragment inboxFragment = new ChatListFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -83,8 +83,10 @@ public class CreateCandidateProfileFragment extends Fragment {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     Bitmap bitmap = ImagePicker.getImageFromResult(getContext(), result);
-                    avatarImageBitmap = ImageHelper.reduceImageSize(bitmap, 400, 400);
-                    cirImgAvatar.setImageBitmap(avatarImageBitmap);
+                    if (bitmap != null) {
+                        avatarImageBitmap = ImageHelper.reduceImageSize(bitmap, 400, 400);
+                        cirImgAvatar.setImageBitmap(avatarImageBitmap);
+                    }
                 }
         );
     }

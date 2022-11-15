@@ -21,43 +21,71 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
 import com.uet.fwork.UpdateProfileActivity;
+import com.uet.fwork.account.ChangePasswordActivity;
 import com.uet.fwork.account.login.LoginActivity;
+import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
+import com.uet.fwork.firebasehelper.FirebaseSignInMethod;
 
-public class ProfileFragment extends Fragment implements View.OnClickListener{
+import java.util.List;
 
-    FirebaseAuth firebaseAuth;
-    FirebaseUser user;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+public class ProfileFragment extends Fragment implements View.OnClickListener {
 
-    ImageView avatarIv;
-    TextView nameTv, emailTv, phoneTv, sexTv, birthTv, workYearTv, jobTv;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+    private FirebaseAuthHelper firebaseAuthHelper;
+
+    private ImageView avatarIv;
+    private TextView nameTv, emailTv, phoneTv, sexTv, birthTv, workYearTv, jobTv;
+
+    private TextView txtChangePassword;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuthHelper = new FirebaseAuthHelper(firebaseAuth);
         user = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users");
 
-        Button logout_btn =(Button) view.findViewById(R.id.return_button);
-        logout_btn.setOnClickListener(new View.OnClickListener() {
+        txtChangePassword = (TextView) view.findViewById(R.id.txtChangePassword);
+        txtChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+        firebaseAuthHelper.getUserSignInMethod(firebaseAuth.getCurrentUser().getEmail(), new FirebaseAuthHelper.OnSuccessListener<List<String>>() {
+            @Override
+            public void onSuccess(List<String> result) {
+                if (result.contains(FirebaseSignInMethod.PASSWORD)) {
+                    txtChangePassword.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        Button btnLogout = (Button) view.findViewById(R.id.return_button);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent =new Intent(getActivity(), LoginActivity.class);
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
             }
         });
 
-        Button edit_profile_button =(Button) view.findViewById(R.id.edtProfile_button);
-        edit_profile_button.setOnClickListener(new View.OnClickListener() {
+        TextView txtEditProfile = (TextView) view.findViewById(R.id.edtProfile_button);
+        txtEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent =new Intent(getActivity(), UpdateProfileActivity.class);
+                Intent intent = new Intent(getActivity(), UpdateProfileActivity.class);
                 startActivity(intent);
             }
         });
@@ -78,13 +106,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    String name = ""+ ds.child("fullName").getValue();
-                    String email = ""+ ds.child("email").getValue();
-                    String phoneNumber = ""+ ds.child("phoneNumber").getValue();
-                    String image = ""+ ds.child("avatar").getValue();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String name = "" + ds.child("fullName").getValue();
+                    String email = "" + ds.child("email").getValue();
+                    String phoneNumber = "" + ds.child("phoneNumber").getValue();
+                    String image = "" + ds.child("avatar").getValue();
                     String job = "" + ds.child("major").getValue();
-                    String workYears = "" + ds.child("yearOfExperience").getValue().toString() + " năm";
+                    String workYears = "" + ds.child("yearOfExperience").getValue() + " năm";
                     String sex = "" + ds.child("sex").getValue();
                     String dateOfBirth = "" + ds.child("dateOfBirth").getValue();
                     nameTv.setText(name);
@@ -96,8 +124,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                     birthTv.setText(dateOfBirth);
 
 
-
-                        //Picasso.get().load(image).into(avatarIv);
+                    if (image != null && !image.equals("")) {
+                        Picasso.get().load(image).placeholder(R.drawable.wlop_33se).into(avatarIv);
+                    }
+                    //Picasso.get().load(image).into(avatarIv);
                 }
 
             }

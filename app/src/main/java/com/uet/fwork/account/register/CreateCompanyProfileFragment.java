@@ -97,8 +97,10 @@ public class CreateCompanyProfileFragment extends Fragment {
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Bitmap bitmap = ImagePicker.getImageFromResult(getContext(), result);
-                        avatarImageBitmap = ImageHelper.reduceImageSize(bitmap, 400, 400);
-                        cirImgAvatar.setImageBitmap(avatarImageBitmap);
+                        if (bitmap != null) {
+                            avatarImageBitmap = ImageHelper.reduceImageSize(bitmap, 400, 400);
+                            cirImgAvatar.setImageBitmap(avatarImageBitmap);
+                        }
                     }
                 }
         );

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,18 +32,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.uet.fwork.database.model.UserDeviceModel;
-import com.uet.fwork.database.repository.UserDeviceRepository;
-import com.uet.fwork.navbar.DashboardActivity;
+import com.uet.fwork.LoadingScreenDialog;
 import com.uet.fwork.R;
 import com.uet.fwork.account.register.RegisterActivity;
 import com.uet.fwork.account.resetpassword.ResetPasswordActivity;
-import com.uet.fwork.chat.ChatActivity;
+import com.uet.fwork.database.model.UserDeviceModel;
 import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.repository.Repository;
+import com.uet.fwork.database.repository.UserDeviceRepository;
 import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
 import com.uet.fwork.firebasehelper.FirebaseSignInMethod;
+import com.uet.fwork.navbar.DashboardActivity;
 
 import java.util.Arrays;
 
@@ -53,8 +52,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextInputLayout edtEmail, edtPassword;
     private Button btnLogin;
-    private RelativeLayout btnLoginWithGoogle;
-    private RelativeLayout btnLoginWithFacebook;
+    private Button btnLoginWithGoogle;
+    private Button btnLoginWithFacebook;
     private UserDeviceRepository userDeviceRepository;
     //    private LoginButton btnLoginWithFacebook;
     private TextView txtCreateAccount;
@@ -119,11 +118,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginFirebaseWithCredential(AuthCredential authCredential) {
+        LoadingScreenDialog dialog = new LoadingScreenDialog(this);
+        dialog.show();
         firebaseAuth.signInWithCredential(authCredential)
                 .addOnSuccessListener(authResult -> {
                     userRepository.getUserByUID(firebaseAuth.getUid(), new Repository.OnQuerySuccessListener<UserModel>() {
                         @Override
                         public void onSuccess(UserModel result) {
+                            dialog.dismiss();
                             //  Người dùng chưa khai báo thông tin cá nhân
                             if (result.getLastUpdate() == 0) {
                                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -150,9 +152,15 @@ public class LoginActivity extends AppCompatActivity {
         } else if (password.length() == 0) {
             edtPassword.setError("Password is empty");
         } else {
+            LoadingScreenDialog dialog = new LoadingScreenDialog(this);
+            dialog.show();
             firebaseAuth.signInWithEmailAndPassword(email, password)
-                    .addOnFailureListener(exception -> edtEmail.setError("Email or password is invalid."))
+                    .addOnFailureListener(exception -> {
+                        edtEmail.setError("Email or password is invalid.");
+                        dialog.dismiss();
+                    })
                     .addOnSuccessListener(authResult -> {
+                        dialog.dismiss();
                         onFirebaseLoginSuccess();
                     });
         }
@@ -168,7 +176,7 @@ public class LoginActivity extends AppCompatActivity {
                             return;
                         }
 
-                        // Get new FCM registration token
+                        //  Đăng kí thiết bị nhận thông báo
                         String token = task.getResult();
                         userDeviceRepository.isUserDeviceExists(firebaseAuth.getUid(), new Repository.OnQuerySuccessListener<Boolean>() {
                             @Override
@@ -185,10 +193,9 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             }
                         });
-                        Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
                     }
                 });
-        Intent intent = new Intent(this, ChatActivity.class);
+        Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
     }
 
