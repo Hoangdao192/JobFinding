@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/imgBtnBack"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_marginStart="26dp"
@@ -65,8 +65,6 @@
         android:id="@+id/edtEmail"
         android:layout_marginHorizontal="26dp"
         android:layout_marginTop="211dp"
-        android:drawableLeft="@drawable/ic_email"
-        android:inputType="textEmailAddress"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
@@ -76,7 +74,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/quicksand_medium"
             android:background="@drawable/round_border"
-            android:inputType="textPassword"
+            android:inputType="textEmailAddress"
             android:textSize="15sp"
             />
     </com.google.android.material.textfield.TextInputLayout>
@@ -90,7 +88,6 @@
         app:startIconDrawable="@drawable/ic_lock"
         android:layout_marginHorizontal="26dp"
         android:layout_marginTop="280dp"
-        android:inputType="textPassword"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView" >

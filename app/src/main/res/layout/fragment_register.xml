@@ -18,10 +18,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/btnBack"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="26dp"
         android:layout_marginTop="38dp"
         android:background="@color/topview_color"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,16 +29,16 @@
         app:srcCompat="@drawable/button_return" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txtLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="111dp"
         android:layout_marginTop="48dp"
         android:fontFamily="@font/quicksand_medium"
-        android:text="@string/sign_up_suggest"
+        android:text="@string/login_suggest"
         android:textColor="#FFFFFF"
         android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="26dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -46,101 +46,93 @@
         tools:text="Đăng ký"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="192dp"
-        android:fontFamily="@font/quicksand_medium"
+        android:layout_marginTop="191dp"
+        android:fontFamily="@font/quicksand_bold"
         android:text="Đăng ký"
         android:textColor="#213C5A"
         android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="@id/editTextTextEmailAddress"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextEmailAddress"
+        app:layout_constraintLeft_toLeftOf="@id/edtEmail"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editTextTextEmailAddress"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="47dp"
+        android:layout_height="wrap_content"
+        style="@style/Theme.FWork.TextInputLayout"
+        app:startIconDrawable="@drawable/ic_message"
+        android:id="@+id/edtEmail"
         android:layout_marginHorizontal="26dp"
-        android:layout_marginTop="252dp"
-        android:background="@drawable/round_border"
-        android:drawableLeft="@drawable/ic_email"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:fontFamily="@font/quicksand_medium"
-        android:hint="Email"
-        android:inputType="text"
-        android:paddingLeft="16dp"
-        android:textSize="15dp"
+        android:layout_marginTop="238dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+        <EditText
+            android:hint="Email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_medium"
+            android:background="@drawable/round_border"
+            android:inputType="textEmailAddress"
+            android:textSize="15sp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/editTextPassword"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="47dp"
+        android:layout_height="wrap_content"
+        style="@style/Theme.FWork.TextInputLayout"
+        app:startIconDrawable="@drawable/ic_lock"
+        android:id="@+id/edtPassword"
         android:layout_marginHorizontal="26dp"
-        android:layout_marginTop="328dp"
-        android:background="@drawable/round_border"
-        android:drawableStart="@drawable/ic_lock"
-        android:drawableEnd="@drawable/ic_eye"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:fontFamily="@font/quicksand_medium"
-        android:hint="Mật khẩu"
-        android:inputType="textPassword"
-        android:paddingHorizontal="16dp"
-        android:textSize="15dp"
-        app:layout_constraintHorizontal_bias="0.49"
+        android:layout_marginTop="301dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:passwordToggleEnabled="true">
+        <EditText
+            android:hint="Mật khẩu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_medium"
+            android:background="@drawable/round_border"
+            android:inputType="textPassword"
+            android:textSize="15sp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/editTextTextPassword"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="47dp"
+        android:layout_height="wrap_content"
+        style="@style/Theme.FWork.TextInputLayout"
+        app:startIconDrawable="@drawable/ic_lock"
+        android:id="@+id/edtRePassword"
+        app:passwordToggleEnabled="true"
         android:layout_marginHorizontal="26dp"
-        android:layout_marginTop="404dp"
-        android:background="@drawable/round_border"
-        android:drawableStart="@drawable/ic_lock"
-        android:drawableEnd="@drawable/ic_eye"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:fontFamily="@font/quicksand_medium"
-        android:hint="Nhập lại mật khẩu"
-        android:inputType="textPassword"
-        android:paddingHorizontal="16dp"
-        android:textSize="15dp"
-        app:layout_constraintHorizontal_bias="0.509"
+        android:layout_marginTop="364dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="230dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="516dp"
-        android:background="@drawable/round_border"
-        android:fontFamily="@font/quicksand_medium"
-        android:text="Đăng ký"
-        app:backgroundTint="#060F63"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/imageView" >
+        <EditText
+            android:hint="Nhập lại khẩu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_medium"
+            android:background="@drawable/round_border"
+            android:inputType="textPassword"
+            android:textSize="15sp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <ImageButton
-        android:id="@+id/imageButton6"
-        android:layout_width="60dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="45dp"
+        android:id="@+id/btnNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
         android:background="@color/background_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/buton" />
+        app:srcCompat="@drawable/next" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

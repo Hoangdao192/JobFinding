@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -58,9 +59,9 @@ public class RegisterMainFragment extends Fragment {
     private TextInputLayout edtEmail;
     private TextInputLayout edtPassword, edtRePassword;
     private Button btnCreateAccount;
+    private ImageButton btnBack;
     private TextView txtLogin;
-    private RelativeLayout btnRegisterWithGoogle;
-    private RelativeLayout btnRegisterWithFacebook;
+    private Button btnRegisterWithGoogle, btnRegisterWithFacebook;
 
     private FirebaseAuthHelper firebaseAuthHelper;
 
@@ -87,9 +88,17 @@ public class RegisterMainFragment extends Fragment {
         btnRegisterWithGoogle = view.findViewById(R.id.relLoginGoogle);
         btnRegisterWithFacebook = view.findViewById(R.id.btnLoginFacebook);
         navController = Navigation.findNavController(getActivity(), R.id.navigation_host);
+        btnBack = view.findViewById(R.id.btnBack);
 
         initRegisterWithGoogle();
         initRegisterWithFacebook();
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
 
         txtLogin.setOnClickListener(txtLoginView -> {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -208,7 +217,10 @@ public class RegisterMainFragment extends Fragment {
                     initUserData();
                     navController.navigate(R.id.action_registerMainFragment_to_selectUserRoleFragment);
                 })
-                .addOnFailureListener(Throwable::printStackTrace);
+                .addOnFailureListener(exception -> {
+                    exception.printStackTrace();
+                    Toast.makeText(getActivity(), "Email của tài khoản này đã được sử dụng", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void initRegisterWithGoogle() {

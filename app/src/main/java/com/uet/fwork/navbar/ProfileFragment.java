@@ -102,6 +102,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         // Đoạn này m có thể dùng userRepository để lấy ra user bằng udi thì hơn ấy
         //  Hoặc m có thể querry trực tiếp như thế này databaseReference.child(uid).get
+        // Cần sửa lại
         Query query = databaseReference.orderByChild("email").equalTo(user.getEmail());
         query.addValueEventListener(new ValueEventListener() {
             @Override

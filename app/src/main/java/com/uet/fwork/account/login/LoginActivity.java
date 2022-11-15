@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     //    private LoginButton btnLoginWithFacebook;
     private TextView txtCreateAccount;
     private TextView txtForgotPassword;
+    private ImageButton imgBtnBack;
 
     private FirebaseAuthHelper firebaseAuthHelper;
     private UserRepository userRepository;
@@ -88,9 +90,17 @@ public class LoginActivity extends AppCompatActivity {
         btnLoginWithFacebook = findViewById(R.id.btnLoginFacebook);
         txtCreateAccount = findViewById(R.id.txtCreateAccount);
         txtForgotPassword = findViewById(R.id.txtForgotPassword);
+        imgBtnBack = (ImageButton) findViewById(R.id.imgBtnBack);
 
         initLoginWithGoogle();
         initLoginWithFacebook();
+
+        imgBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         btnLogin.setOnClickListener(btnLoginView -> loginWithEmailPassword());
 
@@ -156,7 +166,8 @@ public class LoginActivity extends AppCompatActivity {
             dialog.show();
             firebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnFailureListener(exception -> {
-                        edtEmail.setError("Email or password is invalid.");
+                        exception.printStackTrace();
+                        edtEmail.setError("Email hoặc mật khẩu không hợp lệ.");
                         dialog.dismiss();
                     })
                     .addOnSuccessListener(authResult -> {

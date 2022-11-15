@@ -153,6 +153,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         });
 
         //  Load thông tin cá nhân hiện tại
+        //  Cần sửa
         Query query = reference.orderByChild("email").equalTo(user.getEmail());
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -170,7 +171,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     edtEmail.setText(email);
                     edtPhone.setText(phone);
 //                    edtJob.setText(job);
-                    edtExp.setText(yearOfExperience.toString());
+                    edtExp.setText(yearOfExperience != null ? yearOfExperience.toString() : "1");
                     edtBirth.setText(dateOfBirth);
 
                     if (image != null && !image.equals("")) {

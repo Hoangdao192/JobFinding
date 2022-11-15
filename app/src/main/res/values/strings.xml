@@ -21,6 +21,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sign_up_suggest">Bạn chưa có tài khoản?<font fgcolor='#000000'> Đăng ký</font></string>
+    <string name="login_suggest">Bạn đã có tài khoản?<font fgcolor='#000000'> Đăng nhập</font></string>
     <string name="sign_up_suggest_two"><font fgcolor='#FF0000'> * </font>Chúng tôi sẽ gửi cho bạn tin nhắn về email của bạn. Vui lòng kiểm tra email để thiết lập mật khẩu.</string>
 
 </resources>
