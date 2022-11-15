@@ -72,6 +72,7 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
                         if (!userMap.containsKey(memberId)) {
                             System.out.println("RECREATE");
                             userRepository.getUserByUID(memberId, user -> {
+                                System.out.println(memberId);
                                 userMap.put(memberId, user);
                                 if (user.getAvatar() != null && !user.getAvatar().equals("")) {
                                     Picasso.get().load(user.getAvatar())

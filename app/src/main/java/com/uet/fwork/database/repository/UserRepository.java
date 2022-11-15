@@ -1,7 +1,5 @@
 package com.uet.fwork.database.repository;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -29,8 +27,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class UserRepository extends Repository {
 
@@ -69,11 +65,15 @@ public class UserRepository extends Repository {
             String userUID,
             Repository.OnQuerySuccessListener<UserModel> listener
     ) {
-        Log.d("GET USER", userUID);
+        System.out.println("GET USER BY UID" + userUID);
+
         rootDatabaseReference.child(userUID).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
+                System.out.println(userUID);
+                System.out.println("GET USER SNAPSHOT: " + dataSnapshot);
                 if (dataSnapshot.exists()) {
+                    System.out.println("GET USER OK");
                     String userRole = (String) dataSnapshot.child("role").getValue();
                     if (userRole.equals(UserRole.CANDIDATE)) {
                         UserModel userModel = dataSnapshot.getValue(CandidateModel.class);
@@ -86,6 +86,7 @@ public class UserRepository extends Repository {
                         listener.onSuccess(userModel);
                     }
                 } else {
+                    System.out.println("GET USER FAIL");
                     listener.onSuccess(null);
                 }
             }

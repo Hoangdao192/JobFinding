@@ -1,5 +1,7 @@
 package com.uet.fwork.firebasehelper;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,9 +21,15 @@ import java.util.List;
 
 public class FirebaseAuthHelper {
     private FirebaseAuth firebaseAuth;
+    private Context context = null;
 
     public FirebaseAuthHelper(FirebaseAuth firebaseAuth) {
         this.firebaseAuth = firebaseAuth;
+    }
+
+    public FirebaseAuthHelper(FirebaseAuth firebaseAuth, Context context) {
+        this.firebaseAuth = firebaseAuth;
+        this.context = context.getApplicationContext();
     }
 
     public void isUserWithEmailExists(String email, OnSuccessListener<Boolean> onSuccessListener) {
@@ -95,6 +103,14 @@ public class FirebaseAuthHelper {
                         listener.onSuccess(signInMethodQueryResult.getSignInMethods());
                     }
                 });
+    }
+
+    public void signOut() {
+        if (context != null) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences("MAIN", Context.MODE_PRIVATE);
+            sharedPreferences.edit().remove("USER").apply();
+        }
+        firebaseAuth.signOut();
     }
 
     public interface OnSuccessListener<T> {

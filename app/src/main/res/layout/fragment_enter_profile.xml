@@ -8,100 +8,128 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="-195dp">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="30dp">
+
             <RelativeLayout
+                android:id="@+id/relAvatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:id="@+id/relAvatar">
+                app:layout_constraintTop_toTopOf="parent">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/cirImgAvatar"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:src="@drawable/camera"
-                    app:civ_border_width="2dp"
-                    app:civ_border_color="#FF000000"/>
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp" />
 
                 <ImageView
+                    android:id="@+id/imgCamera"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/camera"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="-40dp"
+                    android:layout_marginTop="110dp"
+                    android:layout_toRightOf="@id/cirImgAvatar"
                     android:background="@drawable/circle"
                     android:backgroundTint="#e5e6eb"
                     android:padding="12dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_toRightOf="@id/cirImgAvatar"
-                    android:layout_marginLeft="-40dp"
-                    android:layout_marginTop="110dp"
-                    android:id="@+id/imgCamera"
-                    />
+                    android:src="@drawable/camera" />
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/txtFullName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Họ và tên"
-                android:fontFamily="@font/lexenddeca_bold"
-                android:textSize="20dp"
-                android:textColor="@color/purple"
-                android:id="@+id/txtFullName"
-                app:layout_constraintTop_toBottomOf="@id/relAvatar"
-                android:layout_marginTop="40dp"
                 android:layout_marginLeft="3dp"
-                app:layout_constraintLeft_toLeftOf="@id/edtFullName"/>
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/lexenddeca_bold"
+                android:text="Họ và tên"
+                android:textColor="@color/purple"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toLeftOf="@id/edtFullName"
+                app:layout_constraintTop_toBottomOf="@id/relAvatar" />
 
             <EditText
                 android:id="@+id/edtFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lexenddeca_light"
-                android:inputType="textPersonName"
                 android:hint="Nhập họ và tên"
-                android:textColor="@color/purple"
+                android:inputType="textPersonName"
                 android:paddingBottom="20dp"
+                android:textColor="@color/purple"
                 app:layout_constraintTop_toBottomOf="@id/txtFullName"
                 tools:layout_editor_absoluteX="40dp" />
 
             <TextView
+                android:id="@+id/txtSex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Giới tính"
-                android:fontFamily="@font/lexenddeca_bold"
-                android:textSize="20dp"
-                android:textColor="@color/purple"
-                android:id="@+id/txtSex"
-                app:layout_constraintTop_toBottomOf="@id/edtFullName"
-                android:layout_marginTop="40dp"
                 android:layout_marginLeft="3dp"
-                app:layout_constraintLeft_toLeftOf="@id/spnMajor"/>
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/lexenddeca_bold"
+                android:text="Giới tính"
+                android:textColor="@color/purple"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toLeftOf="@id/spnMajor"
+                app:layout_constraintTop_toBottomOf="@id/edtFullName" />
 
             <Spinner
-                style="@style/MySpinner"
                 android:id="@+id/spnSex"
+                style="@style/MySpinner"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                app:layout_constraintTop_toBottomOf="@id/txtSex"/>
+                app:layout_constraintTop_toBottomOf="@id/txtSex" />
 
             <TextView
+                android:id="@+id/txtDob"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Số điện thoại"
-                android:fontFamily="@font/lexenddeca_bold"
-                android:textSize="20dp"
-                android:textColor="@color/purple"
-                android:id="@+id/txtPhoneNumber"
-                app:layout_constraintTop_toBottomOf="@id/spnSex"
-                android:layout_marginTop="40dp"
                 android:layout_marginLeft="3dp"
-                app:layout_constraintLeft_toLeftOf="@id/spnMajor"/>
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/lexenddeca_bold"
+                android:text="Ngày sinh"
+                android:textColor="@color/purple"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toLeftOf="@id/spnMajor"
+                app:layout_constraintTop_toBottomOf="@id/spnSex" />
+
+            <EditText
+                android:id="@+id/edtDob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/lexenddeca_light"
+                android:hint="Chọn ngày sinh"
+                android:paddingBottom="20dp"
+                android:textColor="@color/purple"
+                app:layout_constraintTop_toBottomOf="@id/txtDob"
+                tools:layout_editor_absoluteX="40dp" />
+
+            <TextView
+                android:id="@+id/txtPhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/lexenddeca_bold"
+                android:text="Số điện thoại"
+                android:textColor="@color/purple"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toLeftOf="@id/edtDob"
+                app:layout_constraintTop_toBottomOf="@id/edtDob" />
 
             <EditText
                 android:id="@+id/edtPhoneNumber"
@@ -109,23 +137,23 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lexenddeca_light"
                 android:hint="Nhập số điện thoại"
-                android:textColor="@color/purple"
                 android:paddingBottom="20dp"
+                android:textColor="@color/purple"
                 app:layout_constraintTop_toBottomOf="@id/txtPhoneNumber"
                 tools:layout_editor_absoluteX="40dp" />
 
             <TextView
+                android:id="@+id/txtWorkEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email liên hệ"
-                android:fontFamily="@font/lexenddeca_bold"
-                android:textSize="20dp"
-                android:textColor="@color/purple"
-                android:id="@+id/txtWorkEmail"
-                app:layout_constraintTop_toBottomOf="@id/edtPhoneNumber"
-                android:layout_marginTop="40dp"
                 android:layout_marginLeft="3dp"
-                app:layout_constraintLeft_toLeftOf="@id/spnMajor"/>
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/lexenddeca_bold"
+                android:text="Email liên hệ"
+                android:textColor="@color/purple"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toLeftOf="@id/spnMajor"
+                app:layout_constraintTop_toBottomOf="@id/edtPhoneNumber" />
 
             <EditText
                 android:id="@+id/edtWorkEmail"
@@ -134,64 +162,64 @@
                 android:fontFamily="@font/lexenddeca_light"
                 android:hint="Nhập email của bạn"
                 android:inputType="textEmailAddress"
-                android:textColor="@color/purple"
                 android:paddingBottom="20dp"
+                android:textColor="@color/purple"
                 app:layout_constraintTop_toBottomOf="@id/txtWorkEmail"
                 tools:layout_editor_absoluteX="40dp" />
 
             <TextView
-                android:inputType="phone"
+                android:id="@+id/txtMajor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chuyên ngành"
-                android:fontFamily="@font/lexenddeca_bold"
-                android:textSize="20dp"
-                android:textColor="@color/purple"
-                android:id="@+id/txtMajor"
-                app:layout_constraintTop_toBottomOf="@id/edtWorkEmail"
-                android:layout_marginTop="40dp"
                 android:layout_marginLeft="3dp"
-                app:layout_constraintLeft_toLeftOf="@id/spnMajor"/>
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/lexenddeca_bold"
+                android:inputType="phone"
+                android:text="Chuyên ngành"
+                android:textColor="@color/purple"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toLeftOf="@id/spnMajor"
+                app:layout_constraintTop_toBottomOf="@id/edtWorkEmail" />
 
             <Spinner
-                style="@style/MySpinner"
                 android:id="@+id/spnMajor"
+                style="@style/MySpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/txtMajor"/>
+                app:layout_constraintTop_toBottomOf="@id/txtMajor" />
 
             <TextView
-                android:inputType="phone"
+                android:id="@+id/txtYearExperience"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Số năm kinh nghiệm"
-                android:fontFamily="@font/lexenddeca_bold"
-                android:textSize="20dp"
-                android:textColor="@color/purple"
-                android:id="@+id/txtYearExperience"
-                app:layout_constraintTop_toBottomOf="@id/spnMajor"
-                android:layout_marginTop="40dp"
                 android:layout_marginLeft="3dp"
-                app:layout_constraintLeft_toLeftOf="@id/txtMajor"/>
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/lexenddeca_bold"
+                android:inputType="phone"
+                android:text="Số năm kinh nghiệm"
+                android:textColor="@color/purple"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toLeftOf="@id/txtMajor"
+                app:layout_constraintTop_toBottomOf="@id/spnMajor" />
 
             <Spinner
-                style="@style/MySpinner"
                 android:id="@+id/spnYearExperience"
+                style="@style/MySpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/txtYearExperience"/>
+                app:layout_constraintTop_toBottomOf="@id/txtYearExperience" />
 
             <Button
+                android:id="@+id/btnSubmit"
+                style="@style/MyButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/MyButton"
-                app:layout_constraintTop_toBottomOf="@id/spnYearExperience"
+                android:layout_marginHorizontal="40dp"
                 android:layout_marginTop="50dp"
+                android:text="Submit"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:text="Submit"
-                android:layout_marginHorizontal="40dp"
-                android:id="@+id/btnSubmit"/>
+                app:layout_constraintTop_toBottomOf="@id/spnYearExperience" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

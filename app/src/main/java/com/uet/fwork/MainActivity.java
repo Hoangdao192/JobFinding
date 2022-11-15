@@ -46,8 +46,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //  Truy cập lần đầu
-        SharedPreferences sharedPreferences = this.getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("MAIN", MODE_PRIVATE);
         boolean firstLaunch = sharedPreferences.getBoolean("FIRST_LAUNCH", true);
+        String currentUserId = sharedPreferences.getString("USER", "");
         if (firstLaunch) {
             sharedPreferences.edit().putBoolean("FIRST_LAUNCH", false).apply();
             startActivity(new Intent(this, FirstLaunchActivity.class));
@@ -62,11 +63,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void checking() {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        SharedPreferences sharedPreferences = this.getSharedPreferences("MAIN", MODE_PRIVATE);
+        String currentUserId = sharedPreferences.getString("USER", "");
+        System.out.println(currentUserId);
         if (firebaseUser != null) {
             firebaseUser.reload().addOnSuccessListener(
                             new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
+                                    if (!currentUserId.equals("")) {
+                                        System.out.println(currentUserId);
+                                        startDashboardActivity();
+                                    }
                                     FirebaseAuth.getInstance().fetchSignInMethodsForEmail(firebaseUser.getEmail())
                                             .addOnSuccessListener(new OnSuccessListener<SignInMethodQueryResult>() {
                                                 @Override
@@ -134,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startDashboardActivity() {
+        SharedPreferences sharedPreferences = this.getSharedPreferences("MAIN", MODE_PRIVATE);
+        sharedPreferences.edit().putString("USER", firebaseAuth.getUid()).apply();
         Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
     }
