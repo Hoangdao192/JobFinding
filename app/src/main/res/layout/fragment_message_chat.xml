@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_color">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/top_view_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <RelativeLayout
+        android:layout_width="170dp"
+        android:layout_height="123dp"
+        android:layout_marginHorizontal="92dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        tools:ignore="MissingConstraints">
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:background="@color/topview_color"
+            app:srcCompat="@drawable/ic_phone" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/topview_color"
+            app:srcCompat="@drawable/ic_camera" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgUserAvatar"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/blank_user_avatar" />
+
+        <TextView
+            android:id="@+id/txtUserFullName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/imgUserAvatar"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/quicksand_medium"
+            android:text="Tên người dùng"
+            android:textColor="#FAFCFC"
+            android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/topview_color"
+            app:srcCompat="@drawable/ic_upload_file" />
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:background="#73DCB9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgUser"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+
+            android:src="@drawable/blank_user_avatar" />
+
+        <EditText
+            android:id="@+id/editTextSearchBar"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginLeft="12dp"
+            android:layout_toRightOf="@id/imgUser"
+
+            android:background="@drawable/round_border_chat"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/ic_send"
+            android:drawablePadding="16dp"
+            android:ems="10"
+            android:fontFamily="@font/quicksand_medium"
+            android:hint="Nhập tin nhắn"
+            android:inputType="text"
+            android:paddingLeft="16px"
+            android:paddingRight="16px"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/topview_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/button_return" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
