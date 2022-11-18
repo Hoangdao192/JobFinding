@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/relChatUser"
-            android:background="#6b8cff"
+            android:background="@color/white"
             android:paddingVertical="10dp">
 
             <ImageButton
@@ -23,7 +23,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:background="@color/topview_color"
+                android:background="@android:color/transparent"
+                app:tint="@color/black"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
                 android:src="@drawable/button_return"
@@ -47,8 +48,8 @@
                 android:layout_marginLeft="10dp"
                 android:maxLength="20"
                 android:text="Tên người dùng"
-                android:textColor="#FAFCFC"
-                android:textSize="18sp" />
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
             <ImageButton
                 android:id="@+id/imgBtnCall"
@@ -86,6 +87,7 @@
             android:layout_marginLeft="10dp"
             android:adjustViewBounds="true"
             android:layout_centerVertical="true"
+            app:tint="#234587"
             android:src="@drawable/ic_image"/>
 
         <EditText

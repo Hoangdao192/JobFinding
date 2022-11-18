@@ -156,6 +156,9 @@ public class ChatActivity extends AppCompatActivity {
                         public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                             messageList.add(snapshot.getValue(MessageModel.class));
                             adapter.notifyItemInserted(messageList.size() - 1);
+                            if (messageList.size() - 2 >= 0) {
+                                adapter.notifyItemChanged(messageList.size() - 2);
+                            }
                             recMessageList.scrollToPosition(recMessageList.getAdapter().getItemCount() - 1);
                         }
 
