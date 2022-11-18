@@ -80,6 +80,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     dateOfBirth = "" + ds.child("dateOfBirth").getValue().toString();
                     sex = "" +ds.child("sex").getValue();
                     expeYears = "" + ds.child("yearOfExperience").getValue();
+
                     edtName.setText(name);
                     edtEmail.setText(email);
                     edtPhone.setText(phone);

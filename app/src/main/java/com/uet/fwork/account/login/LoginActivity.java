@@ -174,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startDashboardActivity() {
-        Intent intent = new Intent(this, ChatActivity.class);
+        Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
     }
 

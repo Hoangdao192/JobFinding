@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
 import com.uet.fwork.UpdateProfileActivity;
 import com.uet.fwork.account.login.LoginActivity;
@@ -95,9 +96,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                     sexTv.setText(sex);
                     birthTv.setText(dateOfBirth);
 
-
-
-                        //Picasso.get().load(image).into(avatarIv);
+                    Picasso.get().load(image).into(avatarIv);
                 }
 
             }

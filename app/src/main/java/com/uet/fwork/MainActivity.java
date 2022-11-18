@@ -22,6 +22,7 @@ import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.firebasehelper.FirebaseSignInMethod;
 import com.uet.fwork.landingpage.LandingPage1;
 import com.uet.fwork.landingpage.LandingPage2;
+import com.uet.fwork.navbar.DashboardActivity;
 
 import java.util.List;
 
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startDashboardActivity() {
-        Intent intent = new Intent(this, ChatActivity.class);
+        Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
     }
 
