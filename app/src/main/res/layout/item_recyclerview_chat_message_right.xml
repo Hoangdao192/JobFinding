@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="right">
+    android:layout_gravity="right"
+    android:paddingHorizontal="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="30dp"
@@ -11,22 +12,23 @@
         android:src="@drawable/user"
         android:id="@+id/imgUserAvatar"
         android:layout_alignParentRight="true"
-        android:layout_alignBottom="@id/txtMessage"/>
+        android:layout_alignBottom="@id/txtMessage"
+        android:layout_marginLeft="15dp"/>
 
     <TextView
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/imgUserAvatar"
         android:padding="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="300dp"
-        android:textSize="17dp"
+        android:textSize="15dp"
         android:text="Xin chào"
-        android:background="@drawable/rounded_corner_10"
-        android:backgroundTint="@color/light_blue_600"
+        android:background="@drawable/rounded_corner_20_border_fill"
+        android:backgroundTint="#234587"
         android:textStyle="bold"
+        android:fontFamily="@font/quicksand"
         android:textColor="@color/white"
         android:id="@+id/txtMessage"
-        android:fontFamily="@font/lexenddeca_extralight"
-        android:layout_marginBottom="10dp"
-        android:layout_toLeftOf="@+id/imgUserAvatar"
-        android:layout_marginRight="15dp"/>
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"/>
 </RelativeLayout>

@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -57,7 +58,7 @@ public class ChatMainFragment extends Fragment {
     private RecyclerView recMessageList;
     private TextView txtPartnerFullName;
     private EditText edtMessage;
-    private Button btnSend;
+    private ImageButton btnSend;
     private CircleImageView imgUserAvatar;
 
     private String chatChanelId;
@@ -92,7 +93,7 @@ public class ChatMainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         this.chatChanelId = bundle.getString("chatChanelId");
-        ChatActivity.currentChatChanelId = chatChanelId;
+//        ChatActivity.currentChatChanelId = chatChanelId;
         this.partnerUser = (UserModel) bundle.getSerializable("partner");
     }
 
@@ -104,7 +105,7 @@ public class ChatMainFragment extends Fragment {
         edtMessage = view.findViewById(R.id.edtMessage);
         btnSend = view.findViewById(R.id.btnSend);
         imgUserAvatar = view.findViewById(R.id.imgUserAvatar);
-        imgImage = view.findViewById(R.id.imgImage);
+        imgImage = view.findViewById(R.id.imgBtnImage);
         createImagePicker();
 
         imgImage.setOnClickListener(new View.OnClickListener() {

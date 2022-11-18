@@ -160,6 +160,63 @@ public class UserRepository extends Repository {
         }
     }
 
+    public void updateUser(UserModel userModel, OnQuerySuccessListener<Boolean> listener) {
+        if (!userModel.getId().isEmpty()) {
+            isUserExists(userModel.getId(), new OnQuerySuccessListener<Boolean>() {
+                @Override
+                public void onSuccess(Boolean result) {
+                    if (result) {
+                        if (userModel instanceof CandidateModel) {
+                            rootDatabaseReference.child(userModel.getId()).setValue((CandidateModel) userModel)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            listener.onSuccess(true);
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            listener.onSuccess(false);
+                                            e.printStackTrace();
+                                        }
+                                    });
+                        } else if (userModel instanceof EmployerModel) {
+                            rootDatabaseReference.child(userModel.getId()).setValue((EmployerModel) userModel)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            listener.onSuccess(true);
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            listener.onSuccess(false);
+                                            e.printStackTrace();
+                                        }
+                                    });
+                        }
+                    } else {
+                        listener.onSuccess(false);
+                    }
+                }
+            });
+        } else {
+            listener.onSuccess(false);
+        }
+    }
+
+    public void getUserRole(String userUID, OnQuerySuccessListener<String> listener) {
+        rootDatabaseReference.child(userUID).child("role").get()
+                .addOnSuccessListener(dataSnapshot -> {
+                    if (dataSnapshot.exists()) {
+                        listener.onSuccess(dataSnapshot.getValue(String.class));
+                    }
+                })
+                .addOnFailureListener(System.out::println);
+    }
+
     public void getAllUserFullNameSimilarTo(String target, Integer limit, OnQuerySuccessListener<List<UserModel>> listener) {
         Client client = new Client(Constants.ALGOLIA_APPLICATION_ID, Constants.ALGOLIA_SEARCH_API_KEY);
         Index index = client.getIndex("users");

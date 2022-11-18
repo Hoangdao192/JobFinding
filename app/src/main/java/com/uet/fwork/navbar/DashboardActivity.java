@@ -3,18 +3,22 @@ package com.uet.fwork.navbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.uet.fwork.R;
+import com.uet.fwork.account.profile.ProfileFragment;
 import com.uet.fwork.chat.ChatListFragment;
+import com.uet.fwork.database.repository.Repository;
+import com.uet.fwork.database.repository.UserRepository;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    FirebaseAuth auth;
+    private UserRepository userRepository;
+    FirebaseAuth firebaseAuth;
 
     BottomNavigationView bottomNavigationView;
     HomeFragment homeFragment = new HomeFragment();
@@ -27,6 +31,9 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        userRepository = new UserRepository(FirebaseDatabase.getInstance());
 
         bottomNavigationView = findViewById(R.id.navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.content, homeFragment).commit();
@@ -39,7 +46,18 @@ public class DashboardActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.content, homeFragment).commit();
                         return true;
                     case R.id.nav_profile:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content, profileFragment).commit();
+                        userRepository.getUserRole(firebaseAuth.getUid(), new Repository.OnQuerySuccessListener<String>() {
+                            @Override
+                            public void onSuccess(String role) {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("USER_ROLE", role);
+                                profileFragment.setArguments(bundle);
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.content, profileFragment)
+                                        .commit();
+                            }
+                        });
                         return true;
                     case R.id.nav_search:
                         getSupportFragmentManager().beginTransaction().replace(R.id.content, searchFragment).commit();

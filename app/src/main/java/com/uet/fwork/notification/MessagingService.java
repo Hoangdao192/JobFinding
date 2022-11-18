@@ -45,14 +45,14 @@ public class MessagingService extends FirebaseMessagingService {
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true);
             NotificationManager notificationManager =  (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
-            if (ChatActivity.isActivityVisible()) {
-                if (ChatActivity.currentChatChanelId.equals((String) data.get("chanelId"))) {
-                    notificationManager.notify(0, builder.build());
-                }
-            } else {
-                notificationManager.notify(0, builder.build());
-            }
-
+//            if (ChatActivity.isActivityVisible()) {
+//                if (ChatActivity.currentChatChanelId.equals((String) data.get("chanelId"))) {
+//                    notificationManager.notify(0, builder.build());
+//                }
+//            } else {
+//                notificationManager.notify(0, builder.build());
+//            }
+            notificationManager.notify(0, builder.build());
         } catch (Exception e) {
             e.printStackTrace();
         }

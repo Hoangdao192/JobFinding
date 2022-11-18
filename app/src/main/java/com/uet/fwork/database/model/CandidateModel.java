@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class CandidateModel extends UserModel {
-    private String sex;
-    private String dateOfBirth;
-    private String major;
-    private double yearOfExperience;
+    private String sex = "";
+    private String dateOfBirth = "";
+    private String major = "";
+    private double yearOfExperience = 0;
 
     public CandidateModel() {
         super();

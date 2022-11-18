@@ -19,7 +19,9 @@ import com.squareup.picasso.Target;
 import com.uet.fwork.R;
 import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.model.chat.ChanelModel;
+import com.uet.fwork.database.model.chat.MessageModel;
 import com.uet.fwork.database.repository.ChatRepository;
+import com.uet.fwork.database.repository.MessageRepository;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
 
@@ -39,6 +41,7 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
     private String currentUserId;
     private UserRepository userRepository;
     private ChatRepository chatRepository;
+    private MessageRepository messageRepository;
 
     private OnItemClickListener listener = null;
 
@@ -50,6 +53,7 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
         this.currentUserId = currentUserId;
         this.userRepository = new UserRepository(firebaseDatabase);
         this.chatRepository = new ChatRepository(firebaseDatabase);
+        this.messageRepository = new MessageRepository(firebaseDatabase);
         this.listener = listener;
     }
 
@@ -70,9 +74,8 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
                 chanel.getMembers().forEach(memberId -> {
                     if (!memberId.equals(currentUserId)) {
                         if (!userMap.containsKey(memberId)) {
-                            System.out.println("RECREATE");
+                            //  Lấy thông tin user
                             userRepository.getUserByUID(memberId, user -> {
-                                System.out.println(memberId);
                                 userMap.put(memberId, user);
                                 if (user.getAvatar() != null && !user.getAvatar().equals("")) {
                                     Picasso.get().load(user.getAvatar())
@@ -95,7 +98,17 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
                                                 }
                                             });
                                 }
+                                if (!user.getAvatar().isEmpty()) {
+                                    Picasso.get().load(user.getAvatar())
+                                            .placeholder(R.drawable.wlop_33se)
+                                            .into(holder.imgAvatar);
+                                }
                                 holder.userName.setText(user.getFullName());
+                                messageRepository.getLastMessage(chanelIdList.get(position), messageModel -> {
+                                    if (messageModel != null) {
+                                        holder.txvLastMessage.setText(messageModel.getContent());
+                                    }
+                                });
                             });
                         } else {
                             holder.userName.setText(userMap.get(memberId).getFullName());
@@ -123,12 +136,13 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private CircleImageView imgAvatar;
-        private TextView userName;
+        private TextView userName, txvLastMessage;
 
         public ViewHolder (@NonNull View view, @Nullable OnItemClickListener listener) {
             super(view);
             imgAvatar = view.findViewById(R.id.imgAvatar);
             userName = view.findViewById(R.id.txtFullName);
+            txvLastMessage = view.findViewById(R.id.txtLastMessage);
             if (listener != null) {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override

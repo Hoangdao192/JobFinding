@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
 import com.uet.fwork.database.model.UserModel;
 
@@ -39,14 +40,19 @@ public class UserFoundRecyclerViewAdapter extends RecyclerView.Adapter<UserFound
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.item_recyclerview_user_list, null);
+        View view = layoutInflater.inflate(R.layout.item_recyclerview_chat_search, null);
         return new ViewHolder(view, this.clickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        String userAvatar = userList.get(position).getAvatar();
         holder.txtFullName.setText(userList.get(position).getFullName());
+        if (!userAvatar.isEmpty()) {
+            Picasso.get().load(userAvatar)
+                    .placeholder(R.drawable.wlop_33se)
+                    .into(holder.imgAvatar);
+        }
     }
 
     @Override

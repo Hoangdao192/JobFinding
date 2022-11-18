@@ -3,31 +3,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".chat.ChatMainFragment">
-
-    <RelativeLayout
+    tools:context=".chat.ChatMainFragment"
+    android:background="#DDEFFF">
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/relChatUser"
-        android:layout_marginBottom="20dp">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:id="@+id/imgUserAvatar"
-            android:src="@drawable/blank_user_avatar"/>
-        <TextView
-            android:id="@+id/txtUserFullName"
-            android:layout_width="wrap_content"
+        app:cardElevation="5dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tên người dùng"
-            android:textSize="20sp"
-            android:fontFamily="@font/lexenddeca_bold"
-            android:layout_toRightOf="@id/imgUserAvatar"
-            android:layout_marginLeft="20dp"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
+            android:id="@+id/relChatUser"
+            android:background="#6b8cff"
+            android:paddingVertical="10dp">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:background="@color/topview_color"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/button_return"
+                android:layout_centerVertical="true"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/btnBack"
+                android:id="@+id/imgUserAvatar"
+                android:src="@drawable/wlop_33se"
+                android:layout_centerVertical="true"/>
+            <TextView
+                android:id="@+id/txtUserFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/imgUserAvatar"
+                android:fontFamily="@font/quicksand_bold"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:maxLength="20"
+                android:text="Tên người dùng"
+                android:textColor="#FAFCFC"
+                android:textSize="18sp" />
+
+            <ImageButton
+                android:id="@+id/imgBtnCall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/ic_phone"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
@@ -37,31 +71,51 @@
         android:id="@+id/recMessageList"
         tools:listitem="@layout/item_recyclerview_chat_message_left"/>
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/relToolbar">
+        android:background="@color/white"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="20dp">
+
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/image_icon"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="10dp"
-            android:id="@+id/imgImage">
-        </ImageView>
+            android:id="@+id/imgBtnImage"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:layout_marginLeft="10dp"
+            android:adjustViewBounds="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_image"/>
+
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Nhắn tin"
-            android:layout_weight="1"
             android:id="@+id/edtMessage"
-            android:layout_marginRight="10dp"/>
-        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="7dp"
+            android:paddingHorizontal="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/imgBtnImage"
+            android:background="@drawable/rounded_corner_25"
+            android:backgroundTint="#f2f3f5"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/quicksand_medium"
+            android:hint="Nhập tin nhắn"
+            android:textColorHint="@color/dark_gary"
+            android:inputType="text"
+            android:textSize="15sp"/>
+
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Gửi"
+            android:background="@android:color/transparent"
             android:id="@+id/btnSend"
-            android:layout_toRightOf="@id/edtMessage"/>
-    </LinearLayout>
+            android:src="@drawable/ic_send"
+            android:layout_alignEnd="@id/edtMessage"
+            android:layout_alignTop="@id/edtMessage"
+            android:layout_alignBottom="@id/edtMessage"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"/>
+    </RelativeLayout>
 </LinearLayout>

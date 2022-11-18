@@ -29,7 +29,7 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/fworktext"
         android:layout_width="214dp"
-        android:layout_height="112dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="412dp"
         android:fontFamily="@font/lexend_deca"

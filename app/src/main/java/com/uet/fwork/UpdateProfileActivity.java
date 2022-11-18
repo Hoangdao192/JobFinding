@@ -2,6 +2,7 @@ package com.uet.fwork;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,9 +11,11 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.Navigation;
 
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -52,7 +55,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UpdateProfileActivity extends AppCompatActivity {
 
-
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference reference;
     private FirebaseAuth firebaseAuth;
@@ -80,10 +82,14 @@ public class UpdateProfileActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> getImageActivityLauncher;
     private Uri avatarImageUri = null;
     private ImageView imgCamera;
-
     private Calendar calendar;
-
     private List<String> majorList = new ArrayList<>();
+
+    @Nullable
+    @Override
+    public View onCreateView(@Nullable View parent, @NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        return super.onCreateView(parent, name, context, attrs);
+    }
 
     @SuppressLint("MissingInflatedId")
     @Override

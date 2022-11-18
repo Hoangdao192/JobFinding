@@ -19,6 +19,20 @@
         android:theme="@style/Theme.FWork"
         tools:targetApi="31">
         <activity
+            android:name=".account.profile.UpdateCandidateProfileActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".account.profile.UpdateEmployerProfileActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".chat.ChatActivity"
             android:exported="false"
             android:launchMode="singleTop">

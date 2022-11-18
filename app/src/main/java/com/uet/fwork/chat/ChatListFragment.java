@@ -1,5 +1,7 @@
 package com.uet.fwork.chat;
 
+import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -11,11 +13,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.uet.fwork.R;
@@ -65,15 +71,7 @@ public class ChatListFragment extends Fragment {
                                 userRepository.getUserByUID(userId, new Repository.OnQuerySuccessListener<UserModel>() {
                                     @Override
                                     public void onSuccess(UserModel result) {
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("chatChanelId", chanel.getId());
-                                        bundle.putSerializable("partner", result);
-                                        getActivity().getSupportFragmentManager().beginTransaction()
-                                                .replace(
-                                                        R.id.content, ChatMainFragment.class, bundle
-                                                ).addToBackStack(null).commit();
-//                                        Navigation.findNavController(getActivity(), R.id.navigation_host)
-//                                                .navigate(R.id.action_chatListFragment_to_chatMainFragment, bundle);
+                                        startChatActivity(result, chanel.getId());
                                     }
                                 });
                             }
@@ -81,12 +79,39 @@ public class ChatListFragment extends Fragment {
                     }
                 }
         );
-        chatRepository.getAllChatIdByUserId(firebaseUser.getUid(), new Repository.OnQuerySuccessListener<List<String>>() {
-            @Override
-            public void onSuccess(List<String> chanelIdList) {
-                adapter.updateChanelList(chanelIdList);
-            }
-        });
+
+        FirebaseDatabase.getInstance().getReference("chats/userChats").child(firebaseUser.getUid())
+                        .addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                                chatRepository.getAllChatIdByUserId(firebaseUser.getUid(), new Repository.OnQuerySuccessListener<List<String>>() {
+                                    @Override
+                                    public void onSuccess(List<String> chanelIdList) {
+                                        adapter.updateChanelList(chanelIdList);
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
     }
 
     @Override
@@ -96,11 +121,11 @@ public class ChatListFragment extends Fragment {
         edtSearch = view.findViewById(R.id.edtSearch);
         recUserList = view.findViewById(R.id.recUserList);
         recChatList = view.findViewById(R.id.recChatList);
+        recChatList.addItemDecoration(new DividerItemDecoration(getContext(),
+                DividerItemDecoration.VERTICAL));
 
         loadChatList();
         initSearchUser();
-
-        System.out.println("CALLED");
     }
 
     private void loadChatList() {
@@ -113,35 +138,20 @@ public class ChatListFragment extends Fragment {
                 getContext(), userResultList,
                 user -> {
                     chatRepository.isChatChanelExists(firebaseUser.getUid(), user.getId(), chanelId -> {
+                        //  Chat chanel giữa hai user tồn tại
                         if (chanelId != null) {
-                            Bundle bundle = new Bundle();
-                            bundle.putString("chatChanelId", chanelId);
-                            bundle.putSerializable("partner", user);
                             unFocusSearch();
-                            getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(
-                                            R.id.content, ChatMainFragment.class, bundle
-                                    ).addToBackStack(null).commit();
-//                            Navigation.findNavController(getActivity(), R.id.navigation_host)
-//                                    .navigate(R.id.action_chatListFragment_to_chatMainFragment, bundle);
-                        } else {
+                            unFocusSearch();
+                            startChatActivity(user, chanelId);
+                        }
+                        //  Tạo đoạn chat mới
+                        else {
                             List<String> chatMembers = new ArrayList<>();
                             chatMembers.add(firebaseUser.getUid());
                             chatMembers.add(user.getId());
-                            chatRepository.createNewChat(chatMembers, new Repository.OnQuerySuccessListener<ChanelModel>() {
-                                @Override
-                                public void onSuccess(ChanelModel result) {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("chatChanelId", result.getId());
-                                    bundle.putSerializable("partner", user);
-                                    unFocusSearch();
-                                    getActivity().getSupportFragmentManager().beginTransaction()
-                                            .replace(
-                                                    R.id.content, ChatMainFragment.class, bundle
-                                            ).addToBackStack(null).commit();
-//                                    Navigation.findNavController(getActivity(), R.id.navigation_host)
-//                                            .navigate(R.id.action_chatListFragment_to_chatMainFragment, bundle);
-                                }
+                            chatRepository.createNewChat(chatMembers, chanelModel -> {
+                                unFocusSearch();
+                                startChatActivity(user, chanelModel.getId());
                             });
                         }
                     });
@@ -173,10 +183,12 @@ public class ChatListFragment extends Fragment {
                 countDownTimer.cancel();
                 if (!edtSearch.getText().toString().isEmpty()) {
                     recUserList.setVisibility(View.VISIBLE);
+                    recChatList.setVisibility(View.GONE);
                     countDownTimer.start();
                 } else {
                     adapter.clearUserList();
                     recUserList.setVisibility(View.GONE);
+                    recChatList.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -185,13 +197,22 @@ public class ChatListFragment extends Fragment {
                 if (s.toString().isEmpty()) {
                     adapter.clearUserList();
                     recUserList.setVisibility(View.GONE);
+                    recChatList.setVisibility(View.VISIBLE);
                 }
             }
         });
     }
 
+    private void startChatActivity(UserModel partner, String chanelId) {
+        Intent intent = new Intent(getContext(), ChatActivity.class);
+        intent.putExtra("partner", partner);
+        intent.putExtra("chatChanelId", chanelId);
+        startActivity(intent);
+    }
+
     private void unFocusSearch() {
         edtSearch.getText().clear();
         recUserList.setVisibility(View.GONE);
+        recChatList.setVisibility(View.VISIBLE);
     }
 }

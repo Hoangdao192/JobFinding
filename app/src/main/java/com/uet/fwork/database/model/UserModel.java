@@ -3,14 +3,14 @@ package com.uet.fwork.database.model;
 import java.io.Serializable;
 
 public class UserModel implements Serializable {
-    protected String id;
-    protected String email;
-    protected String avatar;
-    protected String fullName;
-    protected String phoneNumber;
-    protected String contactEmail;
-    protected String role;
-    protected long lastUpdate;
+    protected String id = "";
+    protected String email = "";
+    protected String avatar = "";
+    protected String fullName = "";
+    protected String phoneNumber = "";
+    protected String contactEmail = "";
+    protected String role = "";
+    protected long lastUpdate = 0;
 
     public UserModel() {
     }

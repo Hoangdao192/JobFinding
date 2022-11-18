@@ -151,12 +151,9 @@ public class CreateCompanyProfileFragment extends Fragment {
         String contactEmail = edtContactEmail.getEditText().getText().toString();
         String phoneNumber = edtPhoneNumber.getEditText().getText().toString();
         String detailAddress = edtDetailAddress.getEditText().getText().toString();
-//        String province = ((Pair<Integer, String>) spnProvince.getSelectedItem()).second;
-//        String district = ((Pair<Integer, String>) spnDistrict.getSelectedItem()).second;
-//        String ward = ((Pair<Integer, String>) spnWard.getSelectedItem()).second;
-        String province = "";
-        String district = "";
-        String ward = "";
+        String province = ((Pair<Integer,String>)spnProvince.getSelectedItem()).second;
+        String district = ((Pair<Integer,String>)spnDistrict.getSelectedItem()).second;
+        String ward = ((Pair<Integer,String>)spnWard.getSelectedItem()).second;
         userRepository.getUserByUID(userUID, result -> {
             System.out.println(result.toString());
             EmployerModel employerModel = (EmployerModel) result;

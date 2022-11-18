@@ -3,62 +3,117 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="10dp"
     android:orientation="vertical"
     tools:context=".chat.ChatMainFragment">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/relChatUser"
-        android:layout_marginBottom="20dp">
+        android:background="#6b8cff">
+
+        <ImageButton
+            android:id="@+id/imageButton5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="17dp"
+            android:background="@color/topview_color"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/button_return"/>
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="70dp"
             android:layout_height="70dp"
+            android:layout_marginTop="16dp"
+            android:layout_centerHorizontal="true"
             android:id="@+id/imgUserAvatar"
             android:src="@drawable/blank_user_avatar"/>
         <TextView
             android:id="@+id/txtUserFullName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/imgUserAvatar"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/quicksand_bold"
             android:text="Tên người dùng"
-            android:textSize="20sp"
-            android:fontFamily="@font/lexenddeca_bold"
-            android:layout_toRightOf="@id/imgUserAvatar"
-            android:layout_marginLeft="20dp"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
+            android:textColor="#FAFCFC"
+            android:textSize="18sp" />
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/scrMessageContainer"
-        android:layout_weight="1"
-        android:scrollbars="none">
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/recMessageList"
-            tools:listitem="@layout/item_recyclerview_chat_message_left"/>
-    </androidx.core.widget.NestedScrollView>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/relToolbar">
-        <EditText
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Nhắn tin"
-            android:layout_weight="1"
+            android:layout_below="@id/txtUserFullName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginVertical="10dp">
+            <ImageView
+                android:id="@+id/imgBtnImage"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:adjustViewBounds="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_image" />
+            <ImageButton
+                android:id="@+id/imgBtnCall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@id/imgBtnImage"
+                android:src="@drawable/ic_phone" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scrollbars="none"
+        android:paddingHorizontal="10dp"
+        android:id="@+id/recMessageList"
+        tools:listitem="@layout/item_recyclerview_chat_message_left"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#73DCB9"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="10dp">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgUser"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/wlop_33se" />
+
+        <EditText
             android:id="@+id/edtMessage"
-            android:layout_marginRight="10dp"/>
-        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="7dp"
+            android:paddingHorizontal="15dp"
+            android:layout_marginLeft="12dp"
+            android:layout_toRightOf="@id/imgUser"
+            android:background="@drawable/rounded_corner_11"
+            android:backgroundTint="@color/white"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/quicksand_medium"
+            android:hint="Nhập tin nhắn"
+            android:inputType="text"
+            android:textSize="15sp"/>
+
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Gửi"
+            android:background="@android:color/transparent"
             android:id="@+id/btnSend"
-            android:layout_toRightOf="@id/edtMessage"/>
-    </LinearLayout>
+            android:src="@drawable/ic_send"
+            android:layout_alignEnd="@id/edtMessage"
+            android:layout_alignTop="@id/edtMessage"
+            android:layout_alignBottom="@id/edtMessage"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"/>
+    </RelativeLayout>
 </LinearLayout>

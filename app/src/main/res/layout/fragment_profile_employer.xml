@@ -108,121 +108,6 @@
                 android:fontFamily="@font/quicksand_medium"
                 android:textSize="15sp"/>
 
-            <TextView
-                android:id="@+id/txtTitleBirth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="248dp"
-                android:text="Ngày sinh"
-                android:fontFamily="@font/quicksand_bold"
-                android:textColor="#5A2D22"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/birthTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignBaseline="@id/txtTitleBirth"
-                android:layout_marginStart="136dp"
-                android:textAlignment="center"
-                android:textColor="#5A2D22"
-                android:text="Hello"
-                android:fontFamily="@font/quicksand_medium"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/txtTitleSex"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="308dp"
-                android:text="Giới tính"
-                android:fontFamily="@font/quicksand_bold"
-                android:textColor="#5A2D22"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/sexTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="136dp"
-                android:layout_alignBaseline="@id/txtTitleSex"
-                android:textAlignment="center"
-                android:textColor="@color/dark_purple"
-                android:text="Hello"
-                android:fontFamily="@font/quicksand_medium"
-                android:textSize="15sp"/>
-
-            <TextView
-                android:id="@+id/txtTitleMajor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="368dp"
-                android:text="Chuyên ngành"
-                android:fontFamily="@font/quicksand_bold"
-                android:textColor="#5A2D22"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/jobTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="136dp"
-                android:layout_alignBaseline="@id/txtTitleMajor"
-                android:textAlignment="center"
-                android:textColor="#5A2D22"
-                android:text="Hello"
-                android:fontFamily="@font/quicksand_medium"
-                android:textSize="15sp"/>
-
-            <TextView
-                android:id="@+id/txtTitleExperience"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="428dp"
-                android:text="Kinh nghiệm"
-                android:fontFamily="@font/quicksand_bold"
-                android:textColor="#5A2D22"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/workYearTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="136dp"
-                android:layout_alignBaseline="@id/txtTitleExperience"
-                android:textAlignment="center"
-                android:textColor="#5A2D22"
-                android:text="Hello"
-                android:fontFamily="@font/quicksand_medium"
-                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/txtTitlePhone"
@@ -231,7 +116,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="488dp"
+                android:layout_marginTop="248dp"
                 android:text="Điện thoại"
                 android:fontFamily="@font/quicksand_bold"
                 android:textColor="#5A2D22"
@@ -260,12 +145,41 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="548dp"
+                android:layout_marginTop="308dp"
                 android:text="Email"
                 android:fontFamily="@font/quicksand_bold"
                 android:textColor="#5A2D22"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/txtTitleAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="368dp"
+                android:text="Địa chỉ"
+                android:fontFamily="@font/quicksand_bold"
+                android:textColor="#5A2D22"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/txtAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="136dp"
+                android:layout_alignBaseline="@id/txtTitleAddress"
+                android:textAlignment="center"
+                android:textColor="#5A2D22"
+                android:text="Hello"
+                android:fontFamily="@font/quicksand_medium"
+                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/emailTv"
@@ -281,6 +195,19 @@
                 android:text="nguyendanghoangdao11a@gmail.com"
                 android:fontFamily="@font/quicksand_medium"
                 android:textSize="15sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:padding="10dp"
+                android:id="@+id/txtDescription"
+                android:text="@string/company_description"
+                android:layout_below="@id/txtAddress"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rounded_corner_10"
+                android:backgroundTint="@color/white"
+                android:textColor="@color/dark_gary"/>
 
             <TextView
                 android:id="@+id/txtChangePassword"

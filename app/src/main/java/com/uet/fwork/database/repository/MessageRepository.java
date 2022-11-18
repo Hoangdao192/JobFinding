@@ -81,4 +81,24 @@ public class MessageRepository extends Repository {
                 })
                 .addOnFailureListener(System.out::println);
     }
+
+    public void getLastMessage(String chanelId, OnQuerySuccessListener<MessageModel> listener) {
+        rootDatabaseReference.child(chanelId).orderByChild("sentTime").limitToLast(1)
+                .get()
+                .addOnSuccessListener(dataSnapshot -> {
+                    System.out.println(dataSnapshot);
+                    if (dataSnapshot.exists()) {
+                        dataSnapshot.getChildren().forEach(snapshot -> {
+                            MessageModel message = snapshot.getValue(MessageModel.class);
+                            listener.onSuccess(message);
+                        });
+                    } else {
+                        listener.onSuccess(null);
+                    }
+                })
+                .addOnFailureListener(exception -> {
+                    exception.printStackTrace();
+                    listener.onSuccess(null);
+                });
+    }
 }
