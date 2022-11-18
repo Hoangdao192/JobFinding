@@ -24,6 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
 import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.model.chat.ChanelModel;
@@ -34,11 +35,14 @@ import com.uet.fwork.database.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ChatListFragment extends Fragment {
 
     private EditText edtSearch;
     private CountDownTimer countDownTimer;
     private RecyclerView recUserList, recChatList;
+    private CircleImageView cirImgAvatar;
 
     private List<UserModel> userResultList;
     private List<String> chanelIdList;
@@ -123,6 +127,20 @@ public class ChatListFragment extends Fragment {
         recChatList = view.findViewById(R.id.recChatList);
         recChatList.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
+        cirImgAvatar = view.findViewById(R.id.imgUserAvatar);
+
+        userRepository.getUserByUID(firebaseUser.getUid(), new Repository.OnQuerySuccessListener<UserModel>() {
+            @Override
+            public void onSuccess(UserModel result) {
+                if (result != null) {
+                    if (!result.getAvatar().isEmpty()) {
+                        Picasso.get().load(result.getAvatar())
+                                .placeholder(R.drawable.wlop_33se)
+                                .into(cirImgAvatar);
+                    }
+                }
+            }
+        });
 
         loadChatList();
         initSearchUser();
