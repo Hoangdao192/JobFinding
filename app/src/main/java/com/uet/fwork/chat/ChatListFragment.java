@@ -40,8 +40,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ChatListFragment extends Fragment {
 
     private EditText edtSearch;
-    private CountDownTimer countDownTimer;
-    private RecyclerView recUserList, recChatList;
+    private RecyclerView recChatList;
     private CircleImageView cirImgAvatar;
 
     private List<UserModel> userResultList;
@@ -52,6 +51,8 @@ public class ChatListFragment extends Fragment {
     private UserRepository userRepository;
 
     private ChatListRecyclerViewAdapter adapter;
+
+    private ChatSearchFragment chatSearchFragment = new ChatSearchFragment();
 
     public ChatListFragment() {
         super(R.layout.fragment_chat_main);
@@ -123,11 +124,19 @@ public class ChatListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         edtSearch = view.findViewById(R.id.edtSearch);
-        recUserList = view.findViewById(R.id.recUserList);
         recChatList = view.findViewById(R.id.recChatList);
         recChatList.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
         cirImgAvatar = view.findViewById(R.id.imgUserAvatar);
+
+        edtSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, chatSearchFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         userRepository.getUserByUID(firebaseUser.getUid(), new Repository.OnQuerySuccessListener<UserModel>() {
             @Override
@@ -143,7 +152,6 @@ public class ChatListFragment extends Fragment {
         });
 
         loadChatList();
-        initSearchUser();
     }
 
     private void loadChatList() {
@@ -151,86 +159,10 @@ public class ChatListFragment extends Fragment {
         recChatList.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private void initSearchUser() {
-        UserFoundRecyclerViewAdapter adapter = new UserFoundRecyclerViewAdapter(
-                getContext(), userResultList,
-                user -> {
-                    chatRepository.isChatChanelExists(firebaseUser.getUid(), user.getId(), chanelId -> {
-                        //  Chat chanel giữa hai user tồn tại
-                        if (chanelId != null) {
-                            unFocusSearch();
-                            unFocusSearch();
-                            startChatActivity(user, chanelId);
-                        }
-                        //  Tạo đoạn chat mới
-                        else {
-                            List<String> chatMembers = new ArrayList<>();
-                            chatMembers.add(firebaseUser.getUid());
-                            chatMembers.add(user.getId());
-                            chatRepository.createNewChat(chatMembers, chanelModel -> {
-                                unFocusSearch();
-                                startChatActivity(user, chanelModel.getId());
-                            });
-                        }
-                    });
-                }
-        );
-        recUserList.setAdapter(adapter);
-        recUserList.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        countDownTimer = new CountDownTimer(50, 10) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-            }
-
-            @Override
-            public void onFinish() {
-                userRepository.getAllUserFullNameSimilarTo(edtSearch.getText().toString(),
-                        10, adapter::setUserList);
-            }
-        };
-
-        edtSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                countDownTimer.cancel();
-                if (!edtSearch.getText().toString().isEmpty()) {
-                    recUserList.setVisibility(View.VISIBLE);
-                    recChatList.setVisibility(View.GONE);
-                    countDownTimer.start();
-                } else {
-                    adapter.clearUserList();
-                    recUserList.setVisibility(View.GONE);
-                    recChatList.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().isEmpty()) {
-                    adapter.clearUserList();
-                    recUserList.setVisibility(View.GONE);
-                    recChatList.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-    }
-
     private void startChatActivity(UserModel partner, String chanelId) {
         Intent intent = new Intent(getContext(), ChatActivity.class);
         intent.putExtra("partner", partner);
         intent.putExtra("chatChanelId", chanelId);
         startActivity(intent);
-    }
-
-    private void unFocusSearch() {
-        edtSearch.getText().clear();
-        recUserList.setVisibility(View.GONE);
-        recChatList.setVisibility(View.VISIBLE);
     }
 }

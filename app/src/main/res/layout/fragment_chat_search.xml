@@ -62,9 +62,7 @@
             android:paddingRight="16dp"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:focusable="false"
-            android:focusableInTouchMode="false"/>
+            app:layout_constraintTop_toTopOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -76,15 +74,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginHorizontal="10dp"
-                android:layout_alignParentTop="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:listitem="@layout/item_recyclerview_chat_list"
-                android:id="@+id/recChatList"
-                />
-            <androidx.recyclerview.widget.RecyclerView
-                android:visibility="gone"
                 android:paddingHorizontal="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -115,6 +115,11 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
                             if (userAvatarMap.containsKey(memberId)) {
                                 holder.imgAvatar.setImageBitmap(userAvatarMap.get(memberId));
                             }
+                            messageRepository.getLastMessage(chanelIdList.get(position), messageModel -> {
+                                if (messageModel != null) {
+                                    holder.txvLastMessage.setText(messageModel.getContent());
+                                }
+                            });
                         }
                     }
                 });
