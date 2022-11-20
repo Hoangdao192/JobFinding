@@ -24,4 +24,5 @@
     <string name="login_suggest">Bạn đã có tài khoản?<font fgcolor='#000000'> Đăng nhập</font></string>
     <string name="sign_up_suggest_two"><font fgcolor='#FF0000'> * </font>Chúng tôi sẽ gửi cho bạn tin nhắn về email của bạn. Vui lòng kiểm tra email để thiết lập mật khẩu.</string>
     <string name="company_description"><b>Mô tả công ty:\n</b>%1$s</string>
+    <string name="reset_password_email_sent">Chúng tôi đã gửi email đến địa chỉ email của bạn. Hãy kiểm tra hòm thư của bạn, email có thể được đưa vào mục spam</string>
 </resources>

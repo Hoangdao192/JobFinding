@@ -11,21 +11,16 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
 import com.uet.fwork.database.model.UserModel;
-import com.uet.fwork.database.model.chat.ChanelModel;
 import com.uet.fwork.database.repository.ChatRepository;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
@@ -62,6 +57,7 @@ public class ChatSearchFragment extends Fragment {
         edtSearch = view.findViewById(R.id.edtSearch);
         recUserList = view.findViewById(R.id.recUserList);
         cirImgAvatar = view.findViewById(R.id.imgUserAvatar);
+        edtSearch.requestFocus();
 
         userRepository.getUserByUID(firebaseUser.getUid(), new Repository.OnQuerySuccessListener<UserModel>() {
             @Override
