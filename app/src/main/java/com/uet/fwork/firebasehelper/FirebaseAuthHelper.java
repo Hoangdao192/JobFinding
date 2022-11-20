@@ -100,7 +100,16 @@ public class FirebaseAuthHelper {
                 .addOnSuccessListener(new com.google.android.gms.tasks.OnSuccessListener<SignInMethodQueryResult>() {
                     @Override
                     public void onSuccess(SignInMethodQueryResult signInMethodQueryResult) {
-                        listener.onSuccess(signInMethodQueryResult.getSignInMethods());
+                        if (signInMethodQueryResult.getSignInMethods().size() == 0) {
+                            listener.onSuccess(null);
+                        } else listener.onSuccess(signInMethodQueryResult.getSignInMethods());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        listener.onSuccess(null);
                     }
                 });
     }
