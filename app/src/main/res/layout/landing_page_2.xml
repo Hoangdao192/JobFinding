@@ -5,38 +5,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileFragment"
+    tools:context=".landingpage.LandingPage2"
     android:background="#DDEFFF">
 
     <View
         android:id="@+id/group_37160"
-        android:layout_width="354dp"
-        android:layout_height="431dp"
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
+        android:layout_below="@+id/imageView5"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="22dp"
-        android:layout_marginTop="141dp"
-        android:background="#00000000" />
+        android:layout_marginTop="-30dp"
+        android:background="#00000000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/nextPage2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView5"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="409dp"
-        android:layout_marginEnd="175dp"
-        android:layout_marginBottom="500dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/next" />
 
     <ImageView
         android:id="@+id/imageView7"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:layout_alignEnd="@+id/group_37160"
-        android:layout_alignBottom="@+id/group_37160"
-        android:layout_marginEnd="190dp"
-        android:layout_marginBottom="265dp"
+        android:layout_alignStart="@+id/group_37160"
+        android:layout_alignTop="@+id/group_37160"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="30dp"
         android:src="@drawable/job1" />
 
     <ImageView
@@ -45,53 +48,59 @@
         android:layout_height="130dp"
         android:layout_alignEnd="@+id/group_37160"
         android:layout_alignBottom="@+id/group_37160"
-        android:layout_marginEnd="19dp"
-        android:layout_marginBottom="52dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="30dp"
         android:src="@drawable/job2" />
 
     <ImageView
         android:id="@+id/imageView9"
         android:layout_width="130dp"
         android:layout_height="130dp"
+        android:layout_alignTop="@+id/group_37160"
         android:layout_alignEnd="@+id/group_37160"
-        android:layout_alignBottom="@+id/group_37160"
-        android:layout_marginEnd="19dp"
-        android:layout_marginBottom="265dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="35dp"
         android:src="@drawable/job0" />
 
     <ImageView
         android:id="@+id/imageView11"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:layout_alignEnd="@+id/group_37160"
+        android:layout_alignStart="@+id/group_37160"
         android:layout_alignBottom="@+id/group_37160"
-        android:layout_marginEnd="190dp"
-        android:layout_marginBottom="52dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginBottom="30dp"
         android:src="@drawable/job3" />
 
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="match_parent"
         android:layout_height="205dp"
-        android:layout_marginTop="-6.5dp"
+        android:layout_marginTop="-20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_vector_116"></ImageView>
 
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="match_parent"
-        android:layout_height="143dp"
+        android:layout_height="match_parent"
         android:layout_alignBottom="@+id/imageView5"
-        android:layout_marginBottom="54dp"
+        android:layout_marginBottom="74dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_group_37062" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/group_37160"
-        android:layout_alignBottom="@+id/group_37160"
-        android:layout_marginEnd="194dp"
-        android:layout_marginBottom="233dp"
+        android:layout_alignTop="@+id/imageView7"
+        android:layout_alignEnd="@+id/imageView7"
+        android:layout_marginTop="144dp"
+        android:layout_marginEnd="3dp"
         android:text="Tìm việc dễ dàng"
         android:textColor="#5A2D22"
         android:textSize="16sp"
@@ -101,10 +110,10 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/group_37160"
-        android:layout_alignBottom="@+id/group_37160"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="235dp"
+        android:layout_alignTop="@+id/imageView9"
+        android:layout_alignEnd="@+id/imageView9"
+        android:layout_marginTop="144dp"
+        android:layout_marginEnd="6dp"
         android:text="Phù hợp trình độ"
         android:textColor="#5A2D22"
         android:textSize="16sp"
@@ -114,10 +123,10 @@
         android:id="@+id/textView3"
         android:layout_width="117dp"
         android:layout_height="49dp"
-        android:layout_alignEnd="@+id/group_37160"
-        android:layout_alignBottom="@+id/group_37160"
-        android:layout_marginEnd="195dp"
-        android:layout_marginBottom="-7dp"
+        android:layout_alignStart="@+id/imageView11"
+        android:layout_alignTop="@+id/imageView11"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="146dp"
         android:gravity="center"
         android:text="Nhanh chóng, hiệu quả"
         android:textColor="#5A2D22"
@@ -128,10 +137,10 @@
         android:id="@+id/textView4"
         android:layout_width="91dp"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/group_37160"
-        android:layout_alignBottom="@+id/group_37160"
-        android:layout_marginEnd="37dp"
-        android:layout_marginBottom="2dp"
+        android:layout_alignTop="@+id/imageView8"
+        android:layout_alignEnd="@+id/imageView8"
+        android:layout_marginTop="146dp"
+        android:layout_marginEnd="20dp"
         android:gravity="center"
         android:text="Phỏng vấn trực tuyến"
         android:textColor="#5A2D22"
@@ -139,4 +148,3 @@
         android:textStyle="bold" />
 
 </RelativeLayout>
-

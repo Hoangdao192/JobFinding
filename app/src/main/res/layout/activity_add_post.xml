@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddPostActivity"
+    android:background="#DDEFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="209dp"
+            android:layout_marginTop="-20dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/header_post" >
+
+            <TextView
+                android:id="@+id/create_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/header"
+                android:layout_marginBottom="50dp"
+                android:gravity="center"
+                android:text="Tạo bài viết"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/round_post"
+        android:layout_margin="10dp">
+
+        <EditText
+            android:id="@+id/job_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:hint="Tên công việc..."
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/job_major"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Chuyên ngành..."
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/job_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nơi làm việc..."
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/job_experience"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Yêu cầu kinh nghiệm..."
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/job_salary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mức lương..."
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/job_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:hint="Mô tả..."
+            android:inputType="text|textMultiLine"
+            android:minHeight="150dp"
+            android:padding="10dp" />
+
+        <ImageView
+            android:id="@+id/job_image"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            app:srcCompat="@drawable/button_upload"
+            android:background="@color/white"
+            android:layout_marginBottom="20dp"/>
+    </LinearLayout>
+
+        <Button
+            android:id="@+id/job_upload_button"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:text="Đăng" />
+
+
+    </LinearLayout>
+
+</ScrollView>

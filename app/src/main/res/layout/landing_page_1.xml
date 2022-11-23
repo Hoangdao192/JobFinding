@@ -5,45 +5,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileFragment"
+    tools:context=".landingpage.LandingPage1"
     android:background="#DDEFFF">
 
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="match_parent"
         android:layout_height="205dp"
-        android:layout_marginTop="-6.5dp"
-        app:srcCompat="@drawable/ic_vector_116">
-
-    </ImageView>
+        android:layout_marginTop="-20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_vector_116"></ImageView>
 
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="match_parent"
-        android:layout_height="143dp"
+        android:layout_height="match_parent"
         android:layout_alignBottom="@+id/imageView5"
         android:layout_marginBottom="72dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_group_37062" />
 
     <ImageView
         android:id="@+id/nextPage"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView5"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="409dp"
-        android:layout_marginEnd="175dp"
-        android:layout_marginBottom="500dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/next" />
 
     <TextView
         android:id="@+id/fworktext"
-        android:layout_width="214dp"
-        android:layout_height="112dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="412dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView6"
+        android:layout_marginTop="78dp"
         android:fontFamily="@font/lexend_deca"
         android:gravity="center"
         android:lineHeight="26sp"
@@ -51,8 +54,7 @@
         android:text="FWork - ứng dụng di động phục vụ mục đích tìm việc, tuyển nhân sự dành cho người đi làm và các công ty"
         android:textColor="#13266A"
         android:textSize="15sp"
-        android:textStyle="bold"
-        android:translationY="-3.62sp" />
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/imageView6"
@@ -61,10 +63,11 @@
         android:layout_below="@+id/imageView5"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="123dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="120dp"
-        android:src="@drawable/working" />
+        android:layout_marginTop="20dp"
+        android:src="@drawable/working"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </RelativeLayout>
 

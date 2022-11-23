@@ -107,9 +107,9 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
         edtName = findViewById(R.id.nameEdit);
         edtEmail = findViewById(R.id.contactEdit);
-        edtPhone = findViewById(R.id.phoneEdit);
-        edtBirth = findViewById(R.id.dateOfBirthEdit);
-        edtExp = findViewById(R.id.expEdit);
+//        edtPhone = findViewById(R.id.phoneEdit);
+//        edtBirth = findViewById(R.id.dateOfBirthEdit);
+//        edtExp = findViewById(R.id.expEdit);
         button = findViewById(R.id.saveEdit);
         spnSex = (Spinner) findViewById(R.id.spnSex);
         spnMajor = (Spinner) findViewById(R.id.spnMajor);
