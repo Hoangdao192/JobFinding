@@ -2,36 +2,55 @@ package com.uet.fwork.database.model.post;
 
 public class PostModel {
 
-    private String postId;
-    private String postName;
-    private String postMajor;
-    private String postAddress;
-    private String postExperience;
-    private String postSalary;
-    private String postDescription;
-    private String postTime;
-    private String postImage;
-    private String userId;
-    private String userName;
-    private String userEmail;
-    private String userDp;
+    private String postId = "";
+    private String postName = "";
+    private String postMajor = "";
+    private String postAddress = "";
+    private String postExperience = "";
+    private String postSalary = "";
+    private String postDescription = "";
+    private Long postTime = 0L;
+    private String postImage = "";
+    private String userId = "";
+    private String userName = "";
+    private String userEmail = "";
+    private String userDp = "";
 
     public PostModel() {
     }
 
     public PostModel(
+            String postName, String postMajor, String postAddress,
+            String postExperience, String postSalary, String postDescription,
+            Long postTime, String postImage, String userId, String userName,
+            String userEmail, String userDp) {
+        this.postName = postName;
+        this.postMajor = postMajor;
+        this.postAddress = postAddress;
+        this.postExperience = postExperience;
+        this.postSalary = postSalary;
+        this.postDescription = postDescription;
+        this.postTime = postTime;
+        this.postImage = postImage;
+        this.userId = userId;
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.userDp = userDp;
+    }
+
+    public PostModel(
             String postId, String postName, String postMajor,
-            String postAddress, String postTime, String postExperience,
-            String postSalary, String postDescription, String postImage,
+            String postAddress, String postExperience, String postSalary,
+            String postDescription, Long postTime, String postImage,
             String userId, String userName, String userEmail, String userDp) {
         this.postId = postId;
         this.postName = postName;
         this.postMajor = postMajor;
         this.postAddress = postAddress;
-        this.postTime = postTime;
         this.postExperience = postExperience;
         this.postSalary = postSalary;
         this.postDescription = postDescription;
+        this.postTime = postTime;
         this.postImage = postImage;
         this.userId = userId;
         this.userName = userName;
@@ -71,11 +90,11 @@ public class PostModel {
         this.postAddress = postAddress;
     }
 
-    public String getPostTime() {
+    public Long getPostTime() {
         return postTime;
     }
 
-    public void setPostTime(String postTime) {
+    public void setPostTime(Long postTime) {
         this.postTime = postTime;
     }
 
@@ -141,5 +160,24 @@ public class PostModel {
 
     public void setUserDp(String userDp) {
         this.userDp = userDp;
+    }
+
+    @Override
+    public String toString() {
+        return "PostModel{" +
+                "postId='" + postId + '\'' +
+                ", postName='" + postName + '\'' +
+                ", postMajor='" + postMajor + '\'' +
+                ", postAddress='" + postAddress + '\'' +
+                ", postExperience='" + postExperience + '\'' +
+                ", postSalary='" + postSalary + '\'' +
+                ", postDescription='" + postDescription + '\'' +
+                ", postTime='" + postTime + '\'' +
+                ", postImage='" + postImage + '\'' +
+                ", userId='" + userId + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", userDp='" + userDp + '\'' +
+                '}';
     }
 }

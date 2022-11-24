@@ -1,26 +1,20 @@
 package com.uet.fwork.post;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
-import android.app.AlertDialog;
-import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,16 +31,20 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.uet.fwork.R;
-import com.uet.fwork.database.repository.UserRepository;
+import com.uet.fwork.database.model.post.PostModel;
+import com.uet.fwork.database.repository.PostRepository;
+import com.uet.fwork.dialog.ErrorDialog;
+import com.uet.fwork.util.ImageHelper;
+import com.uet.fwork.util.ImagePicker;
 
-import java.util.HashMap;
+import java.util.Calendar;
 
 public class AddPostActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
-    private UserRepository userRepository;
     private DatabaseReference databaseReference;
+    private PostRepository postRepository;
 
     private String name, email, uid, dp;
 
@@ -59,14 +57,16 @@ public class AddPostActivity extends AppCompatActivity {
     private ImageView imgJobImage;
     private Button btnUpload;
 
-    Uri imageUri = null;
+    private Bitmap postImage = null;
 
-    //progress bar
+    private ActivityResultLauncher<Intent> getImageActivityLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
+
+        postRepository = new PostRepository(FirebaseDatabase.getInstance());
 
         //display
         edtJobName = findViewById(R.id.job_name);
@@ -101,11 +101,23 @@ public class AddPostActivity extends AppCompatActivity {
             }
         });
 
+        this.getImageActivityLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    Bitmap bitmap = ImagePicker.getImageFromResult(this, result);
+                    if (bitmap != null) {
+                        postImage = ImageHelper.reduceImageSize(bitmap, 1000, 1000);
+                        imgJobImage.setImageBitmap(postImage);
+                    }
+                }
+        );
+
         //get image from camera or gallery
         imgJobImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showImagePickDialogue();
+                Intent intent = ImagePicker.getPickImageIntent(AddPostActivity.this);
+                getImageActivityLauncher.launch(intent);
             }
         });
 
@@ -144,189 +156,104 @@ public class AddPostActivity extends AppCompatActivity {
                     Toast.makeText(AddPostActivity.this, "Bạn chưa nhập mô tả công việc!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (imageUri == null) {
-                    //post without image
-                    uploadPost(jobName, jobMajor, jobAddress, jobExperience, jobSalary, jobDescription, "noImage");
-                } else {
-                    //post with image
-                    uploadPost(jobName, jobMajor, jobAddress, jobExperience, jobSalary, jobDescription, String.valueOf(imageUri));
-                }
+
+                uploadPost(jobName, jobMajor, jobAddress, jobExperience, jobSalary, jobDescription);
             }
         });
 
     }
 
-    private void showImagePickDialogue() {
-        String[] options = {"Camera", "Gallery"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose image from:");
-        //set items
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (i == 0) {
-                    if (!checkCameraPermission()) {
-                        requestCameraPermission();
-                    } else {
-                        pickFromCamera();
-                    }
-                }
-                if (i == 1) {
-                    if (!checkStoragePermission()) {
-                        requestStoragePermission();
-                    } else {
-                        pickFromGallery();
-                    }
-                }
-            }
-        });
-        //create and show dialog
-        builder.create().show();
-    }
-
-    private void pickFromGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE);
-    }
-
-    private void pickFromCamera() {
-        ContentValues cv = new ContentValues();
-        cv.put(MediaStore.Images.Media.TITLE, "Temp Pick");
-        cv.put(MediaStore.Images.Media.TITLE, "Temp Descr");
-        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
-
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
-    }
-
-    private boolean checkStoragePermission() {
-        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-        return result;
-    }
-
-    private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(this, storagePermissions, STORAGE_REQUEST_CODE);
-    }
-
-    private boolean checkCameraPermission() {
-        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
-        boolean result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-        return result && result1;
-    }
-
-    private void requestCameraPermission() {
-        ActivityCompat.requestPermissions(this, storagePermissions, CAMERA_REQUEST_CODE);
-    }
-
-    private void uploadPost(String j_name, String j_major, String j_address, String j_exp, String j_salary, String j_description, String uri) {
-        String timeStamp = String.valueOf(System.currentTimeMillis());
-
+    private void uploadPost(
+            String jobName, String jobMajor, String jobAddress,
+            String jobExperience, String jobSalary, String jobDescription) {
+//        String timeStamp = String.valueOf(System.currentTimeMillis());
+        Long timeStamp = Calendar.getInstance().getTimeInMillis() / 1000;
         String filePathAndName = "posts/" + "post_" + timeStamp;
 
-        if (!uri.equals("noImage")) {
+        if (postImage != null) {
             //post with image
             StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathAndName);
-            ref.putFile(Uri.parse(uri)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    //Image is uploaded to firebase storage
-                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                    while (!uriTask.isSuccessful()) ;
-                    String downloadUri = uriTask.getResult().toString();
-                    if (uriTask.isSuccessful()) {
-                        //url is received upload post to firebase db
+            ref.putBytes(ImageHelper.convertBitmapToByteArray(postImage))
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            //Image is uploaded to firebase storage
+                            Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                            while (!uriTask.isSuccessful()) ;
+                            String downloadUri = uriTask.getResult().toString();
+                            if (uriTask.isSuccessful()) {
+                                //url is received upload post to firebase db
 
-                        HashMap<Object, String> hashMap = new HashMap<>();
-                        hashMap.put("uid", uid);
-                        hashMap.put("userName", name);
-                        hashMap.put("userEmail", email);
-                        hashMap.put("userDp", dp);
-                        hashMap.put("postId", timeStamp);
-                        hashMap.put("postName", j_name);
-                        hashMap.put("postMajor", j_major);
-                        hashMap.put("postAddress", j_address);
-                        hashMap.put("postExperience", j_exp);
-                        hashMap.put("postSalary", j_salary);
-                        hashMap.put("postDescription", j_description);
-                        hashMap.put("postImage", downloadUri);
+                                PostModel postModel = new PostModel(
+                                        jobName, jobMajor, jobAddress, jobExperience,
+                                        jobSalary, jobDescription, timeStamp, downloadUri.toString(),
+                                        uid, name, email, dp
+                                );
 
-                        //path to storage
-                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("posts");
-                        //store data
-                        databaseReference.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                //post added
-                                Toast.makeText(AddPostActivity.this, "Bài viết đã được đăng", Toast.LENGTH_SHORT).show();
-                                //reset views
-                                edtJobName.setText("");
-                                edtJobAddress.setText("");
-                                edtJobDescription.setText("");
-                                edtJobExperience.setText("");
-                                edtJobMajor.setText("");
-                                edtJobSalary.setText("");
-                                imgJobImage.setImageURI(null);
-                                imageUri = null;
+                                postRepository.insert(postModel, success -> {
+                                    if (success) {
+                                        //post added
+                                        ErrorDialog dialog = new ErrorDialog(
+                                                AddPostActivity.this, "Đăng bài thành công",
+                                                "Bài viết đã được đăng");
+                                        dialog.show();
+                                        //reset views
+                                        edtJobName.setText("");
+                                        edtJobAddress.setText("");
+                                        edtJobDescription.setText("");
+                                        edtJobExperience.setText("");
+                                        edtJobMajor.setText("");
+                                        edtJobSalary.setText("");
+                                        imgJobImage.setImageBitmap(null);
+                                    } else {
+                                        ErrorDialog dialog = new ErrorDialog(
+                                                AddPostActivity.this, "Đăng bài không thành công",
+                                                "Có lỗi xảy ra");
+                                        dialog.show();
+                                    }
+                                });
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                //failed to add post
-                                Toast.makeText(AddPostActivity.this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show();
-
-                            }
-                        });
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    //failed to upload image
-                    Toast.makeText(AddPostActivity.this, "Ảnh bị lỗi", Toast.LENGTH_SHORT).show();
-                }
-            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            //failed to upload image
+                            ErrorDialog dialog = new ErrorDialog(
+                                    AddPostActivity.this, "Đăng bài không thành công",
+                                    "Không thể upload ảnh");
+                            dialog.show();
+                        }
+                    });
         } else {
             //post without image
-            HashMap<Object, String> hashMap = new HashMap<>();
-            hashMap.put("uid", uid);
-            hashMap.put("userName", name);
-            hashMap.put("userEmail", email);
-            hashMap.put("userDp", dp);
-            hashMap.put("postId", timeStamp);
-            hashMap.put("postName", j_name);
-            hashMap.put("postMajor", j_major);
-            hashMap.put("postAddress", j_address);
-            hashMap.put("postExperience", j_exp);
-            hashMap.put("postSalary", j_salary);
-            hashMap.put("postDescription", j_description);
-            hashMap.put("postImage", "noImage");
+            PostModel postModel = new PostModel(
+                    jobName, jobMajor, jobAddress, jobExperience,
+                    jobSalary, jobDescription, timeStamp, "",
+                    uid, name, email, dp
+            );
 
-            //path to storage
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("posts");
-            //store data
-            databaseReference.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
+            postRepository.insert(postModel, success -> {
+                ErrorDialog dialog;
+                if (success) {
                     //post added
-                    Toast.makeText(AddPostActivity.this, "Bài viết đã được đăng", Toast.LENGTH_SHORT).show();
+                    dialog = new ErrorDialog(
+                            AddPostActivity.this, "Đăng bài thành công",
+                            "Bài viết đã được đăng");
+                    //reset views
                     edtJobName.setText("");
                     edtJobAddress.setText("");
                     edtJobDescription.setText("");
                     edtJobExperience.setText("");
                     edtJobMajor.setText("");
                     edtJobSalary.setText("");
-                    imgJobImage.setImageURI(null);
-                    imageUri = null;
-
+                    imgJobImage.setImageBitmap(null);
+                } else {
+                    dialog = new ErrorDialog(
+                            AddPostActivity.this, "Đăng bài không thành công",
+                            "Có lỗi xảy ra");
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    //failed to add post
-                    Toast.makeText(AddPostActivity.this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show();
-                }
+                dialog.show();
             });
         }
 

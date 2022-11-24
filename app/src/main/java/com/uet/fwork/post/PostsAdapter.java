@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,20 +39,22 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+        PostModel post = postModelList.get(position);
+
         //get data
-        String uid = postModelList.get(position).getUserId();
-        String uEmail = postModelList.get(position).getUserEmail();
-        String uName = postModelList.get(position).getUserName();
-        String uDp = postModelList.get(position).getUserDp();
-        String pId = postModelList.get(position).getPostId();
-        String pJobName = postModelList.get(position).getPostName();
-        String pJobMajor = postModelList.get(position).getPostMajor();
-        String pJobAddress = postModelList.get(position).getPostAddress();
-        String pJobExperience = postModelList.get(position).getPostExperience();
-        String pJobSalary = postModelList.get(position).getPostSalary();
-        String pJobDescription = postModelList.get(position).getPostDescription();
-        String pJobImage = postModelList.get(position).getPostImage();
-        String pTimeStamp = postModelList.get(position).getPostTime();
+        String uid = post.getUserId();
+        String uEmail = post.getUserEmail();
+        String uName = post.getUserName();
+        String uDp = post.getUserDp();
+        String pId = post.getPostId();
+        String pJobName = post.getPostName();
+        String pJobMajor = post.getPostMajor();
+        String pJobAddress = post.getPostAddress();
+        String pJobExperience = post.getPostExperience();
+        String pJobSalary = post.getPostSalary();
+        String pJobDescription = post.getPostDescription();
+        String pJobImage = post.getPostImage();
+        String pTimeStamp = post.getPostTime().toString();
 
         //convert timestamp to dd/mm/yyyy hh:mm am/pm
         //Calendar calendar = Calendar.getInstance(Locale.getDefault());
@@ -104,7 +107,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         holder.commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
+                CommentViewDialog commentViewDialog = new CommentViewDialog(context, post.getPostId());
+                commentViewDialog.show();
             }
         });
 
