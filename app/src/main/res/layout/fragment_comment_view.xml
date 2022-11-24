@@ -16,39 +16,70 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/relHead"
+                android:layout_marginVertical="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:background="@color/white">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10 Lượt thích"
+                    android:id="@+id/txtLikeNumber"
+                    android:layout_centerVertical="true"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20 Bình luận"
+                    android:layout_toRightOf="@id/txtLikeNumber"
+                    android:id="@+id/txtCommentNumber"
+                    android:layout_marginLeft="20dp"
+                    android:layout_centerVertical="true"/>
+                <ImageView
+                    android:id="@+id/btnLike"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_heart_no_fill"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recCommentList"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:scrollbars="none"
                 android:layout_weight="1"
-                android:paddingHorizontal="15dp"
                 tools:listitem="@layout/item_recyclerview_comment"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="#f7f7f7"
+                android:paddingVertical="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="20dp">
                 <EditText
                     android:id="@+id/edtComment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Nhập bình luận"
+                    android:background="@android:color/transparent"
+                    android:hint="Bình luận"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     android:padding="10dp"/>
                 <ImageView
-
+                    android:layout_gravity="center"
+                    android:id="@+id/btnSend"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:adjustViewBounds="true"
+                    app:tint="@color/light_blue_600"
                     android:src="@drawable/ic_send_fill"/>
-                <Button
-                    android:id="@+id/btnSend"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Send"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

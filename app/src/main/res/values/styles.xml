@@ -97,12 +97,16 @@
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
     </style>
 
+    <style name="Theme.FWork.BottomSheetDialog" parent="Base.V14.ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Style.FWork.BottomSheetDialog</item>
+    </style>
+
     <style name="Theme.FWork.BottomSheetDialog.Fullscreen" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/Style.FWork.BottomSheetDialog</item>
         <item name="android:layout_height">match_parent</item>
     </style>
 
     <style name="Style.FWork.BottomSheetDialog" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 </resources>

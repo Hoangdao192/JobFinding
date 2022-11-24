@@ -2,8 +2,10 @@ package com.uet.fwork.database.repository;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 import com.uet.fwork.database.model.post.CommentModel;
@@ -47,13 +49,23 @@ public class CommentRepository extends Repository {
     }
 
     public void getAllCommentByPostId(String postId, OnQuerySuccessListener<List<CommentModel>> listener) {
-        rootDatabaseReference.child("comments").child(postId).get()
+        rootDatabaseReference.child(postId).get()
                 .addOnSuccessListener(dataSnapshot -> {
                     System.out.println(dataSnapshot.toString());
                     List<CommentModel> commentList = new ArrayList<>();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         System.out.println(snapshot);
                         commentList.add(snapshot.getValue(CommentModel.class));
+                    }
+                });
+    }
+
+    public void getNumberOfComment(String postId, @NonNull OnQuerySuccessListener<Long> listener) {
+        rootDatabaseReference.child(postId).get()
+                .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        listener.onSuccess(dataSnapshot.getChildrenCount());
                     }
                 });
     }

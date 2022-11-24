@@ -24,7 +24,7 @@ public class PostRepository extends Repository {
     public void insert(PostModel postModel, @Nullable OnQuerySuccessListener<Boolean> listener) {
         String postId = rootDatabaseReference.push().getKey();
         postModel.setPostId(postId);
-        rootDatabaseReference.child("list").child(postId).setValue(postModel)
+        rootDatabaseReference.child(postId).setValue(postModel)
                 .addOnFailureListener(exception -> {
                     Log.d(LOG_TAG, "Insert post failed " + postModel.toString());
                     exception.printStackTrace();
@@ -61,4 +61,6 @@ public class PostRepository extends Repository {
                     });
         }
     }
+
+
 }

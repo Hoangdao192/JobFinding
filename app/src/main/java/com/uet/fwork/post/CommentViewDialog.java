@@ -1,24 +1,17 @@
 package com.uet.fwork.post;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,8 +25,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.uet.fwork.R;
 import com.uet.fwork.database.model.post.CommentModel;
+import com.uet.fwork.database.model.post.ReactionModel;
 import com.uet.fwork.database.repository.CommentRepository;
+import com.uet.fwork.database.repository.PostReactionRepository;
 import com.uet.fwork.database.repository.PostRepository;
+import com.uet.fwork.database.repository.Repository;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,7 +41,9 @@ public class CommentViewDialog extends BottomSheetDialog {
 
     private RecyclerView recCommentList;
     private EditText edtComment;
-    private Button btnSend;
+    private ImageView btnSend, btnLike;
+    private TextView txvReactionNumber, txvCommentNumber;
+
     private String postId;
 
     private CommentRecyclerViewAdapter commentAdapter;
@@ -53,10 +51,11 @@ public class CommentViewDialog extends BottomSheetDialog {
 
     private PostRepository postRepository;
     private CommentRepository commentRepository;
+    private PostReactionRepository reactionRepository;
     private FirebaseUser firebaseUser;
 
     public CommentViewDialog(Context context, String postId) {
-        super(context, R.style.Theme_FWork_BottomSheetDialog_Fullscreen);
+        super(context, R.style.Theme_FWork_BottomSheetDialog);
         this.postId = postId;
     }
 
@@ -68,17 +67,8 @@ public class CommentViewDialog extends BottomSheetDialog {
         setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-
-                // In a previous life I used this method to get handles to the positive and negative buttons
-                // of a dialog in order to change their Typeface. Good ol' days.
-
                 BottomSheetDialog d = (BottomSheetDialog) dialog;
-
-                // This is gotten directly from the source of BottomSheetDialog
-                // in the wrapInBottomSheet() method
                 FrameLayout bottomSheet = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-
-                // Right here!
                 BottomSheetBehavior.from(bottomSheet)
                         .setState(BottomSheetBehavior.STATE_EXPANDED);
             }
@@ -86,21 +76,30 @@ public class CommentViewDialog extends BottomSheetDialog {
 
         postRepository = new PostRepository(FirebaseDatabase.getInstance());
         commentRepository = new CommentRepository(FirebaseDatabase.getInstance());
+        reactionRepository = new PostReactionRepository(FirebaseDatabase.getInstance());
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         recCommentList = findViewById(R.id.recCommentList);
         edtComment = findViewById(R.id.edtComment);
         btnSend = findViewById(R.id.btnSend);
+        btnLike = (ImageView) findViewById(R.id.btnLike);
+        txvReactionNumber = (TextView) findViewById(R.id.txtLikeNumber);
+        txvCommentNumber = (TextView) findViewById(R.id.txtCommentNumber);
 
         commentAdapter = new CommentRecyclerViewAdapter(getContext(), commentList);
         recCommentList.setAdapter(commentAdapter);
-        recCommentList.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setReverseLayout(true);
+        recCommentList.setLayoutManager(linearLayoutManager);
 
-        commentRepository.getAllCommentByPostId(postId, commentList -> {
-            if (commentList != null) {
-                commentAdapter.setCommentList(commentList);
-            }
-        });
+//        commentRepository.getAllCommentByPostId(postId, commentList -> {
+//            if (commentList != null) {
+//                commentAdapter.setCommentList(commentList);
+//            }
+//        });
+
+        loadCommentNumber();
+        loadLikeNumber();
 
         commentRepository.getRootDatabaseReference().child(postId).addChildEventListener(new ChildEventListener() {
             @Override
@@ -135,11 +134,42 @@ public class CommentViewDialog extends BottomSheetDialog {
             @Override
             public void onClick(View v) {
                 String comment = edtComment.getText().toString();
+                edtComment.getText().clear();
                 CommentModel commentModel = new CommentModel(
                         Calendar.getInstance().getTimeInMillis() / 1000,
                         comment, postId, firebaseUser.getUid(), ""
                 );
                 commentRepository.insert(commentModel, null);
+            }
+        });
+
+        reactionRepository.isUserLikePost(postId, firebaseUser.getUid(), new Repository.OnQuerySuccessListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                if (!result) {
+                    btnLike.setImageDrawable(getContext().getDrawable(R.drawable.ic_heart_no_fill));
+                } else {
+                    btnLike.setImageDrawable(getContext().getDrawable(R.drawable.ic_heart_fill));
+                }
+            }
+        });
+        btnLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reactionRepository.isUserLikePost(postId, firebaseUser.getUid(), new Repository.OnQuerySuccessListener<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        if (result) {
+                            btnLike.setImageDrawable(getContext().getDrawable(R.drawable.ic_heart_no_fill));
+                            reactionRepository.removeReactionByPostAndUser(postId, firebaseUser.getUid());
+                        } else {
+                            btnLike.setImageDrawable(getContext().getDrawable(R.drawable.ic_heart_fill));
+                            reactionRepository.insert(new ReactionModel(
+                                    firebaseUser.getUid(), postId, Calendar.getInstance().getTimeInMillis()/1000
+                            ), null);
+                        }
+                    }
+                });
             }
         });
 
@@ -150,6 +180,24 @@ public class CommentViewDialog extends BottomSheetDialog {
                     dialog.dismiss();
                 }
                 return true;
+            }
+        });
+    }
+
+    private void loadLikeNumber() {
+        reactionRepository.getNumberOfReaction(postId, new Repository.OnQuerySuccessListener<Long>() {
+            @Override
+            public void onSuccess(Long result) {
+                txvReactionNumber.setText(result + " Lượt thích");
+            }
+        });
+    }
+
+    private void loadCommentNumber() {
+        commentRepository.getNumberOfComment(postId, new Repository.OnQuerySuccessListener<Long>() {
+            @Override
+            public void onSuccess(Long result) {
+                txvCommentNumber.setText(result + " Bình luận");
             }
         });
     }
