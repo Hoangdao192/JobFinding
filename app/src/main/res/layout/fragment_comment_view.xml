@@ -43,7 +43,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/ic_send_fill"
+                    android:src="@drawable/ic_send_fill"/>
                 <Button
                     android:id="@+id/btnSend"
                     android:layout_width="wrap_content"
