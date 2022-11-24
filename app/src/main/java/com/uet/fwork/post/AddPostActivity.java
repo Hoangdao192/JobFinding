@@ -1,16 +1,13 @@
-package com.uet.fwork;
+package com.uet.fwork.post;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,7 +20,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.uet.fwork.R;
 import com.uet.fwork.database.repository.UserRepository;
 
 import java.util.HashMap;
@@ -50,21 +47,19 @@ public class AddPostActivity extends AppCompatActivity {
     private FirebaseUser user;
     private UserRepository userRepository;
     private DatabaseReference databaseReference;
-    private static final int CAMERA_REQUEST_CODE = 100;
-    private static final int STORAGE_REQUEST_CODE = 200;
-    private static final int IMAGE_PICK_CAMERA_CODE = 300;
-    private static final int IMAGE_PICK_GALLERY_CODE = 400;
 
-    String[] cameraPermissions;
-    String[] storagePermissions;
+    private String name, email, uid, dp;
 
-    String name, email, uid, dp;
+    private EditText edtJobName;
+    private EditText edtJobMajor;
+    private EditText edtJobAddress;
+    private EditText edtJobExperience;
+    private EditText edtJobSalary;
+    private EditText edtJobDescription;
+    private ImageView imgJobImage;
+    private Button btnUpload;
 
-    EditText jobName, jobMajor, jobAddress, jobExperience, jobSalary, jobDescription;
-    ImageView jobImage;
-    Button jobUploadBtn;
-
-    Uri image_rui = null;
+    Uri imageUri = null;
 
     //progress bar
 
@@ -73,19 +68,15 @@ public class AddPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
 
-        //init permissions arrays
-        cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
         //display
-        jobName = findViewById(R.id.job_name);
-        jobMajor = findViewById(R.id.job_major);
-        jobAddress = findViewById(R.id.job_address);
-        jobExperience = findViewById(R.id.job_experience);
-        jobSalary = findViewById(R.id.job_salary);
-        jobDescription = findViewById(R.id.job_description);
-        jobImage = findViewById(R.id.job_image);
-        jobUploadBtn = findViewById(R.id.job_upload_button);
+        edtJobName = findViewById(R.id.job_name);
+        edtJobMajor = findViewById(R.id.job_major);
+        edtJobAddress = findViewById(R.id.job_address);
+        edtJobExperience = findViewById(R.id.job_experience);
+        edtJobSalary = findViewById(R.id.job_salary);
+        edtJobDescription = findViewById(R.id.job_description);
+        imgJobImage = findViewById(R.id.job_image);
+        btnUpload = findViewById(R.id.job_upload_button);
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -111,54 +102,54 @@ public class AddPostActivity extends AppCompatActivity {
         });
 
         //get image from camera or gallery
-        jobImage.setOnClickListener(new View.OnClickListener() {
+        imgJobImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showImagePickDialogue();
             }
         });
 
-        jobUploadBtn.setOnClickListener(new View.OnClickListener() {
+        btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //get data from Edit Texts
-                String j_name = jobName.getText().toString().trim();
-                String j_major = jobMajor.getText().toString().trim();
-                String j_address = jobAddress.getText().toString().trim();
-                String j_exp = jobExperience.getText().toString().trim();
-                String j_salary = jobSalary.getText().toString().trim();
-                String j_description = jobDescription.getText().toString().trim();
+                String jobName = edtJobName.getText().toString().trim();
+                String jobMajor = edtJobMajor.getText().toString().trim();
+                String jobAddress = edtJobAddress.getText().toString().trim();
+                String jobExperience = edtJobExperience.getText().toString().trim();
+                String jobSalary = edtJobSalary.getText().toString().trim();
+                String jobDescription = edtJobDescription.getText().toString().trim();
 
-                if (TextUtils.isEmpty(j_name)) {
+                if (TextUtils.isEmpty(jobName)) {
                     Toast.makeText(AddPostActivity.this, "Bạn chưa nhập tên công việc!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (TextUtils.isEmpty(j_major)) {
+                if (TextUtils.isEmpty(jobMajor)) {
                     Toast.makeText(AddPostActivity.this, "Bạn chưa nhập chuyên ngành công việc!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (TextUtils.isEmpty(j_address)) {
+                if (TextUtils.isEmpty(jobAddress)) {
                     Toast.makeText(AddPostActivity.this, "Bạn chưa nhập địa chỉ công việc!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (TextUtils.isEmpty(j_exp)) {
+                if (TextUtils.isEmpty(jobExperience)) {
                     Toast.makeText(AddPostActivity.this, "Bạn chưa nhập kinh nghiệm yêu cầu!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (TextUtils.isEmpty(j_salary)) {
+                if (TextUtils.isEmpty(jobSalary)) {
                     Toast.makeText(AddPostActivity.this, "Bạn chưa nhập lương công việc!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (TextUtils.isEmpty(j_description)) {
+                if (TextUtils.isEmpty(jobDescription)) {
                     Toast.makeText(AddPostActivity.this, "Bạn chưa nhập mô tả công việc!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (image_rui == null) {
+                if (imageUri == null) {
                     //post without image
-                    uploadPost(j_name, j_major, j_address, j_exp, j_salary, j_description, "noImage");
+                    uploadPost(jobName, jobMajor, jobAddress, jobExperience, jobSalary, jobDescription, "noImage");
                 } else {
                     //post with image
-                    uploadPost(j_name, j_major, j_address, j_exp, j_salary, j_description, String.valueOf(image_rui));
+                    uploadPost(jobName, jobMajor, jobAddress, jobExperience, jobSalary, jobDescription, String.valueOf(imageUri));
                 }
             }
         });
@@ -203,10 +194,10 @@ public class AddPostActivity extends AppCompatActivity {
         ContentValues cv = new ContentValues();
         cv.put(MediaStore.Images.Media.TITLE, "Temp Pick");
         cv.put(MediaStore.Images.Media.TITLE, "Temp Descr");
-        image_rui = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
+        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, image_rui);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
     }
 
@@ -270,14 +261,14 @@ public class AddPostActivity extends AppCompatActivity {
                                 //post added
                                 Toast.makeText(AddPostActivity.this, "Bài viết đã được đăng", Toast.LENGTH_SHORT).show();
                                 //reset views
-                                jobName.setText("");
-                                jobAddress.setText("");
-                                jobDescription.setText("");
-                                jobExperience.setText("");
-                                jobMajor.setText("");
-                                jobSalary.setText("");
-                                jobImage.setImageURI(null);
-                                image_rui = null;
+                                edtJobName.setText("");
+                                edtJobAddress.setText("");
+                                edtJobDescription.setText("");
+                                edtJobExperience.setText("");
+                                edtJobMajor.setText("");
+                                edtJobSalary.setText("");
+                                imgJobImage.setImageURI(null);
+                                imageUri = null;
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -320,14 +311,14 @@ public class AddPostActivity extends AppCompatActivity {
                 public void onSuccess(Void unused) {
                     //post added
                     Toast.makeText(AddPostActivity.this, "Bài viết đã được đăng", Toast.LENGTH_SHORT).show();
-                    jobName.setText("");
-                    jobAddress.setText("");
-                    jobDescription.setText("");
-                    jobExperience.setText("");
-                    jobMajor.setText("");
-                    jobSalary.setText("");
-                    jobImage.setImageURI(null);
-                    image_rui = null;
+                    edtJobName.setText("");
+                    edtJobAddress.setText("");
+                    edtJobDescription.setText("");
+                    edtJobExperience.setText("");
+                    edtJobMajor.setText("");
+                    edtJobSalary.setText("");
+                    imgJobImage.setImageURI(null);
+                    imageUri = null;
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -339,53 +330,5 @@ public class AddPostActivity extends AppCompatActivity {
             });
         }
 
-    }
-
-    //handle permission results
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        switch (requestCode) {
-            case CAMERA_REQUEST_CODE: {
-                if (grantResults.length > 0) {
-                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean storageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    if (cameraAccepted && storageAccepted) {
-                        pickFromCamera();
-                    } else {
-                        Toast.makeText(this, "Cần quyền truy cập Camera và bộ nhớ", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-            break;
-            case STORAGE_REQUEST_CODE: {
-                if (grantResults.length > 0) {
-                    boolean storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if (storageAccepted) {
-                        pickFromGallery();
-                    } else {
-                        Toast.makeText(this, "Cần quyền truy cập kho ảnh", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-            break;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == IMAGE_PICK_GALLERY_CODE) {
-                image_rui = data.getData();
-                jobImage.setImageURI(image_rui);
-
-            } else if (requestCode == IMAGE_PICK_CAMERA_CODE) {
-                jobImage.setImageURI(image_rui);
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 }

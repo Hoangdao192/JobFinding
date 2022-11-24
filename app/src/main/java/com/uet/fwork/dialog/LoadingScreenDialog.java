@@ -1,4 +1,4 @@
-package com.uet.fwork;
+package com.uet.fwork.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
+
+import com.uet.fwork.R;
 
 public class LoadingScreenDialog extends Dialog {
     public LoadingScreenDialog(@NonNull Context context) {

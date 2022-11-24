@@ -1,13 +1,10 @@
 package com.uet.fwork.account.register;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -33,16 +30,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.uet.fwork.LoadingScreenDialog;
+import com.uet.fwork.dialog.LoadingScreenDialog;
 import com.uet.fwork.R;
-import com.uet.fwork.UpdateProfileActivity;
 import com.uet.fwork.adapter.SpinnerAdapter;
 import com.uet.fwork.database.model.CandidateModel;
 import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.util.ImageHelper;
 import com.uet.fwork.util.ImagePicker;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;

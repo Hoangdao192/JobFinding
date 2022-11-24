@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +27,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
@@ -38,22 +37,19 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
-import com.uet.fwork.HelloActivity;
-import com.uet.fwork.LoadingScreenDialog;
+import com.uet.fwork.dialog.ErrorDialog;
+import com.uet.fwork.dialog.LoadingScreenDialog;
 import com.uet.fwork.R;
 import com.uet.fwork.account.login.LoginActivity;
 import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.model.UserRole;
 import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
-import com.uet.fwork.firebasehelper.FirebaseSignInMethod;
 
 import java.util.Arrays;
 
 public class RegisterMainFragment extends Fragment {
-
-    private final FirebaseAuth firebaseAuth;
-    private final UserRepository userRepository;
+    private static final String LOG_TAG = "Register";
 
     private NavController navController;
     private TextInputLayout edtEmail;
@@ -63,11 +59,14 @@ public class RegisterMainFragment extends Fragment {
     private TextView txtLogin;
     private Button btnRegisterWithGoogle, btnRegisterWithFacebook;
 
-    private FirebaseAuthHelper firebaseAuthHelper;
+    private final FirebaseAuthHelper firebaseAuthHelper;
+    private final FirebaseAuth firebaseAuth;
+    private final UserRepository userRepository;
 
+    //  Facebook login
     private CallbackManager callbackManager;
     private LoginManager loginManager;
-
+    //  Google login
     private ActivityResultLauncher<Intent> getGoogleAccountActivityLauncher;
 
     public RegisterMainFragment() {
@@ -93,40 +92,31 @@ public class RegisterMainFragment extends Fragment {
         initRegisterWithGoogle();
         initRegisterWithFacebook();
 
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
+        btnBack.setOnClickListener(button -> getActivity().onBackPressed());
 
-        txtLogin.setOnClickListener(txtLoginView -> {
+        txtLogin.setOnClickListener(textView -> {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
         });
 
-        btnCreateAccount.setOnClickListener(btnCreateAccountView -> {
+        btnCreateAccount.setOnClickListener(button -> {
             clearTextInputLayoutError();
             if (checkUserInput()) {
                 createUserAccount();
             }
         });
 
-        btnRegisterWithGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registerWithGoogle();
-            }
-        });
+        btnRegisterWithGoogle.setOnClickListener(button -> registerWithGoogle());
 
-        btnRegisterWithFacebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginManager.logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile"));
-            }
+        btnRegisterWithFacebook.setOnClickListener(button -> {
+            Log.d(LOG_TAG, "Firebase auth: Start register facebook");
+            loginManager.logInWithReadPermissions(
+                    getActivity(),
+                    Arrays.asList("email", "public_profile"));
         });
 
         Intent intent = getActivity().getIntent();
+        Log.d(LOG_TAG, "Checking activity destination");
         if (intent.hasExtra("startDestinationId")) {
             navController.navigate(intent.getIntExtra("startDestinationId", R.id.registerMainFragment));
         }
@@ -179,23 +169,37 @@ public class RegisterMainFragment extends Fragment {
 
         LoadingScreenDialog dialog = new LoadingScreenDialog(getContext());
         dialog.show();
+        Log.d(LOG_TAG, "Firebase auth: Create user with email and password");
         firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(authResult -> firebaseAuth.getCurrentUser()
+                .addOnSuccessListener(authResult -> {
+                    Log.d(LOG_TAG, "Firebase auth: Create user successful " + email + " " + password);
+                    firebaseAuth.getCurrentUser()
                         .sendEmailVerification()
+                        .addOnFailureListener(exception -> {
+                            exception.printStackTrace();
+                            Log.d(LOG_TAG, "Firebase auth: Send email verification to " + email + " failed");
+                        })
+                        .addOnCanceledListener(() ->
+                                Log.d(LOG_TAG, "Firebase auth: Send email verification to " + email + " cancelled"))
                         .addOnSuccessListener(unused -> {
+                            Log.d(LOG_TAG, "Firebase auth: Send email verification to " + email + " successful");
                             initUserData();
                             dialog.dismiss();
                             navController.navigate(R.id.action_registerMainFragment_to_registerVerifyRequestFragment);
-                        }))
-                .addOnFailureListener(e -> {
-                    e.printStackTrace();
-                    if (e instanceof FirebaseAuthUserCollisionException) {
+                        });
+                })
+                .addOnFailureListener(exception -> {
+                    exception.printStackTrace();
+                    Log.d(LOG_TAG, "Firebase auth: Create user failed " + email + " " + password);
+                    if (exception instanceof FirebaseAuthUserCollisionException) {
                         edtEmail.setError("Email đã được sử dụng.");
-                    } else if (e instanceof FirebaseAuthWeakPasswordException) {
+                    } else if (exception instanceof FirebaseAuthWeakPasswordException) {
                         edtPassword.setError("Mật khẩu phải chứa ít nhất 6 kí tự");
                     }
                     dialog.dismiss();
-                });
+                })
+                .addOnCanceledListener(() ->
+                        Log.d(LOG_TAG, "Firebase auth: Create user cancelled " + email + " " + password));
     }
 
     /**
@@ -204,7 +208,7 @@ public class RegisterMainFragment extends Fragment {
     private void initUserData() {
         String email = firebaseAuth.getCurrentUser().getEmail();
         String userUID = firebaseAuth.getCurrentUser().getUid();
-
+        Log.d(LOG_TAG, "Initialize user data");
         UserModel userModel = new UserModel(
                 userUID, email, "", "", "", "", UserRole.NOT_SET, 0
         );
@@ -214,49 +218,76 @@ public class RegisterMainFragment extends Fragment {
     private void loginFirebaseWithCredential(AuthCredential authCredential) {
         LoadingScreenDialog dialog = new LoadingScreenDialog(getContext());
         dialog.show();
+        Log.d(LOG_TAG, "Firebase auth: Login with credential " + authCredential.toString());
         firebaseAuth.signInWithCredential(authCredential)
                 .addOnSuccessListener(authResult -> {
+                    Log.d(LOG_TAG, "Firebase auth: Login with credential successful " + authCredential.toString());
                     dialog.dismiss();
                     initUserData();
                     navController.navigate(R.id.action_registerMainFragment_to_selectUserRoleFragment);
                 })
                 .addOnFailureListener(exception -> {
+                    Log.d(LOG_TAG, "Firebase auth: Login with credential failed " + authCredential.toString());
                     exception.printStackTrace();
                     Toast.makeText(getActivity(), "Email của tài khoản này đã được sử dụng", Toast.LENGTH_SHORT).show();
-                });
+                })
+                .addOnCanceledListener(() ->
+                        Log.d(LOG_TAG, "Firebase auth: Login with credential cancelled " + authCredential.toString()));
     }
 
     private void initRegisterWithGoogle() {
+        Log.d(LOG_TAG, "Firebase auth: Initialize register with google");
         getGoogleAccountActivityLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 activityResult -> {
                     if (activityResult.getResultCode() == Activity.RESULT_OK) {
+                        Log.d(LOG_TAG, "Google: Google account pick launch ok");
+                        LoadingScreenDialog dialog = new LoadingScreenDialog(getActivity());
+                        dialog.show();
+
+                        Log.d(LOG_TAG, "Google: Get sign in account task");
                         Task<GoogleSignInAccount> signInAccountTask =
                                 GoogleSignIn.getSignedInAccountFromIntent(activityResult.getData());
 
                         signInAccountTask.addOnSuccessListener(googleSignInAccount -> {
+                            Log.d(LOG_TAG, "Google: sign in task successful");
                             if (googleSignInAccount != null) {
                                 String email = googleSignInAccount.getEmail();
+                                Log.d(LOG_TAG, "Google: Account get successful " + email);
                                 firebaseAuthHelper.isUserWithEmailExists(
                                         email,
                                         result -> {
+                                            Log.d(LOG_TAG, "Firebase: Google account exists in Firebase");
+                                            dialog.dismiss();
                                             if (!result) {
                                                 String googleIdToken = googleSignInAccount.getIdToken();
                                                 AuthCredential authCredential =
                                                         GoogleAuthProvider.getCredential(googleIdToken, null);
                                                 loginFirebaseWithCredential(authCredential);
                                             } else {
-                                                //  UI thông báo lỗi
-                                                Toast.makeText(getActivity(),
-                                                                "Tài khoản này đã tồn tại", Toast.LENGTH_SHORT)
-                                                        .show();
+                                                Log.d(LOG_TAG, "Firebase: Google account not exists in Firebase");
+                                                ErrorDialog errorDialog = new ErrorDialog(
+                                                        getActivity(),
+                                                        "Đăng ký không thành công",
+                                                        "Tài khoản không tồn tại hoặc email đã được sử dụng cho phương thức đăng nhập khác"
+                                                );
+                                                errorDialog.show();
                                             }
                                         }
                                 );
+                            } else {
+                                dialog.dismiss();
+                                Log.d(LOG_TAG, "Google: Account get failed, return null");
                             }
-                        });
+                        }).addOnFailureListener(exception -> {
+                                Log.e(LOG_TAG, "Google: sign in task failed");
+                                exception.printStackTrace();
+                                dialog.dismiss();
+                            });
                     } else {
-                        System.out.println("RESULT CODE " + activityResult.getResultCode());
+                        Log.d(LOG_TAG,
+                                "Google: Google account pick launch failed, result code " +
+                                        activityResult.getResultCode());
                     }
                 });
     }
@@ -269,42 +300,49 @@ public class RegisterMainFragment extends Fragment {
                 .requestEmail()
                 .build();
         GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(getActivity(), googleSignInOptions);
+        Log.d(LOG_TAG, "Firebase auth: Get google sign in intent");
         Intent intent = googleSignInClient.getSignInIntent();
         getGoogleAccountActivityLauncher.launch(intent);
         googleSignInClient.signOut();
     }
 
     private void initRegisterWithFacebook() {
+        Log.d(LOG_TAG, "Firebase auth: Initialize register with facebook");
         loginManager = LoginManager.getInstance();
         this.callbackManager = ((RegisterActivity) getActivity()).callbackManager;
         loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("FACEBOOK", "Callback success");
+                Log.d(LOG_TAG, "Facebook: Callback success");
                 firebaseAuthHelper.isFacebookUserExistsInFirebase(loginResult,
                         result -> {
                             if (!result) {
+                                Log.d(LOG_TAG, "Firebase auth: Facebook user exists in Firebase");
                                 AuthCredential credential =
                                         FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
                                 loginFirebaseWithCredential(credential);
                             } else  {
-                                //  UI thông báo tài khoản không tồn tại
-                                Toast.makeText(getActivity(),
-                                                "Tài khoản này đã tồn tại", Toast.LENGTH_SHORT)
-                                        .show();
+                                Log.d(LOG_TAG, "Firebase auth: Facebook user not exists in Firebase");
+                                ErrorDialog errorDialog = new ErrorDialog(
+                                        getActivity(),
+                                        "Đăng nhập không thành công",
+                                        "Tài khoản không tồn tại hoặc email đã được sử dụng cho phương thức đăng nhập khác"
+                                );
+                                errorDialog.show();
                             }
                         });
             }
 
             @Override
             public void onCancel() {
+                Log.d(LOG_TAG, "Firebase auth: Facebook callback is cancelled");
                 Log.d("FACEBOOK", "facebook:onCancel");
             }
 
             @Override
             public void onError(FacebookException error) {
                 error.printStackTrace();
-                Log.d("FACEBOOK", "facebook:error");
+                Log.d(LOG_TAG, "Firebase auth: Facebook callback failed\n" + error.toString());
             }
         });
     }

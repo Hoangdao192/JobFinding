@@ -8,11 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.CallbackManager;
@@ -24,7 +22,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
@@ -33,13 +30,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.uet.fwork.LoadingScreenDialog;
+import com.uet.fwork.dialog.ErrorDialog;
+import com.uet.fwork.dialog.LoadingScreenDialog;
 import com.uet.fwork.R;
 import com.uet.fwork.account.register.RegisterActivity;
 import com.uet.fwork.account.resetpassword.ResetPasswordActivity;
 import com.uet.fwork.database.model.UserDeviceModel;
-import com.uet.fwork.database.model.UserModel;
-import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserDeviceRepository;
 import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
@@ -49,31 +45,31 @@ import com.uet.fwork.navbar.DashboardActivity;
 import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
-    private final FirebaseAuth firebaseAuth;
+    private static final String LOG_TAG = "Login activity";
 
     private TextInputLayout edtEmail, edtPassword;
     private Button btnLogin;
     private Button btnLoginWithGoogle;
     private Button btnLoginWithFacebook;
-    private UserDeviceRepository userDeviceRepository;
-    //    private LoginButton btnLoginWithFacebook;
     private TextView txtCreateAccount;
     private TextView txtForgotPassword;
     private ImageButton imgBtnBack;
 
-    private FirebaseAuthHelper firebaseAuthHelper;
-    private UserRepository userRepository;
+    private final FirebaseAuth firebaseAuth;
+    private final FirebaseAuthHelper firebaseAuthHelper;
+    private final UserRepository userRepository;
+    private final UserDeviceRepository userDeviceRepository;
 
+    //  Facebook login handle
     private CallbackManager callbackManager;
     private LoginManager loginManager;
-
+    //  Google login handle
     private ActivityResultLauncher<Intent> getGoogleAccountActivityLauncher;
 
     public LoginActivity() {
         super();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuthHelper = new FirebaseAuthHelper(firebaseAuth);
-//        FacebookSdk.sdkInitialize(getApplicationContext());
         userRepository = new UserRepository(FirebaseDatabase.getInstance());
         userDeviceRepository = new UserDeviceRepository(FirebaseDatabase.getInstance());
     }
@@ -95,59 +91,53 @@ public class LoginActivity extends AppCompatActivity {
         initLoginWithGoogle();
         initLoginWithFacebook();
 
-        imgBtnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        imgBtnBack.setOnClickListener(imageView -> finish());
 
         btnLogin.setOnClickListener(btnLoginView -> loginWithEmailPassword());
 
         btnLoginWithGoogle.setOnClickListener(btnLoginWithGoogleView -> loginWithGoogle());
 
-        btnLoginWithFacebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginManager.logInWithReadPermissions(LoginActivity.this, Arrays.asList("email", "public_profile"));
-            }
-        });
+        btnLoginWithFacebook.setOnClickListener(button ->
+                loginManager.logInWithReadPermissions(
+                        LoginActivity.this,
+                        Arrays.asList("email", "public_profile")));
 
         txtCreateAccount.setOnClickListener(txtCreateAccountView -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
 
-        txtForgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
-                startActivity(intent);
-            }
+        txtForgotPassword.setOnClickListener(textView -> {
+            Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+            startActivity(intent);
         });
     }
 
     private void loginFirebaseWithCredential(AuthCredential authCredential) {
         LoadingScreenDialog dialog = new LoadingScreenDialog(this);
         dialog.show();
+        Log.d("LOGIN", "Firebase auth: Login with credential " + authCredential.toString());
         firebaseAuth.signInWithCredential(authCredential)
                 .addOnSuccessListener(authResult -> {
-                    userRepository.getUserByUID(firebaseAuth.getUid(), new Repository.OnQuerySuccessListener<UserModel>() {
-                        @Override
-                        public void onSuccess(UserModel result) {
-                            dialog.dismiss();
-                            //  Người dùng chưa khai báo thông tin cá nhân
-                            if (result.getLastUpdate() == 0) {
-                                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                                intent.putExtra("startDestinationId", R.id.selectUserRoleFragment);
-                                startActivity(intent);
-                            } else {
-                                startDashboardActivity();
-                            }
+                    userRepository.getUserByUID(firebaseAuth.getUid(), userModel -> {
+                        dialog.dismiss();
+                        Log.d(LOG_TAG, "Checking user data " + userModel.getId());
+                        //  Người dùng chưa khai báo thông tin cá nhân
+                        if (userModel.getLastUpdate() == 0) {
+                            Log.d("LOGIN", "User data not exists" + userModel.getId());
+                            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                            intent.putExtra("startDestinationId", R.id.selectUserRoleFragment);
+                            startActivity(intent);
+                        } else {
+                            Log.d("LOGIN", "Checking ok" + userModel.getId());
+                            onLoginSuccessful();
                         }
                     });
                 })
-                .addOnFailureListener(Throwable::printStackTrace);
+                .addOnFailureListener(exception -> {
+                    exception.printStackTrace();
+                    Log.d(LOG_TAG, "Sign in with credential failed " + authCredential.toString());
+                });
     }
 
     private void loginWithEmailPassword() {
@@ -164,69 +154,75 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             LoadingScreenDialog dialog = new LoadingScreenDialog(this);
             dialog.show();
+            Log.d(LOG_TAG, "Firebase auth: Login with password " + email + " " + password);
             firebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnFailureListener(exception -> {
                         exception.printStackTrace();
                         edtEmail.setError("Email hoặc mật khẩu không hợp lệ.");
                         dialog.dismiss();
+                        Log.d(LOG_TAG, "Firebase auth: Email or password not valid " + email);
                     })
                     .addOnSuccessListener(authResult -> {
                         dialog.dismiss();
+                        Log.d(LOG_TAG, "Firebase auth: Email not valid " + email);
                         onFirebaseLoginSuccess();
                     });
         }
     }
 
-    private void startDashboardActivity() {
+    /**
+     * Kiểm tra và đăng kí token thiết bị để nhận thông báo từ server
+     */
+    private void registerFirebaseMessaging() {
+        Log.d(LOG_TAG, "Firebase messaging: Checking and register device token");
         FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("FIREBASE_MESSAGING", "Fetching FCM registration token failed", task.getException());
-                            return;
+                .addOnSuccessListener(token -> {
+                    Log.d(LOG_TAG, "Firebase messaging: Check if user device exists");
+                    userDeviceRepository.isUserDeviceExists(firebaseAuth.getUid(), exists -> {
+                        UserDeviceModel userDevice= new UserDeviceModel(
+                                firebaseAuth.getUid(),
+                                token
+                        );
+                        if (!exists) {
+                            Log.d(LOG_TAG, "Firebase messaging: User device not exists, insert new device");
+                            userDeviceRepository.insert(userDevice);
+                        } else {
+                            Log.d(LOG_TAG, "Firebase messaging: User device exists, update device");
+                            userDeviceRepository.update(userDevice);
                         }
+                    });
+                })
+                .addOnFailureListener(exception -> {
+                    exception.printStackTrace();
+                    Log.e(LOG_TAG, "Firebase messaging: Failed to checking and register device token");
+                })
+                .addOnCanceledListener(() ->
+                        Log.w(LOG_TAG, "Firebase messaging: Checking and register device token has been cancelled"));
+    }
 
-                        //  Đăng kí thiết bị nhận thông báo
-                        String token = task.getResult();
-                        userDeviceRepository.isUserDeviceExists(firebaseAuth.getUid(), new Repository.OnQuerySuccessListener<Boolean>() {
-                            @Override
-                            public void onSuccess(Boolean result) {
-                                System.out.println("Call");
-                                UserDeviceModel userDevice= new UserDeviceModel(
-                                        firebaseAuth.getUid(),
-                                        token
-                                );
-                                if (!result) {
-                                    userDeviceRepository.insert(userDevice);
-                                } else {
-                                    userDeviceRepository.update(userDevice);
-                                }
-                            }
-                        });
-                    }
-                });
+    private void onLoginSuccessful() {
+        registerFirebaseMessaging();
+        Log.d(LOG_TAG, "Firebase auth: Login successful");
         Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
     }
 
     private void onFirebaseLoginSuccess() {
         if (!firebaseAuth.getCurrentUser().isEmailVerified()) {
+            Log.d(LOG_TAG, "Firebase auth: User email is not verified");
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             intent.putExtra("startDestinationId", R.id.registerVerifyRequestFragment);
             startActivity(intent);
         } else {
-            userRepository.getUserByUID(firebaseAuth.getUid(), new Repository.OnQuerySuccessListener<UserModel>() {
-                @Override
-                public void onSuccess(UserModel result) {
-                    //  Người dùng chưa khai báo thông tin cá nhân
-                    if (result.getLastUpdate() == 0) {
-                        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                        intent.putExtra("startDestinationId", R.id.selectUserRoleFragment);
-                        startActivity(intent);
-                    } else {
-                        startDashboardActivity();
-                    }
+            userRepository.getUserByUID(firebaseAuth.getUid(), user -> {
+                //  Người dùng chưa khai báo thông tin cá nhân
+                if (user.getLastUpdate() == 0) {
+                    Log.d(LOG_TAG, "Firebase auth: User data not exists");
+                    Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                    intent.putExtra("startDestinationId", R.id.selectUserRoleFragment);
+                    startActivity(intent);
+                } else {
+                    onLoginSuccessful();
                 }
             });
         }
@@ -237,36 +233,51 @@ public class LoginActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 activityResult -> {
                     if (activityResult.getResultCode() == Activity.RESULT_OK) {
+                        Log.d(LOG_TAG, "Google: Google account pick launch ok");
+                        LoadingScreenDialog dialog = new LoadingScreenDialog(LoginActivity.this);
+                        dialog.show();
+
+                        Log.d(LOG_TAG, "Google: Get sign in account task");
                         Task<GoogleSignInAccount> signInAccountTask =
                                 GoogleSignIn.getSignedInAccountFromIntent(activityResult.getData());
-
                         signInAccountTask.addOnSuccessListener(googleSignInAccount -> {
+                            Log.d(LOG_TAG, "Google: sign in task successful");
+                            dialog.dismiss();
                             if (googleSignInAccount != null) {
-                                System.out.println("GOOGLE ACCOUNT GET");
                                 String email = googleSignInAccount.getEmail();
+                                Log.d(LOG_TAG, "Google: Account get successful " + email);
                                 firebaseAuthHelper.isUserWithEmailAndSignInMethodExists(
                                         email, FirebaseSignInMethod.GOOGLE,
                                         result -> {
-                                            System.out.println("IS ACCOUNT EXISTS " + result);
                                             if (result) {
+                                                Log.d(LOG_TAG, "Firebase: Google account exists in Firebase");
                                                 String googleIdToken = googleSignInAccount.getIdToken();
                                                 AuthCredential authCredential =
                                                         GoogleAuthProvider.getCredential(googleIdToken, null);
                                                 loginFirebaseWithCredential(authCredential);
                                             } else {
-                                                //  UI thông báo lỗi
-                                                Toast.makeText(LoginActivity.this,
-                                                        "Tài khoản này không tồn tại", Toast.LENGTH_LONG)
-                                                        .show();
+                                                Log.d(LOG_TAG, "Firebase: Google account not exists in Firebase");
+                                                ErrorDialog errorDialog = new ErrorDialog(
+                                                        LoginActivity.this,
+                                                        "Đăng nhập không thành công",
+                                                        "Tài khoản không tồn tại hoặc email đã được sử dụng cho phương thức đăng nhập khác"
+                                                );
+                                                errorDialog.show();
                                             }
                                         }
                                 );
                             } else {
-                                System.out.println("GOOGLE ACCOUNT GET IS NULL");
+                                Log.d(LOG_TAG, "Google: Account get failed, return null");
                             }
-                        }).addOnFailureListener(System.out::println);
+                        }).addOnFailureListener(exception -> {
+                            Log.d(LOG_TAG, "Google: sign in task failed");
+                            exception.printStackTrace();
+                            dialog.dismiss();
+                        });
                     } else {
-                        System.out.println("RESULT CODE " + activityResult.getResultCode());
+                        Log.d(LOG_TAG,
+                                "Google: Google account pick launch failed, result code " +
+                                        activityResult.getResultCode());
                     }
                 });
     }
@@ -280,6 +291,7 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
         GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
         Intent intent = googleSignInClient.getSignInIntent();
+        Log.d(LOG_TAG, "Firebase auth: Get google sign in intent");
         getGoogleAccountActivityLauncher.launch(intent);
         googleSignInClient.signOut();
     }
@@ -290,31 +302,36 @@ public class LoginActivity extends AppCompatActivity {
         loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("FACEBOOK", "Callback success");
+                Log.d(LOG_TAG, "Facebook: Callback success");
                 firebaseAuthHelper.isFacebookUserExistsInFirebase(loginResult,
                         result -> {
                             if (result) {
+                                Log.d(LOG_TAG, "Firebase auth: Facebook user exists in Firebase");
                                 AuthCredential credential =
                                         FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
                                 loginFirebaseWithCredential(credential);
                             } else  {
-                                //  UI thông báo tài khoản không tồn tại
-                                Toast.makeText(LoginActivity.this,
-                                                "Tài khoản này không tồn tại", Toast.LENGTH_SHORT)
-                                        .show();
+                                Log.d(LOG_TAG, "Firebase auth: Facebook user not exists in Firebase");
+                                ErrorDialog errorDialog = new ErrorDialog(
+                                        LoginActivity.this,
+                                        "Đăng nhập không thành công",
+                                        "Tài khoản không tồn tại hoặc email đã được sử dụng cho phương thức đăng nhập khác"
+                                );
+                                errorDialog.show();
                             }
                         });
             }
 
             @Override
             public void onCancel() {
+                Log.d(LOG_TAG, "Firebase auth: Facebook callback is cancelled");
                 Log.d("FACEBOOK", "facebook:onCancel");
             }
 
             @Override
             public void onError(FacebookException error) {
                 error.printStackTrace();
-                Log.d("FACEBOOK", "facebook:error");
+                Log.d(LOG_TAG, "Firebase auth: Facebook callback failed\n" + error.toString());
             }
         });
     }
@@ -323,15 +340,12 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Xử lý login bằng Facebook
-     * @param requestCode
-     * @param resultCode
-     * @param data
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("FACEBOOK", "activity result");
-        // Pass the activity result back to the Facebook SDK
+        //  Gọi callback manager để xử lý dữ liệu Facebook trả về
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 }

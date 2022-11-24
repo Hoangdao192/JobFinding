@@ -11,7 +11,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.uet.fwork.LoadingScreenDialog;
+import com.uet.fwork.dialog.LoadingScreenDialog;
 import com.uet.fwork.R;
 import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
 import com.uet.fwork.navbar.DashboardActivity;

@@ -1,7 +1,6 @@
-package com.uet.fwork;
+package com.uet.fwork.post;
 
 import android.content.Context;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,10 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
+import com.uet.fwork.R;
+import com.uet.fwork.database.model.post.PostModel;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
 
@@ -40,7 +39,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         //get data
-        String uid = postModelList.get(position).getUid();
+        String uid = postModelList.get(position).getUserId();
         String uEmail = postModelList.get(position).getUserEmail();
         String uName = postModelList.get(position).getUserName();
         String uDp = postModelList.get(position).getUserDp();

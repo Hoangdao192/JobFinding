@@ -1,14 +1,29 @@
-package com.uet.fwork;
+package com.uet.fwork.database.model.post;
 
 public class PostModel {
 
-    String postId, postName, postMajor, postAddress, postExperience, postSalary, postDescription, postTime, postImage, uid, userName, userEmail, userDp;
+    private String postId;
+    private String postName;
+    private String postMajor;
+    private String postAddress;
+    private String postExperience;
+    private String postSalary;
+    private String postDescription;
+    private String postTime;
+    private String postImage;
+    private String userId;
+    private String userName;
+    private String userEmail;
+    private String userDp;
 
     public PostModel() {
     }
 
-    public PostModel(String postId, String postName, String postMajor, String postAddress, String postTime, String postExperience,
-                     String postSalary, String postDescription, String postImage, String uid, String userName, String userEmail, String userDp) {
+    public PostModel(
+            String postId, String postName, String postMajor,
+            String postAddress, String postTime, String postExperience,
+            String postSalary, String postDescription, String postImage,
+            String userId, String userName, String userEmail, String userDp) {
         this.postId = postId;
         this.postName = postName;
         this.postMajor = postMajor;
@@ -18,7 +33,7 @@ public class PostModel {
         this.postSalary = postSalary;
         this.postDescription = postDescription;
         this.postImage = postImage;
-        this.uid = uid;
+        this.userId = userId;
         this.userName = userName;
         this.userEmail = userEmail;
         this.userDp = userDp;
@@ -96,12 +111,12 @@ public class PostModel {
         this.postImage = postImage;
     }
 
-    public String getUid() {
-        return uid;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {

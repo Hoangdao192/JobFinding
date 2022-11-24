@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -22,9 +21,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.uet.fwork.AddPostActivity;
-import com.uet.fwork.PostModel;
-import com.uet.fwork.PostsAdapter;
+import com.uet.fwork.post.AddPostActivity;
+import com.uet.fwork.database.model.post.PostModel;
+import com.uet.fwork.post.PostsAdapter;
 import com.uet.fwork.R;
 
 import java.util.ArrayList;

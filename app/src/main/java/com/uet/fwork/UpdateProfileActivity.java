@@ -13,7 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.Navigation;
 
 import android.util.AttributeSet;
 import android.view.View;
@@ -40,6 +39,7 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.uet.fwork.adapter.SpinnerAdapter;
 import com.uet.fwork.database.repository.UserRepository;
+import com.uet.fwork.dialog.LoadingScreenDialog;
 import com.uet.fwork.util.ImageHelper;
 import com.uet.fwork.util.ImagePicker;
 //import com.google.firebase.firestore.DocumentReference;

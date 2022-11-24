@@ -1,6 +1,7 @@
 package com.uet.fwork.account.register;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SelectUserRoleFragment extends Fragment {
+    private static final String LOG_TAG = "User role";
 
     private Button btnCandidate, btnEmployer;
     private UserRepository userRepository;
@@ -38,32 +40,29 @@ public class SelectUserRoleFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Log.d(LOG_TAG, "Select user role");
         btnCandidate = view.findViewById(R.id.btnCandidate);
         btnEmployer = view.findViewById(R.id.btnEmployer);
         navController = Navigation.findNavController(getActivity(), R.id.navigation_host);
 
-        btnCandidate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, Object> data = new HashMap<>();
-                data.put("role", UserRole.CANDIDATE);
-                userRepository.updateUser(firebaseUser.getUid(), data);
-                navController.navigate(
-                                R.id.action_selectUserRoleFragment_to_registerCreateProfileFragment
-                        );
-            }
+        btnCandidate.setOnClickListener(button -> {
+            Log.d(LOG_TAG, "Select role " + UserRole.CANDIDATE);
+            Map<String, Object> data = new HashMap<>();
+            data.put("role", UserRole.CANDIDATE);
+            userRepository.updateUser(firebaseUser.getUid(), data);
+            navController.navigate(
+                            R.id.action_selectUserRoleFragment_to_registerCreateProfileFragment
+                    );
         });
 
-        btnEmployer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, Object> data = new HashMap<>();
-                data.put("role", UserRole.EMPLOYER);
-                userRepository.updateUser(firebaseUser.getUid(), data);
-                navController.navigate(
-                                R.id.action_selectUserRoleFragment_to_createCompanyProfileFragment
-                        );
-            }
+        btnEmployer.setOnClickListener(button -> {
+            Log.d(LOG_TAG, "Select role " + UserRole.EMPLOYER);
+            Map<String, Object> data = new HashMap<>();
+            data.put("role", UserRole.EMPLOYER);
+            userRepository.updateUser(firebaseUser.getUid(), data);
+            navController.navigate(
+                            R.id.action_selectUserRoleFragment_to_createCompanyProfileFragment
+                    );
         });
     }
 }
