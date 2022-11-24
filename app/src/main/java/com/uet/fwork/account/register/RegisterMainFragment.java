@@ -212,8 +212,11 @@ public class RegisterMainFragment extends Fragment {
     }
 
     private void loginFirebaseWithCredential(AuthCredential authCredential) {
+        LoadingScreenDialog dialog = new LoadingScreenDialog(getContext());
+        dialog.show();
         firebaseAuth.signInWithCredential(authCredential)
                 .addOnSuccessListener(authResult -> {
+                    dialog.dismiss();
                     initUserData();
                     navController.navigate(R.id.action_registerMainFragment_to_selectUserRoleFragment);
                 })

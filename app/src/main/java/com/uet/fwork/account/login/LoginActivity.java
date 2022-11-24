@@ -261,8 +261,10 @@ public class LoginActivity extends AppCompatActivity {
                                             }
                                         }
                                 );
+                            } else {
+                                System.out.println("GOOGLE ACCOUNT GET IS NULL");
                             }
-                        });
+                        }).addOnFailureListener(System.out::println);
                     } else {
                         System.out.println("RESULT CODE " + activityResult.getResultCode());
                     }
