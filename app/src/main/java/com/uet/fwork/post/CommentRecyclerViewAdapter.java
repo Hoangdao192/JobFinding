@@ -16,6 +16,7 @@ import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.model.post.CommentModel;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
+import com.uet.fwork.util.TimestampToString;
 
 import java.util.List;
 
@@ -51,6 +52,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
                 holder.txvUsername.setText(user.getFullName());
                 holder.setUserAvatar(user.getAvatar());
                 holder.txvComment.setText(comment.getContent());
+                holder.txvTime.setText(TimestampToString.convert(comment.getCommentTime()));
             }
         });
     }
@@ -69,7 +71,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
 
         private CircleImageView cirImgAvatar;
         private TextView txvUsername;
-        private TextView txvComment;
+        private TextView txvComment, txvTime;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,6 +79,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
             cirImgAvatar = itemView.findViewById(R.id.imgAvatar);
             txvUsername = itemView.findViewById(R.id.txtUsername);
             txvComment = itemView.findViewById(R.id.txtComment);
+            txvTime = itemView.findViewById(R.id.txtTime);
         }
 
         public void setUserAvatar(String url) {

@@ -88,9 +88,7 @@ public class CommentViewDialog extends BottomSheetDialog {
 
         commentAdapter = new CommentRecyclerViewAdapter(getContext(), commentList);
         recCommentList.setAdapter(commentAdapter);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setReverseLayout(true);
-        recCommentList.setLayoutManager(linearLayoutManager);
+        recCommentList.setLayoutManager(new LinearLayoutManager(getContext()));
 
 //        commentRepository.getAllCommentByPostId(postId, commentList -> {
 //            if (commentList != null) {

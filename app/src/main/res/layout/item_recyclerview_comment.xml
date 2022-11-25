@@ -20,7 +20,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/quicksand_bold"
-            android:text="Nguyên Phạm Trung Nghĩa"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:textColor="@color/black"/>
@@ -28,7 +27,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txtTime"
-            android:text="2 ngày trước"
             android:textColor="@color/gray"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"/>
@@ -41,7 +39,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/quicksand_medium"
         android:textColor="@color/dark_gary"
-        android:text="Xin chào các bạn"
         android:layout_below="@id/relHead"
         android:id="@+id/txtComment"
         android:layout_marginBottom="20dp"/>

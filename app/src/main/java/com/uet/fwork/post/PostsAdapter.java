@@ -13,10 +13,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
 import com.uet.fwork.database.model.post.PostModel;
+import com.uet.fwork.database.model.post.ReactionModel;
+import com.uet.fwork.database.repository.CommentRepository;
+import com.uet.fwork.database.repository.PostReactionRepository;
+import com.uet.fwork.database.repository.Repository;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
@@ -24,9 +32,16 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
     Context context;
     List<PostModel> postModelList;
 
+    private PostReactionRepository reactionRepository;
+    private CommentRepository commentRepository;
+    private FirebaseUser firebaseUser;
+
     public PostsAdapter(Context context, List<PostModel> postModelList) {
         this.context = context;
         this.postModelList = postModelList;
+        reactionRepository = new PostReactionRepository(FirebaseDatabase.getInstance());
+        commentRepository = new CommentRepository(FirebaseDatabase.getInstance());
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     @NonNull
@@ -98,10 +113,23 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
                 //TODO
             }
         });
-        holder.likeButton.setOnClickListener(new View.OnClickListener() {
+        holder.btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
+                reactionRepository.isUserLikePost(post.getPostId(), firebaseUser.getUid(), new Repository.OnQuerySuccessListener<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean result) {
+                        if (result) {
+                            holder.btnLike.setImageDrawable(context.getDrawable(R.drawable.ic_heart_no_fill));
+                            reactionRepository.removeReactionByPostAndUser(post.getPostId(), firebaseUser.getUid());
+                        } else {
+                            holder.btnLike.setImageDrawable(context.getDrawable(R.drawable.ic_heart_fill));
+                            reactionRepository.insert(new ReactionModel(
+                                    firebaseUser.getUid(), post.getPostId(), Calendar.getInstance().getTimeInMillis()/1000
+                            ), null);
+                        }
+                    }
+                });
             }
         });
         holder.commentButton.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +140,19 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
             }
         });
 
+        reactionRepository.getNumberOfReaction(post.getPostId(), new Repository.OnQuerySuccessListener<Long>() {
+            @Override
+            public void onSuccess(Long result) {
+                holder.txvLikeNumber.setText(result + " Lượt thích");
+            }
+        });
+
+        commentRepository.getNumberOfComment(post.getPostId(), new Repository.OnQuerySuccessListener<Long>() {
+            @Override
+            public void onSuccess(Long result) {
+                holder.txvCommentNumber.setText(result + " Bình luận");
+            }
+        });
     }
 
     @Override
@@ -123,10 +164,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
     class MyHolder extends RecyclerView.ViewHolder {
 
         //views from row_posts.xml
-        ImageView uAvatarIv, postImageIv;
-        TextView uNameTv, pTimeTv, pJobNameTv, pJobMajorTv, pJobAddressTv, pJobExperienceTv, pJobSalaryTv, pJobDescriptionTv, pLikesTv;
+        ImageView uAvatarIv, postImageIv, btnLike;
+        TextView uNameTv, pTimeTv, pJobNameTv, pJobMajorTv, pJobAddressTv, pJobExperienceTv, pJobSalaryTv, pJobDescriptionTv;
         ImageButton moreButton;
-        AppCompatButton likeButton, commentButton;
+        AppCompatButton commentButton;
+
+        private TextView txvLikeNumber, txvCommentNumber;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -141,10 +184,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
             pJobExperienceTv = itemView.findViewById(R.id.jobExperiencePost);
             pJobSalaryTv = itemView.findViewById(R.id.jobSalaryPost);
             pJobDescriptionTv = itemView.findViewById(R.id.jobDescriptionPost);
-            pLikesTv = itemView.findViewById(R.id.postLikeTv);
             moreButton = itemView.findViewById(R.id.postMoreButton);
-            likeButton = itemView.findViewById(R.id.postLikeButton);
+            btnLike = itemView.findViewById(R.id.btnLike);
             commentButton = itemView.findViewById(R.id.postCommentButton);
+
+            txvCommentNumber = itemView.findViewById(R.id.txtCommentNumber);
+            txvLikeNumber = itemView.findViewById(R.id.txtLikeNumber);
         }
 
     }

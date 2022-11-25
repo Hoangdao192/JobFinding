@@ -123,11 +123,23 @@
             android:layout_height="200dp"
             android:background="@color/white" />
 
-        <TextView
-            android:id="@+id/postLikeTv"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="1.5k Likes" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/txtLikeNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.5k Likes"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 Bình luận"
+                android:layout_alignParentRight="true"
+                android:id="@+id/txtCommentNumber"/>
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
@@ -140,13 +152,12 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/postLikeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
-                android:text="Thích" />
+            <ImageView
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:src="@drawable/ic_heart_no_fill"
+                android:id="@+id/btnLike"
+                android:layout_weight="1"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/postCommentButton"
