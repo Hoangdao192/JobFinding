@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PostReactionRepository extends Repository {
-    private static final String REFERENCE_PATH = "postReactions";
+    private static final String REFERENCE_PATH = "posts/reactions";
     private static final String LOG_TAG = "PostReaction repository";
 
     private Context context;

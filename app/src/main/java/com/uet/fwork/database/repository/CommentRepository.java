@@ -28,6 +28,7 @@ public class CommentRepository extends Repository {
     private final static String REFERENCE_PATH = "posts/comments";
     private Context context;
 
+
     public CommentRepository(Context context, FirebaseDatabase firebaseDatabase) {
         super(firebaseDatabase, REFERENCE_PATH);
         this.context = context;
