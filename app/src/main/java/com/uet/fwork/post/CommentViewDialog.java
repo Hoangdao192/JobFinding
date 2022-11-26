@@ -75,8 +75,8 @@ public class CommentViewDialog extends BottomSheetDialog {
         });
 
         postRepository = new PostRepository(FirebaseDatabase.getInstance());
-        commentRepository = new CommentRepository(FirebaseDatabase.getInstance());
-        reactionRepository = new PostReactionRepository(FirebaseDatabase.getInstance());
+        commentRepository = new CommentRepository(getContext(), FirebaseDatabase.getInstance());
+        reactionRepository = new PostReactionRepository(getContext(), FirebaseDatabase.getInstance());
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         recCommentList = findViewById(R.id.recCommentList);

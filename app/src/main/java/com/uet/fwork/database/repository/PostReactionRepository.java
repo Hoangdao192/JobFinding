@@ -1,25 +1,62 @@
 package com.uet.fwork.database.repository;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
+import com.uet.fwork.Constants;
 import com.uet.fwork.database.model.post.PostModel;
 import com.uet.fwork.database.model.post.ReactionModel;
+
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PostReactionRepository extends Repository {
     private static final String REFERENCE_PATH = "postReactions";
     private static final String LOG_TAG = "PostReaction repository";
 
-    public PostReactionRepository(FirebaseDatabase firebaseDatabase) {
+    private Context context;
+
+    public PostReactionRepository(Context context, FirebaseDatabase firebaseDatabase) {
         super(firebaseDatabase, REFERENCE_PATH);
+        this.context = context;
     }
 
     public void insert(ReactionModel reactionModel, @Nullable OnQuerySuccessListener<Boolean> listener) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        String apiUrl = Constants.SERVER_URL + "post/reaction/notify";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, apiUrl, response -> {
+            response = new String(
+                    response.getBytes(StandardCharsets.ISO_8859_1),
+                    StandardCharsets.UTF_8);
+            Log.d(LOG_TAG, "Volley: Request response " + response);
+        }, error -> {
+            error.printStackTrace();
+            Log.d(LOG_TAG, "Volley: Send request failed " + apiUrl);
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("userId", reactionModel.getUserId());
+                params.put("postId", reactionModel.getPostId());
+                return params;
+            }
+        };
+        Log.d(LOG_TAG, "Volley: Add request to queue");
+        requestQueue.add(stringRequest);
+
         String reactionId = rootDatabaseReference.child(reactionModel.getPostId()).push().getKey();
         reactionModel.setReactionId(reactionId);
         rootDatabaseReference.child(reactionModel.getPostId()).child(reactionId).setValue(reactionModel)

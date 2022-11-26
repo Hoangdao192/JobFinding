@@ -1,8 +1,16 @@
 package com.uet.fwork.database.repository;
 
+import android.content.Context;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
@@ -11,18 +19,25 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.uet.fwork.Constants;
 import com.uet.fwork.database.model.chat.MessageModel;
 import com.uet.fwork.database.model.chat.MessageStatus;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MessageRepository extends Repository {
     private static final String databaseReferencePath = "chats/messages";
+    private static final String LOG_TAG = "Message repository";
 
-    public MessageRepository(FirebaseDatabase firebaseDatabase) {
+    private Context context;
+
+    public MessageRepository(Context context, FirebaseDatabase firebaseDatabase) {
         super(firebaseDatabase, databaseReferencePath);
+        this.context = context;
     }
 
     public MessageRepository(FirebaseDatabase firebaseDatabase, FirebaseFirestore firebaseFirestore) {
@@ -37,10 +52,36 @@ public class MessageRepository extends Repository {
         DatabaseReference newMessageRef = rootDatabaseReference.child(chanelId).push();
         message.setId(newMessageRef.getKey());
         newMessageRef.setValue(message).addOnSuccessListener(unused -> {
+            notifyMessageSent(chanelId, message.getId());
             if (listener != null) {
                 listener.onSuccess(message.getId());
             }
         }).addOnFailureListener(System.out::println);
+    }
+
+    private void notifyMessageSent(String chanelId, String messageId) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        String apiUrl = Constants.SERVER_URL + "message/notify";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, apiUrl, response -> {
+            response = new String(
+                    response.getBytes(StandardCharsets.ISO_8859_1),
+                    StandardCharsets.UTF_8);
+            Log.d(LOG_TAG, "Volley: Request response " + response);
+        }, error -> {
+            error.printStackTrace();
+            Log.d(LOG_TAG, "Volley: Send request failed " + apiUrl);
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("messageId", messageId);
+                params.put("chanelId", chanelId);
+                return params;
+            }
+        };
+        Log.d(LOG_TAG, "Volley: Add request to queue");
+        requestQueue.add(stringRequest);
     }
 
     public void updateMessage(String chanelId, String messageId, Map<String, Object> updateData) {

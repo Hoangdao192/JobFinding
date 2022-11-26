@@ -1,28 +1,62 @@
 package com.uet.fwork.database.repository;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
+import com.uet.fwork.Constants;
 import com.uet.fwork.database.model.post.CommentModel;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommentRepository extends Repository {
     private static final String LOG_TAG = "Comment repository";
+    private final static String REFERENCE_PATH = "posts/comments";
+    private Context context;
 
-    private final static String REFERENCE_PATH = "post/comments";
-
-    public CommentRepository(FirebaseDatabase firebaseDatabase) {
+    public CommentRepository(Context context, FirebaseDatabase firebaseDatabase) {
         super(firebaseDatabase, REFERENCE_PATH);
+        this.context = context;
     }
 
     public void insert(CommentModel comment, @Nullable OnQuerySuccessListener<Boolean> listener) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        String apiUrl = Constants.SERVER_URL + "post/comment/notify";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, apiUrl, response -> {
+            response = new String(
+                    response.getBytes(StandardCharsets.ISO_8859_1),
+                    StandardCharsets.UTF_8);
+            Log.d(LOG_TAG, "Volley: Request response " + response);
+        }, error -> {
+            error.printStackTrace();
+            Log.d(LOG_TAG, "Volley: Send request failed " + apiUrl);
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("userId", comment.getUserId());
+                params.put("postId", comment.getPostId());
+                return params;
+            }
+        };
+        Log.d(LOG_TAG, "Volley: Add request to queue");
+        requestQueue.add(stringRequest);
+
         if (comment.getPostId() == "") {
             if (listener != null) {
                 listener.onSuccess(false);

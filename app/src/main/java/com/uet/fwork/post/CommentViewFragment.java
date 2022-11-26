@@ -57,7 +57,7 @@ public class CommentViewFragment extends Fragment {
         }
 
         postRepository = new PostRepository(FirebaseDatabase.getInstance());
-        commentRepository = new CommentRepository(FirebaseDatabase.getInstance());
+        commentRepository = new CommentRepository(getContext(), FirebaseDatabase.getInstance());
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 

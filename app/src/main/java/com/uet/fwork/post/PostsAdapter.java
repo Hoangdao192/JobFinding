@@ -23,6 +23,7 @@ import com.uet.fwork.database.model.post.ReactionModel;
 import com.uet.fwork.database.repository.CommentRepository;
 import com.uet.fwork.database.repository.PostReactionRepository;
 import com.uet.fwork.database.repository.Repository;
+import com.uet.fwork.util.TimestampToString;
 
 import java.util.Calendar;
 import java.util.List;
@@ -39,8 +40,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
     public PostsAdapter(Context context, List<PostModel> postModelList) {
         this.context = context;
         this.postModelList = postModelList;
-        reactionRepository = new PostReactionRepository(FirebaseDatabase.getInstance());
-        commentRepository = new CommentRepository(FirebaseDatabase.getInstance());
+        reactionRepository = new PostReactionRepository(context, FirebaseDatabase.getInstance());
+        commentRepository = new CommentRepository(context, FirebaseDatabase.getInstance());
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
@@ -85,6 +86,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         holder.pJobSalaryTv.setText(pJobSalary);
         holder.pJobAddressTv.setText(pJobAddress);
         holder.pJobExperienceTv.setText(pJobExperience);
+        holder.pTimeTv.setText(TimestampToString.convert(post.getPostTime()));
 
         //set user dp
         try {

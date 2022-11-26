@@ -20,6 +20,7 @@ import com.uet.fwork.database.model.UserDeviceModel;
 import com.uet.fwork.database.repository.UserDeviceRepository;
 
 import java.util.Map;
+import java.util.Random;
 
 public class MessagingService extends FirebaseMessagingService {
     private UserDeviceRepository repository = null;
@@ -52,7 +53,7 @@ public class MessagingService extends FirebaseMessagingService {
 //            } else {
 //                notificationManager.notify(0, builder.build());
 //            }
-            notificationManager.notify(0, builder.build());
+            notificationManager.notify(new Random().nextInt(), builder.build());
         } catch (Exception e) {
             e.printStackTrace();
         }
