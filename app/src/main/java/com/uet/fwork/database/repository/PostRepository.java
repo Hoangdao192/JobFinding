@@ -11,14 +11,14 @@ import com.uet.fwork.database.model.post.PostModel;
 public class PostRepository extends Repository {
     private static final String LOG_TAG = "Post repository";
 
-    private final static String databasePath = "posts";
+    public final static String DATABASE_PATH = "posts/list";
 
     public PostRepository(FirebaseDatabase firebaseDatabase, FirebaseFirestore firebaseFirestore) {
-        super(firebaseDatabase, firebaseFirestore, databasePath);
+        super(firebaseDatabase, firebaseFirestore, DATABASE_PATH);
     }
 
     public PostRepository(FirebaseDatabase firebaseDatabase) {
-        super(firebaseDatabase, databasePath);
+        super(firebaseDatabase, DATABASE_PATH);
     }
 
     public void insert(PostModel postModel, @Nullable OnQuerySuccessListener<Boolean> listener) {

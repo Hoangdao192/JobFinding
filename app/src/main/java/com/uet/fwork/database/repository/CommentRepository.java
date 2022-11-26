@@ -16,7 +16,7 @@ import java.util.List;
 public class CommentRepository extends Repository {
     private static final String LOG_TAG = "Comment repository";
 
-    private final static String REFERENCE_PATH = "post/comments";
+    private final static String REFERENCE_PATH = "posts/comments";
 
     public CommentRepository(FirebaseDatabase firebaseDatabase) {
         super(firebaseDatabase, REFERENCE_PATH);

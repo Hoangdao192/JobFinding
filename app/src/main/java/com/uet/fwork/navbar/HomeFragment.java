@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.uet.fwork.database.repository.PostRepository;
 import com.uet.fwork.post.AddPostActivity;
 import com.uet.fwork.database.model.post.PostModel;
 import com.uet.fwork.post.PostsAdapter;
@@ -37,10 +38,12 @@ public class HomeFragment extends Fragment {
     List<PostModel> postModelList;
     PostsAdapter postsAdapter;
 
+    private PostRepository postRepository;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        postRepository = new PostRepository(FirebaseDatabase.getInstance());
     }
 
     @Override
@@ -66,7 +69,7 @@ public class HomeFragment extends Fragment {
 
     private void loadPosts() {
         //path of all posts
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("posts");
+        DatabaseReference ref = postRepository.getRootDatabaseReference();
         //get all data from reference
         ref.addValueEventListener(new ValueEventListener() {
             @Override
