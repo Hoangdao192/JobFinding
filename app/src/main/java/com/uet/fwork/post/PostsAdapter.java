@@ -119,14 +119,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         reactionRepository.isUserLikePost(post.getPostId(), firebaseUser.getUid(), new Repository.OnQuerySuccessListener<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                if (result) {
+                if (!result) {
                     holder.btnLike.setImageDrawable(context.getDrawable(R.drawable.ic_heart_no_fill));
-                    reactionRepository.removeReactionByPostAndUser(post.getPostId(), firebaseUser.getUid());
                 } else {
                     holder.btnLike.setImageDrawable(context.getDrawable(R.drawable.ic_heart_fill));
-                    reactionRepository.insert(new ReactionModel(
-                            firebaseUser.getUid(), post.getPostId(), Calendar.getInstance().getTimeInMillis()/1000
-                    ), null);
                 }
             }
         });

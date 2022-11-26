@@ -34,6 +34,7 @@ import com.uet.fwork.R;
 import com.uet.fwork.database.model.post.PostModel;
 import com.uet.fwork.database.repository.PostRepository;
 import com.uet.fwork.dialog.ErrorDialog;
+import com.uet.fwork.dialog.LoadingScreenDialog;
 import com.uet.fwork.util.ImageHelper;
 import com.uet.fwork.util.ImagePicker;
 
@@ -170,6 +171,8 @@ public class AddPostActivity extends AppCompatActivity {
         Long timeStamp = Calendar.getInstance().getTimeInMillis() / 1000;
         String filePathAndName = "posts/" + "post_" + timeStamp;
 
+        LoadingScreenDialog loadingDialog = new LoadingScreenDialog(this);
+        loadingDialog.show();
         if (postImage != null) {
             //post with image
             StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathAndName);
@@ -191,6 +194,7 @@ public class AddPostActivity extends AppCompatActivity {
                                 );
 
                                 postRepository.insert(postModel, success -> {
+                                    loadingDialog.dismiss();
                                     if (success) {
                                         //post added
                                         ErrorDialog dialog = new ErrorDialog(
@@ -234,6 +238,7 @@ public class AddPostActivity extends AppCompatActivity {
             );
 
             postRepository.insert(postModel, success -> {
+                loadingDialog.dismiss();
                 ErrorDialog dialog;
                 if (success) {
                     //post added
