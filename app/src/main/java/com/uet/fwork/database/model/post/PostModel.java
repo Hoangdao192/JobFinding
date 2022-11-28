@@ -6,8 +6,8 @@ public class PostModel {
     private String postName = "";
     private String postMajor = "";
     private String postAddress = "";
-    private String postExperience = "";
-    private String postSalary = "";
+    private double postExperience = 0;
+    private Long postSalary = 0L;
     private String postDescription = "";
     private Long postTime = 0L;
     private String postImage = "";
@@ -21,7 +21,7 @@ public class PostModel {
 
     public PostModel(
             String postName, String postMajor, String postAddress,
-            String postExperience, String postSalary, String postDescription,
+            double postExperience, Long postSalary, String postDescription,
             Long postTime, String postImage, String userId, String userName,
             String userEmail, String userDp) {
         this.postName = postName;
@@ -40,7 +40,7 @@ public class PostModel {
 
     public PostModel(
             String postId, String postName, String postMajor,
-            String postAddress, String postExperience, String postSalary,
+            String postAddress, double postExperience, Long postSalary,
             String postDescription, Long postTime, String postImage,
             String userId, String userName, String userEmail, String userDp) {
         this.postId = postId;
@@ -98,19 +98,19 @@ public class PostModel {
         this.postTime = postTime;
     }
 
-    public String getPostExperience() {
+    public double getPostExperience() {
         return postExperience;
     }
 
-    public void setPostExperience(String postExperience) {
+    public void setPostExperience(double postExperience) {
         this.postExperience = postExperience;
     }
 
-    public String getPostSalary() {
+    public Long getPostSalary() {
         return postSalary;
     }
 
-    public void setPostSalary(String postSalary) {
+    public void setPostSalary(Long postSalary) {
         this.postSalary = postSalary;
     }
 

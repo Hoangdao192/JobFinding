@@ -185,20 +185,20 @@ public class UpdateCandidateProfileActivity extends AppCompatActivity {
     }
 
     private void loadMajorList() {
-        firebaseDatabase.getReference("userMajors")
-                .get().addOnSuccessListener(dataSnapshot -> {
-                    GenericTypeIndicator<List<String>> genericTypeIndicator =
-                            new GenericTypeIndicator<List<String>>() {};
-                    majorList.addAll(dataSnapshot.getValue(genericTypeIndicator));
-                    SpinnerAdapter<String> spinnerMajorAdapter = new SpinnerAdapter<>(
-                            UpdateCandidateProfileActivity.this, majorList, R.layout.item_spinner,
-                            (itemView, position) -> {
-                                TextView txtView = itemView.findViewById(R.id.txtView);
-                                txtView.setText(majorList.get(position));
-                            }
-                    );
-                    spnMajor.setAdapter(spinnerMajorAdapter);
-                })
-                .addOnFailureListener(System.out::println);
+            firebaseDatabase.getReference("userMajors")
+                    .get().addOnSuccessListener(dataSnapshot -> {
+                        GenericTypeIndicator<List<String>> genericTypeIndicator =
+                                new GenericTypeIndicator<List<String>>() {};
+                        majorList.addAll(dataSnapshot.getValue(genericTypeIndicator));
+                        SpinnerAdapter<String> spinnerMajorAdapter = new SpinnerAdapter<>(
+                                UpdateCandidateProfileActivity.this, majorList, R.layout.item_spinner,
+                                (itemView, position) -> {
+                                    TextView txtView = itemView.findViewById(R.id.txtView);
+                                    txtView.setText(majorList.get(position));
+                                }
+                        );
+                        spnMajor.setAdapter(spinnerMajorAdapter);
+                    })
+                    .addOnFailureListener(System.out::println);
     }
 }
