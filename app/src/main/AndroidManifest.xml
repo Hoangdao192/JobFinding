@@ -201,7 +201,7 @@
             android:value="@string/facebook_client_token" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${GOOGLE_MAP_API_KEY}" />
+            android:value="AIzaSyBzGPiLhCKIQ0PSd5WirsfD-GRX85gEc_k" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
