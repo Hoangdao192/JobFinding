@@ -1,11 +1,16 @@
 package com.uet.fwork.post;
 
 import android.content.Context;
+import android.text.format.DateFormat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,11 +32,13 @@ import com.uet.fwork.util.TimestampToString;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
 
     Context context;
     List<PostModel> postModelList;
+    String myUid;
 
     private PostReactionRepository reactionRepository;
     private CommentRepository commentRepository;
@@ -43,6 +50,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         reactionRepository = new PostReactionRepository(context, FirebaseDatabase.getInstance());
         commentRepository = new CommentRepository(context, FirebaseDatabase.getInstance());
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     @NonNull
@@ -66,8 +74,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         String pJobName = post.getPostName();
         String pJobMajor = post.getPostMajor();
         String pJobAddress = post.getPostAddress();
-        String pJobExperience = post.getPostExperience();
-        String pJobSalary = post.getPostSalary();
+        double pJobExperience = post.getPostExperience();
+        Long pJobSalary = post.getPostSalary();
         String pJobDescription = post.getPostDescription();
         String pJobImage = post.getPostImage();
         String pTimeStamp = post.getPostTime().toString();
@@ -75,18 +83,17 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         //convert timestamp to dd/mm/yyyy hh:mm am/pm
         //Calendar calendar = Calendar.getInstance(Locale.getDefault());
         //calendar.setTimeInMillis(Long.parseLong(pTimeStamp));
-        //String pTime = DateFormat.format("dd/mm/yyyy hh:mm am/pm", calendar).toString();
 
         //set data
         holder.uNameTv.setText(uName);
-        //holder.pTimeTv.setText(pTime);
+        holder.pTimeTv.setText(TimestampToString.convert(post.getPostTime()));
         holder.pJobNameTv.setText(pJobName);
         holder.pJobMajorTv.setText(pJobMajor);
         holder.pJobDescriptionTv.setText(pJobDescription);
-        holder.pJobSalaryTv.setText(pJobSalary);
+        holder.pJobSalaryTv.setText(Long.toString(pJobSalary));
         holder.pJobAddressTv.setText(pJobAddress);
-        holder.pJobExperienceTv.setText(pJobExperience);
         holder.pTimeTv.setText(TimestampToString.convert(post.getPostTime()));
+        holder.pJobExperienceTv.setText(String.valueOf(pJobExperience));
 
         //set user dp
         try {
@@ -112,7 +119,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         holder.moreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
+                showMoreOptions(holder.moreButton, uid, myUid, pId, pJobImage);
             }
         });
 
@@ -138,7 +145,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
                         } else {
                             holder.btnLike.setImageDrawable(context.getDrawable(R.drawable.ic_heart_fill));
                             reactionRepository.insert(new ReactionModel(
-                                    firebaseUser.getUid(), post.getPostId(), Calendar.getInstance().getTimeInMillis()/1000
+                                    firebaseUser.getUid(), post.getPostId(), Calendar.getInstance().getTimeInMillis() / 1000
                             ), null);
                         }
                     }
@@ -166,6 +173,41 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
                 holder.txvCommentNumber.setText(result + " Bình luận");
             }
         });
+    }
+
+    private void showMoreOptions(ImageButton moreButton, String uid, String myUid, String pId, String pJobImage) {
+        //creating popup menu
+        PopupMenu popupMenu = new PopupMenu(context, moreButton, Gravity.END);
+
+        //only show delete on current user's posts
+
+        if (uid.equals(myUid)) {
+            popupMenu.getMenu().add(Menu.NONE, 0, 0, "Xóa Bài Viết");
+        }
+
+        //adding items
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == 0) {
+                    beginDelete(pId, pJobImage);
+
+                }
+                return false;
+            }
+        });
+        //show menu
+        popupMenu.show();
+    }
+
+    private void beginDelete(String pId, String pJobImage) {
+        if (pJobImage.equals("noImage")) {
+
+        } else {
+
+        }
     }
 
     @Override

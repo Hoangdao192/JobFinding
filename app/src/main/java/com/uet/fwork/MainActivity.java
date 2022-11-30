@@ -25,6 +25,7 @@ import com.uet.fwork.firebasehelper.FirebaseSignInMethod;
 import com.uet.fwork.landingpage.LandingPage1;
 import com.uet.fwork.landingpage.FirstLaunchActivity;
 import com.uet.fwork.map.ViewPostOnMapActivity;
+import com.uet.fwork.navbar.DashboardActivity;
 
 import java.util.List;
 
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
     private void startDashboardActivity() {
         SharedPreferences sharedPreferences = this.getSharedPreferences("MAIN", MODE_PRIVATE);
         sharedPreferences.edit().putString("USER", firebaseAuth.getUid()).apply();
-        Intent intent = new Intent(this, ViewPostOnMapActivity.class);
+        Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
     }
 

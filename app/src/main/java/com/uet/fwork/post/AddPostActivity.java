@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -25,12 +27,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.uet.fwork.R;
+import com.uet.fwork.account.profile.UpdateCandidateProfileActivity;
+import com.uet.fwork.adapter.SpinnerAdapter;
 import com.uet.fwork.database.model.post.PostModel;
 import com.uet.fwork.database.repository.PostRepository;
 import com.uet.fwork.dialog.ErrorDialog;
@@ -40,7 +45,9 @@ import com.uet.fwork.util.ApiAddress;
 import com.uet.fwork.util.ImageHelper;
 import com.uet.fwork.util.ImagePicker;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class AddPostActivity extends AppCompatActivity {
 
@@ -48,18 +55,20 @@ public class AddPostActivity extends AppCompatActivity {
     private FirebaseUser user;
     private DatabaseReference databaseReference;
     private PostRepository postRepository;
+    private FirebaseDatabase firebaseDatabase;
 
     private String name, email, uid, dp;
     private double jobAddressLatitude = -1d, jobAddressLongitude = -1d;
+    private List<String> majorList = new ArrayList<>();
 
     private EditText edtJobName;
-    private EditText edtJobMajor;
+    private Spinner spnJobMajor;
     private EditText edtJobAddress;
     private EditText edtJobExperience;
     private EditText edtJobSalary;
     private EditText edtJobDescription;
     private ImageView imgJobImage;
-    private Button btnPickOnMap;
+    private ImageView btnPickOnMap;
     private Button btnUpload;
 
     private Bitmap postImage = null;
@@ -75,15 +84,19 @@ public class AddPostActivity extends AppCompatActivity {
         postRepository = new PostRepository(FirebaseDatabase.getInstance());
 
         //display
-        edtJobName = findViewById(R.id.job_name);
-        edtJobMajor = findViewById(R.id.job_major);
-        edtJobAddress = findViewById(R.id.job_address);
-        edtJobExperience = findViewById(R.id.job_experience);
-        edtJobSalary = findViewById(R.id.job_salary);
-        edtJobDescription = findViewById(R.id.job_description);
-        imgJobImage = findViewById(R.id.job_image);
-        btnUpload = findViewById(R.id.job_upload_button);
-        btnPickOnMap = (Button) findViewById(R.id.btnPickOnMap);
+        btnPickOnMap = findViewById(R.id.btnPickOnMap);
+        edtJobName = findViewById(R.id.edtJobName);
+        spnJobMajor = findViewById(R.id.spnJobMajor);
+        edtJobAddress = findViewById(R.id.edtJobAddress);
+        edtJobExperience = findViewById(R.id.edtJobExperience);
+        edtJobSalary = findViewById(R.id.edtJobSalary);
+        edtJobDescription = findViewById(R.id.edtJobDescription);
+        imgJobImage = findViewById(R.id.ivJobImage);
+        btnUpload = findViewById(R.id.btnPostUpload);
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
+        loadMajorList();
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -154,38 +167,40 @@ public class AddPostActivity extends AppCompatActivity {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //get data from Edit Texts
-                String jobName = edtJobName.getText().toString().trim();
-                String jobMajor = edtJobMajor.getText().toString().trim();
-                String jobAddress = edtJobAddress.getText().toString().trim();
-                String jobExperience = edtJobExperience.getText().toString().trim();
-                String jobSalary = edtJobSalary.getText().toString().trim();
-                String jobDescription = edtJobDescription.getText().toString().trim();
 
-                if (TextUtils.isEmpty(jobName)) {
-                    Toast.makeText(AddPostActivity.this, "Bạn chưa nhập tên công việc!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(jobMajor)) {
-                    Toast.makeText(AddPostActivity.this, "Bạn chưa nhập chuyên ngành công việc!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(jobAddress)) {
-                    Toast.makeText(AddPostActivity.this, "Bạn chưa nhập địa chỉ công việc!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(jobExperience)) {
+                if (edtJobExperience.getText().toString().trim().length() == 0) {
                     Toast.makeText(AddPostActivity.this, "Bạn chưa nhập kinh nghiệm yêu cầu!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (TextUtils.isEmpty(jobSalary)) {
+                if (edtJobSalary.getText().toString().trim().length() == 0) {
                     Toast.makeText(AddPostActivity.this, "Bạn chưa nhập lương công việc!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (TextUtils.isEmpty(jobDescription)) {
+                if (edtJobName.getText().toString().trim().length() == 0) {
+                    Toast.makeText(AddPostActivity.this, "Bạn chưa nhập tên công việc!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (spnJobMajor.getSelectedItem().toString().trim().length() == 0) {
+                    Toast.makeText(AddPostActivity.this, "Bạn chưa chọn chuyên ngành công việc!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (edtJobAddress.getText().toString().trim().length() == 0) {
+                    Toast.makeText(AddPostActivity.this, "Bạn chưa nhập địa chỉ công việc!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (edtJobDescription.getText().toString().trim().length() == 0) {
                     Toast.makeText(AddPostActivity.this, "Bạn chưa nhập mô tả công việc!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                //get data from Edit Texts
+                String jobName = edtJobName.getText().toString().trim();
+                String jobMajor = spnJobMajor.getSelectedItem().toString().trim();
+                String jobAddress = edtJobAddress.getText().toString().trim();
+                double jobExperience = Double.parseDouble(edtJobExperience.getText().toString().trim());
+                Long jobSalary = Long.valueOf(edtJobSalary.getText().toString().trim());
+                String jobDescription = edtJobDescription.getText().toString().trim();
 
                 uploadPost(jobName, jobMajor, jobAddress, jobExperience, jobSalary, jobDescription);
             }
@@ -195,8 +210,8 @@ public class AddPostActivity extends AppCompatActivity {
 
     private void uploadPost(
             String jobName, String jobMajor, String jobAddress,
-            String jobExperience, String jobSalary, String jobDescription) {
-//        String timeStamp = String.valueOf(System.currentTimeMillis());
+            double jobExperience, Long jobSalary, String jobDescription) {
+        //String timeStamp = String.valueOf(System.currentTimeMillis());
         Long timeStamp = Calendar.getInstance().getTimeInMillis() / 1000;
         String filePathAndName = "posts/" + "post_" + timeStamp;
 
@@ -237,7 +252,7 @@ public class AddPostActivity extends AppCompatActivity {
                                         edtJobAddress.setText("");
                                         edtJobDescription.setText("");
                                         edtJobExperience.setText("");
-                                        edtJobMajor.setText("");
+                                        //edtJobMajor.setText("");
                                         edtJobSalary.setText("");
                                         imgJobImage.setImageBitmap(null);
                                     } else {
@@ -283,7 +298,7 @@ public class AddPostActivity extends AppCompatActivity {
                     edtJobAddress.setText("");
                     edtJobDescription.setText("");
                     edtJobExperience.setText("");
-                    edtJobMajor.setText("");
+                    //edtJobMajor.setText("");
                     edtJobSalary.setText("");
                     imgJobImage.setImageBitmap(null);
                 } else {
@@ -295,5 +310,23 @@ public class AddPostActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    private void loadMajorList() {
+        firebaseDatabase.getReference("userMajors")
+                .get().addOnSuccessListener(dataSnapshot -> {
+                    GenericTypeIndicator<List<String>> genericTypeIndicator =
+                            new GenericTypeIndicator<List<String>>() {};
+                    majorList.addAll(dataSnapshot.getValue(genericTypeIndicator));
+                    SpinnerAdapter<String> spinnerMajorAdapter = new SpinnerAdapter<>(
+                            AddPostActivity.this, majorList, R.layout.item_spinner,
+                            (itemView, position) -> {
+                                TextView txtView = itemView.findViewById(R.id.txtView);
+                                txtView.setText(majorList.get(position));
+                            }
+                    );
+                    spnJobMajor.setAdapter(spinnerMajorAdapter);
+                })
+                .addOnFailureListener(System.out::println);
     }
 }
