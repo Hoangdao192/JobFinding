@@ -58,14 +58,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".AddPostActivity"
-            android:exported="false"
-            android:launchMode="singleTop">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".chat.ChatActivity"
             android:exported="false"
             android:launchMode="singleTop">
