@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/wrapper">
+        <ImageView
+            android:clickable="false"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_map_pin_no_fill"
+            app:tint="@color/purple"
+            android:background="@drawable/circle_background"
+            android:backgroundTint="#f1f5f8"
+            android:padding="9dp"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/imgMapPin"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:clickable="false"
+            android:maxLines="1"
+            android:inputType="text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtPlaceName"
+            android:text="SVĐ Mỹ Đình"
+            android:fontFamily="@font/quicksand_bold"
+            android:textSize="14sp"
+            android:textColor="@color/dark_purple"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/imgMapPin"/>
+        <TextView
+            android:clickable="false"
+            android:maxLines="1"
+            android:inputType="text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtPlaceAddress"
+            android:text="SVĐ Mỹ Đình"
+            android:fontFamily="@font/quicksand_medium"
+            android:textSize="12sp"
+            android:textColor="@color/dark_purple"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/txtPlaceName"
+            android:layout_toRightOf="@id/imgMapPin"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

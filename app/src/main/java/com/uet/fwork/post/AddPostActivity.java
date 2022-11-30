@@ -35,6 +35,8 @@ import com.uet.fwork.database.model.post.PostModel;
 import com.uet.fwork.database.repository.PostRepository;
 import com.uet.fwork.dialog.ErrorDialog;
 import com.uet.fwork.dialog.LoadingScreenDialog;
+import com.uet.fwork.map.SearchPlaceActivity;
+import com.uet.fwork.util.ApiAddress;
 import com.uet.fwork.util.ImageHelper;
 import com.uet.fwork.util.ImagePicker;
 
@@ -48,6 +50,7 @@ public class AddPostActivity extends AppCompatActivity {
     private PostRepository postRepository;
 
     private String name, email, uid, dp;
+    private double jobAddressLatitude = -1d, jobAddressLongitude = -1d;
 
     private EditText edtJobName;
     private EditText edtJobMajor;
@@ -56,11 +59,13 @@ public class AddPostActivity extends AppCompatActivity {
     private EditText edtJobSalary;
     private EditText edtJobDescription;
     private ImageView imgJobImage;
+    private Button btnPickOnMap;
     private Button btnUpload;
 
     private Bitmap postImage = null;
 
     private ActivityResultLauncher<Intent> getImageActivityLauncher;
+    private ActivityResultLauncher<Intent> getLocationFromMapActivityLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +83,35 @@ public class AddPostActivity extends AppCompatActivity {
         edtJobDescription = findViewById(R.id.job_description);
         imgJobImage = findViewById(R.id.job_image);
         btnUpload = findViewById(R.id.job_upload_button);
+        btnPickOnMap = (Button) findViewById(R.id.btnPickOnMap);
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         email = user.getEmail();
         uid = user.getUid();
+
+        this.getLocationFromMapActivityLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        ApiAddress apiAddress = (ApiAddress) result.getData().getSerializableExtra("address");
+                        edtJobAddress.setText(apiAddress.getFullAddress());
+                        if (apiAddress.getLatitude() != -1d) {
+                            jobAddressLatitude = apiAddress.getLatitude();
+                            jobAddressLongitude = apiAddress.getLongitude();
+                        }
+                    }
+//                    System.out.println(result.getData().getSerializableExtra("address").toString());
+                }
+        );
+
+        btnPickOnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddPostActivity.this, SearchPlaceActivity.class);
+                getLocationFromMapActivityLauncher.launch(intent);
+            }
+        });
 
         //show user info on post
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
@@ -192,6 +221,8 @@ public class AddPostActivity extends AppCompatActivity {
                                         jobSalary, jobDescription, timeStamp, downloadUri.toString(),
                                         uid, name, email, dp
                                 );
+                                postModel.setLatitude(jobAddressLatitude);
+                                postModel.setLongitude(jobAddressLongitude);
 
                                 postRepository.insert(postModel, success -> {
                                     loadingDialog.dismiss();
@@ -236,6 +267,8 @@ public class AddPostActivity extends AppCompatActivity {
                     jobSalary, jobDescription, timeStamp, "",
                     uid, name, email, dp
             );
+            postModel.setLatitude(jobAddressLatitude);
+            postModel.setLongitude(jobAddressLongitude);
 
             postRepository.insert(postModel, success -> {
                 loadingDialog.dismiss();

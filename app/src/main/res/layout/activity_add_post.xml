@@ -69,6 +69,12 @@
             android:padding="10dp"
             android:singleLine="true" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn trên bản đồ"
+            android:id="@+id/btnPickOnMap"/>
+
         <EditText
             android:id="@+id/job_experience"
             android:layout_width="match_parent"

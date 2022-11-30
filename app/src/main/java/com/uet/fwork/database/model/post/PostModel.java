@@ -1,5 +1,7 @@
 package com.uet.fwork.database.model.post;
 
+import com.uet.fwork.database.model.AddressModel;
+
 public class PostModel {
 
     private String postId = "";
@@ -15,6 +17,7 @@ public class PostModel {
     private String userName = "";
     private String userEmail = "";
     private String userDp = "";
+    private double latitude = -1d, longitude = -1d;
 
     public PostModel() {
     }
@@ -56,6 +59,22 @@ public class PostModel {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userDp = userDp;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public String getPostId() {

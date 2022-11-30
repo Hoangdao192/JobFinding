@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".map.SearchPlaceActivity"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relHead"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/button_return"
+            android:id="@+id/btnBack"
+            app:tint="@color/black" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tìm kiếm địa điểm"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_toRightOf="@id/btnBack"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bản đồ"
+            android:id="@+id/txtMap"
+            android:textSize="16sp"
+            android:textColor="@color/light_blue_600"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relAddressBar"
+        android:paddingLeft="15dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="5dp">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_map_pin_no_fill"
+            app:tint="@color/purple"
+            android:layout_gravity="center_vertical"/>
+        <EditText
+            android:inputType="text"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập địa chỉ"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:id="@+id/edtAddress"
+            android:background="@android:color/transparent"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="10dp"
+            android:fontFamily="@font/quicksand_medium"/>
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/recAddressList"/>
+</LinearLayout>
