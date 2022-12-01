@@ -23,11 +23,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
+import com.uet.fwork.database.model.post.PostApplyModel;
 import com.uet.fwork.database.model.post.PostModel;
 import com.uet.fwork.database.model.post.ReactionModel;
 import com.uet.fwork.database.repository.CommentRepository;
+import com.uet.fwork.database.repository.PostApplyRepository;
 import com.uet.fwork.database.repository.PostReactionRepository;
 import com.uet.fwork.database.repository.Repository;
+import com.uet.fwork.dialog.ErrorDialog;
 import com.uet.fwork.util.TimestampToString;
 
 import java.util.Calendar;
@@ -41,12 +44,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
     String myUid;
 
     private PostReactionRepository reactionRepository;
+    private PostApplyRepository postApplyRepository;
     private CommentRepository commentRepository;
     private FirebaseUser firebaseUser;
 
     public PostsAdapter(Context context, List<PostModel> postModelList) {
         this.context = context;
         this.postModelList = postModelList;
+        postApplyRepository = new PostApplyRepository(context, FirebaseDatabase.getInstance());
         reactionRepository = new PostReactionRepository(context, FirebaseDatabase.getInstance());
         commentRepository = new CommentRepository(context, FirebaseDatabase.getInstance());
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -159,6 +164,41 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
                 commentViewDialog.show();
             }
         });
+        holder.btnPostApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postApplyRepository.isUserApplyPost(post.getPostId(), firebaseUser.getUid(),
+                        result -> {
+                            if (result) {
+                                ErrorDialog errorDialog = new ErrorDialog(
+                                        context, "Ứng tuyển không thành công",
+                                        "Bạn đã ứng tuyển công việc này rồi"
+                                );
+                                errorDialog.show();
+                            } else {
+                                postApplyRepository.insert(new PostApplyModel(
+                                        post.getPostId(),
+                                        firebaseUser.getUid(),
+                                        Calendar.getInstance().getTimeInMillis() / 1000
+                                ),  postApplyModel -> {
+                                    if (postApplyModel != null) {
+                                        ErrorDialog errorDialog = new ErrorDialog(
+                                                context, "Ứng tuyển thành công",
+                                                "Đơn ứng tuyển của bạn đã được gửi đi"
+                                        );
+                                        errorDialog.show();
+                                    } else {
+                                        ErrorDialog errorDialog = new ErrorDialog(
+                                                context, "Ứng tuyển không thành công",
+                                                "Đơn ứng tuyển của bạn chưa được gửi đi"
+                                        );
+                                        errorDialog.show();
+                                    }
+                                });
+                            }
+                        });
+            }
+        });
 
         reactionRepository.getNumberOfReaction(post.getPostId(), new Repository.OnQuerySuccessListener<Long>() {
             @Override
@@ -222,7 +262,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         ImageView uAvatarIv, postImageIv, btnLike;
         TextView uNameTv, pTimeTv, pJobNameTv, pJobMajorTv, pJobAddressTv, pJobExperienceTv, pJobSalaryTv, pJobDescriptionTv;
         ImageButton moreButton;
-        AppCompatButton commentButton;
+        AppCompatButton commentButton, btnPostApply;
 
         private TextView txvLikeNumber, txvCommentNumber;
 
@@ -242,6 +282,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
             moreButton = itemView.findViewById(R.id.postMoreButton);
             btnLike = itemView.findViewById(R.id.btnLike);
             commentButton = itemView.findViewById(R.id.postCommentButton);
+            btnPostApply = itemView.findViewById(R.id.btnPostApply);
 
             txvCommentNumber = itemView.findViewById(R.id.txtCommentNumber);
             txvLikeNumber = itemView.findViewById(R.id.txtLikeNumber);

@@ -3,6 +3,7 @@
     <string name="facebook_app_id">1591105611322349</string>
     <string name="fb_login_protocol_scheme">fb1591105611322349</string>
     <string name="facebook_client_token">d50461106e808a81f8dca17181b21241</string>
+    <string name="google_map_api_key">AIzaSyBzGPiLhCKIQ0PSd5WirsfD-GRX85gEc_k</string>
 
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
