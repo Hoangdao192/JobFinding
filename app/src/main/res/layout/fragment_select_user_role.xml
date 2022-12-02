@@ -1,49 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="#DDEFFF"
+    android:background="@color/background_color"
     tools:context=".account.register.SelectUserRoleFragment">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/txtYouAre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="72dp"
+        android:fontFamily="@font/lexenddeca_bold"
+        android:text="Bạn là ?"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <Button
+        android:id="@+id/btnEmployer"
+        android:layout_width="271dp"
+        android:layout_height="79dp"
+        android:backgroundTint="#15554D "
+        android:backgroundTintMode="src_in"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="Nhà tuyển dụng"
+        android:textSize="17sp"
+        app:cornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:padding="50dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/txtYouAre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lexenddeca_bold"
-            android:text="Bạn là ?"
-            android:textSize="30sp" />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtYouAre"
-            android:layout_marginTop="20dp"
-            android:text="Người tìm việc"
-            android:fontFamily="@font/lexenddeca_bold"
-            android:textSize="17sp"
-            style="@style/MyButton"
-            android:id="@+id/btnCandidate"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btnCandidate"
-            android:layout_marginTop="20dp"
-            android:text="Nhà tuyển dụng"
-            android:fontFamily="@font/lexenddeca_bold"
-            android:textSize="17sp"
-            style="@style/MyButton"
-            android:id="@+id/btnEmployer"/>
-    </RelativeLayout>
+    <Button
+        android:id="@+id/btnCandidate"
+        android:layout_width="271dp"
+        android:layout_height="79dp"
+        android:layout_marginTop="52dp"
+        android:backgroundTint="#2272BC"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="Người tìm việc"
+        android:textSize="17sp"
+        app:cornerRadius="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnEmployer" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo_topview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

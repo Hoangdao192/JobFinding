@@ -8,61 +8,68 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background_color">
 
         <ImageView
+            android:id="@+id/imgEmailVerify"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginHorizontal="60dp"
             android:src="@drawable/email_verify_notification"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/imgEmailVerify"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
+            android:id="@+id/txtEmailVerifyTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30dp"
+            android:fontFamily="@font/quicksand_bold"
             android:text="Verify your email"
+            android:textColor="#5A2D22"
+            android:textSize="30dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgEmailVerify"
-            android:fontFamily="@font/poppins_semibold"
-            android:textColor="@color/black"
-            android:id="@+id/txtEmailVerifyTitle"/>
+            app:layout_constraintTop_toBottomOf="@id/imgEmailVerify" />
+
         <TextView
+            android:id="@+id/txtEmailVerify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/quicksand"
             android:text="@string/email_verify"
-            android:textColor="#808080"
             android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@id/txtEmailVerifyTitle"
+            android:textColor="#5A2D22"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:id="@+id/txtEmailVerify"/>
+            app:layout_constraintTop_toBottomOf="@id/txtEmailVerifyTitle" />
+
         <Button
+            android:id="@+id/btnResendEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/MyButton"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="#2272BC"
             android:text="Resend Email"
-            android:id="@+id/btnResendEmail"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:cornerRadius="30sp"
             app:layout_constraintBottom_toTopOf="@id/emailVerified"
-            android:layout_marginBottom="20dp"/>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
         <Button
             android:id="@+id/emailVerified"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/MyButton"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="#060F63"
             android:text="I have verified my email"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:cornerRadius="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="30dp"/>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

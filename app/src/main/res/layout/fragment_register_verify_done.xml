@@ -9,6 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background_color"
         android:foregroundTint="#27187E">
 
         <ImageView
@@ -27,9 +28,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/poppins_semibold"
+            android:fontFamily="@font/quicksand_bold"
             android:text="Account created"
-            android:textColor="@color/black"
+            android:textColor="#5A2D22"
             android:textSize="30dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -41,22 +42,23 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/quicksand_medium"
             android:text="@string/account_created"
             android:textAlignment="center"
-            android:textColor="#808080"
+            android:textColor="#5A2D22"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtEmailVerifyTitle" />
 
         <Button
             android:id="@+id/btnLogin"
-            style="@style/MyButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
             android:layout_marginBottom="30dp"
+            android:backgroundTint="#060F63"
             android:text="Login"
+            app:cornerRadius="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

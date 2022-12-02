@@ -15,6 +15,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/background_color"
             android:padding="30dp">
 
             <RelativeLayout
@@ -53,9 +54,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="40dp"
-                android:fontFamily="@font/lexenddeca_bold"
+                android:fontFamily="@font/quicksand_bold"
                 android:text="Họ và tên"
-                android:textColor="@color/purple"
+                android:textColor="#5A2D22"
                 android:textSize="20dp"
                 app:layout_constraintLeft_toLeftOf="@id/edtFullName"
                 app:layout_constraintTop_toBottomOf="@id/relAvatar" />
@@ -64,11 +65,11 @@
                 android:id="@+id/edtFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lexenddeca_light"
+                android:fontFamily="@font/quicksand"
                 android:hint="Nhập họ và tên"
                 android:inputType="textPersonName"
                 android:paddingBottom="20dp"
-                android:textColor="@color/purple"
+                android:textColor="#5A2D22"
                 app:layout_constraintTop_toBottomOf="@id/txtFullName"
                 tools:layout_editor_absoluteX="40dp" />
 
@@ -78,9 +79,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="40dp"
-                android:fontFamily="@font/lexenddeca_bold"
+                android:fontFamily="@font/quicksand_bold"
                 android:text="Giới tính"
-                android:textColor="@color/purple"
+                android:textColor="#5A2D22"
                 android:textSize="20dp"
                 app:layout_constraintLeft_toLeftOf="@id/spnMajor"
                 app:layout_constraintTop_toBottomOf="@id/edtFullName" />
@@ -98,9 +99,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="40dp"
-                android:fontFamily="@font/lexenddeca_bold"
+                android:fontFamily="@font/quicksand_bold"
                 android:text="Ngày sinh"
-                android:textColor="@color/purple"
+                android:textColor="#5A2D22"
                 android:textSize="20dp"
                 app:layout_constraintLeft_toLeftOf="@id/spnMajor"
                 app:layout_constraintTop_toBottomOf="@id/spnSex" />
@@ -111,10 +112,10 @@
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:fontFamily="@font/lexenddeca_light"
+                android:fontFamily="@font/quicksand"
                 android:hint="Chọn ngày sinh"
                 android:paddingBottom="20dp"
-                android:textColor="@color/purple"
+                android:textColor="#5A2D22"
                 app:layout_constraintTop_toBottomOf="@id/txtDob"
                 tools:layout_editor_absoluteX="40dp" />
 
@@ -124,9 +125,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="40dp"
-                android:fontFamily="@font/lexenddeca_bold"
+                android:fontFamily="@font/quicksand_bold"
                 android:text="Số điện thoại"
-                android:textColor="@color/purple"
+                android:textColor="#5A2D22"
                 android:textSize="20dp"
                 app:layout_constraintLeft_toLeftOf="@id/edtDob"
                 app:layout_constraintTop_toBottomOf="@id/edtDob" />
@@ -135,10 +136,10 @@
                 android:id="@+id/edtPhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lexenddeca_light"
+                android:fontFamily="@font/quicksand"
                 android:hint="Nhập số điện thoại"
                 android:paddingBottom="20dp"
-                android:textColor="@color/purple"
+                android:textColor="#5A2D22"
                 app:layout_constraintTop_toBottomOf="@id/txtPhoneNumber"
                 tools:layout_editor_absoluteX="40dp" />
 
@@ -148,9 +149,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="40dp"
-                android:fontFamily="@font/lexenddeca_bold"
+                android:fontFamily="@font/quicksand_bold"
                 android:text="Email liên hệ"
-                android:textColor="@color/purple"
+                android:textColor="#5A2D22"
                 android:textSize="20dp"
                 app:layout_constraintLeft_toLeftOf="@id/spnMajor"
                 app:layout_constraintTop_toBottomOf="@id/edtPhoneNumber" />
@@ -159,11 +160,11 @@
                 android:id="@+id/edtWorkEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lexenddeca_light"
+                android:fontFamily="@font/quicksand"
                 android:hint="Nhập email của bạn"
                 android:inputType="textEmailAddress"
                 android:paddingBottom="20dp"
-                android:textColor="@color/purple"
+                android:textColor="#5A2D22"
                 app:layout_constraintTop_toBottomOf="@id/txtWorkEmail"
                 tools:layout_editor_absoluteX="40dp" />
 
@@ -173,10 +174,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="40dp"
-                android:fontFamily="@font/lexenddeca_bold"
+                android:fontFamily="@font/quicksand_bold"
                 android:inputType="phone"
                 android:text="Chuyên ngành"
-                android:textColor="@color/purple"
+                android:textColor="#5A2D22"
                 android:textSize="20dp"
                 app:layout_constraintLeft_toLeftOf="@id/spnMajor"
                 app:layout_constraintTop_toBottomOf="@id/edtWorkEmail" />
@@ -194,10 +195,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="40dp"
-                android:fontFamily="@font/lexenddeca_bold"
+                android:fontFamily="@font/quicksand_bold"
                 android:inputType="phone"
                 android:text="Số năm kinh nghiệm"
-                android:textColor="@color/purple"
+                android:textColor="#5A2D22"
                 android:textSize="20dp"
                 app:layout_constraintLeft_toLeftOf="@id/txtMajor"
                 app:layout_constraintTop_toBottomOf="@id/spnMajor" />
@@ -211,12 +212,13 @@
 
             <Button
                 android:id="@+id/btnSubmit"
-                style="@style/MyButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="40dp"
                 android:layout_marginTop="50dp"
+                android:backgroundTint="#060F63"
                 android:text="Submit"
+                app:cornerRadius="30sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/spnYearExperience" />
