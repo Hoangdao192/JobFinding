@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item android:id="@+id/nav_home"
-        android:title="Home"
-        android:icon="@drawable/home"/>
+        android:title="Trang chủ"
+        android:icon="@drawable/nav_vector_home" />
     <item android:id="@+id/nav_search"
-        android:title="Search"
+        android:title="Tìm kiếm"
         android:icon="@drawable/search"/>
     <item android:id="@+id/nav_notifications"
-        android:title="Notifications"
-        android:icon="@drawable/bell"/>
+        android:title="Thông báo"
+        android:icon="@drawable/nav_vector_notifications"/>
     <item android:id="@+id/nav_inbox"
-        android:title="Inbox"
-        android:icon="@drawable/envelope"/>
+        android:title="Tin nhắn"
+        android:icon="@drawable/nav_vector_inbox"/>
     <item android:id="@+id/nav_profile"
-        android:title="Profile"
-        android:icon="@drawable/portrait"/>
+        android:title="Hồ sơ"
+        android:icon="@drawable/nav_vector_profile"/>
 
 </menu>
