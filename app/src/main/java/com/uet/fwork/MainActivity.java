@@ -19,8 +19,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.uet.fwork.account.login.LoginActivity;
 import com.uet.fwork.account.register.RegisterActivity;
 import com.uet.fwork.database.model.UserModel;
+import com.uet.fwork.database.repository.PostApplyRepository;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
+import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
 import com.uet.fwork.firebasehelper.FirebaseSignInMethod;
 import com.uet.fwork.landingpage.LandingPage1;
 import com.uet.fwork.landingpage.FirstLaunchActivity;
@@ -143,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
     private void startDashboardActivity() {
         SharedPreferences sharedPreferences = this.getSharedPreferences("MAIN", MODE_PRIVATE);
         sharedPreferences.edit().putString("USER", firebaseAuth.getUid()).apply();
+        FirebaseAuthHelper.initialize(FirebaseDatabase.getInstance(), FirebaseAuth.getInstance(), getApplicationContext());
+
         Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
     }

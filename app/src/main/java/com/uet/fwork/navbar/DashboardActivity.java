@@ -3,6 +3,7 @@ package com.uet.fwork.navbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -12,16 +13,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.uet.fwork.R;
 import com.uet.fwork.account.profile.ProfileFragment;
 import com.uet.fwork.chat.ChatListFragment;
+import com.uet.fwork.database.model.UserRole;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
+import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
 
 public class DashboardActivity extends AppCompatActivity {
+
+    private static final String LOG_TAG = "Dashboard activity";
 
     private UserRepository userRepository;
     FirebaseAuth firebaseAuth;
 
     BottomNavigationView bottomNavigationView;
     HomeFragment homeFragment = new HomeFragment();
+    private CandidateDashboardFragment candidateDashboardFragment = new CandidateDashboardFragment();
+    private EmployerDashboardFragment employerDashboardFragment = new EmployerDashboardFragment();
     ProfileFragment profileFragment = new ProfileFragment();
     SearchFragment searchFragment = new SearchFragment();
     NotificationsFragment notificationsFragment = new NotificationsFragment();
@@ -46,18 +53,22 @@ public class DashboardActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.content, homeFragment).commit();
                         return true;
                     case R.id.nav_profile:
-                        userRepository.getUserRole(firebaseAuth.getUid(), new Repository.OnQuerySuccessListener<String>() {
-                            @Override
-                            public void onSuccess(String role) {
-                                Bundle bundle = new Bundle();
-                                bundle.putString("USER_ROLE", role);
-                                profileFragment.setArguments(bundle);
+                        String userRole = FirebaseAuthHelper.getUser().getRole();
+                        if (userRole != null) {
+                            if (userRole.equals(UserRole.CANDIDATE)) {
                                 getSupportFragmentManager()
                                         .beginTransaction()
-                                        .replace(R.id.content, profileFragment)
+                                        .replace(R.id.content, candidateDashboardFragment)
+                                        .commit();
+                            } else if (userRole.equals(UserRole.EMPLOYER)) {
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.content, employerDashboardFragment)
                                         .commit();
                             }
-                        });
+                        } else {
+                            Log.d(LOG_TAG, "User role is null");
+                        }
                         return true;
                     case R.id.nav_search:
                         getSupportFragmentManager().beginTransaction().replace(R.id.content, searchFragment).commit();
@@ -74,7 +85,4 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
     }
-
-
-
 }

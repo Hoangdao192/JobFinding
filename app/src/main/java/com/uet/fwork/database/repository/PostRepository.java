@@ -2,8 +2,13 @@ package com.uet.fwork.database.repository;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.uet.fwork.database.model.post.PostModel;
@@ -62,5 +67,28 @@ public class PostRepository extends Repository {
         }
     }
 
-
+    public void getById(String postId, @NonNull OnQuerySuccessListener<PostModel> listener) {
+        rootDatabaseReference.child(postId).get()
+                .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        PostModel postModel = dataSnapshot.getValue(PostModel.class);
+                        Log.d(LOG_TAG, "Get post by id " + postId + " successful " + postModel.toString());
+                        listener.onSuccess(postModel);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        Log.d(LOG_TAG, "Get post by id " + postId + " failed");
+                    }
+                })
+                .addOnCanceledListener(new OnCanceledListener() {
+                    @Override
+                    public void onCanceled() {
+                        Log.d(LOG_TAG, "Get post by id " + postId + " cancelled");
+                    }
+                });
+    }
 }

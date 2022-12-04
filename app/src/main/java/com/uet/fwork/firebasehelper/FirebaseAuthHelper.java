@@ -3,6 +3,7 @@ package com.uet.fwork.firebasehelper;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -13,6 +14,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.FirebaseDatabase;
+import com.uet.fwork.database.model.UserModel;
+import com.uet.fwork.database.repository.Repository;
+import com.uet.fwork.database.repository.UserRepository;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +26,11 @@ import java.util.List;
 
 public class FirebaseAuthHelper {
     private FirebaseAuth firebaseAuth;
-    private Context context = null;
+    private static  UserModel user = null;
+    private static String signInMethod = null;
+    private static UserRepository userRepository;
+
+    private static Context applicationContext = null;
 
     public FirebaseAuthHelper(FirebaseAuth firebaseAuth) {
         this.firebaseAuth = firebaseAuth;
@@ -29,7 +38,38 @@ public class FirebaseAuthHelper {
 
     public FirebaseAuthHelper(FirebaseAuth firebaseAuth, Context context) {
         this.firebaseAuth = firebaseAuth;
-        this.context = context.getApplicationContext();
+        this.applicationContext = context.getApplicationContext();
+    }
+
+    public static final void initialize(FirebaseDatabase firebaseDatabase, FirebaseAuth firebaseAuth, Context context) {
+        userRepository = new UserRepository(firebaseDatabase);
+        applicationContext = context.getApplicationContext();
+        userRepository.getUserByUID(firebaseAuth.getUid(), new Repository.OnQuerySuccessListener<UserModel>() {
+            @Override
+            public void onSuccess(UserModel userModel) {
+                user = userModel;
+            }
+        });
+
+        firebaseAuth.fetchSignInMethodsForEmail(firebaseAuth.getCurrentUser().getEmail())
+                .addOnSuccessListener(signInMethodQueryResult -> {
+                    signInMethod = signInMethodQueryResult.getSignInMethods().get(0);
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        Log.d("FirebaseAuthHelper", "Firebase auth: Fetch sign in method failed");
+                    }
+                });
+    }
+
+    public static UserModel getUser() {
+        return user;
+    }
+
+    public static String getSignInMethod() {
+        return signInMethod;
     }
 
     public void isUserWithEmailExists(String email, OnSuccessListener<Boolean> onSuccessListener) {
@@ -115,8 +155,8 @@ public class FirebaseAuthHelper {
     }
 
     public void signOut() {
-        if (context != null) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences("MAIN", Context.MODE_PRIVATE);
+        if (applicationContext != null) {
+            SharedPreferences sharedPreferences = applicationContext.getSharedPreferences("MAIN", Context.MODE_PRIVATE);
             sharedPreferences.edit().remove("USER").apply();
         }
         firebaseAuth.signOut();

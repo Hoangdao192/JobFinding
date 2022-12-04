@@ -18,10 +18,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.uet.fwork.Constants;
+import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.model.post.PostApplyModel;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PostApplyRepository extends Repository {
@@ -119,6 +122,21 @@ public class PostApplyRepository extends Repository {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         e.printStackTrace();
+                    }
+                });
+    }
+
+    public void getAllPostApplyByUserId(
+            String userId, @NonNull OnQuerySuccessListener<List<PostApplyModel>> listener) {
+        firebaseDatabase.getReference("/posts/userApply").child(userId).get()
+                .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        List<PostApplyModel> postApplyModels = new ArrayList<>();
+                        dataSnapshot.getChildren().forEach(snapshot -> {
+                            postApplyModels.add(snapshot.getValue(PostApplyModel.class));
+                        });
+                        listener.onSuccess(postApplyModels);
                     }
                 });
     }
