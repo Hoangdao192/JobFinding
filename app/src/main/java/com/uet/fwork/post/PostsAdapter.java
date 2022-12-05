@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
 import com.uet.fwork.database.model.post.PostApplyModel;
+import com.uet.fwork.database.model.post.PostApplyStatus;
 import com.uet.fwork.database.model.post.PostModel;
 import com.uet.fwork.database.model.post.ReactionModel;
 import com.uet.fwork.database.repository.CommentRepository;
@@ -179,7 +180,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
                                 postApplyRepository.insert(new PostApplyModel(
                                         post.getPostId(),
                                         firebaseUser.getUid(),
-                                        Calendar.getInstance().getTimeInMillis() / 1000
+                                        Calendar.getInstance().getTimeInMillis() / 1000,
+                                        PostApplyStatus.WAITING
                                 ),  postApplyModel -> {
                                     if (postApplyModel != null) {
                                         ErrorDialog errorDialog = new ErrorDialog(

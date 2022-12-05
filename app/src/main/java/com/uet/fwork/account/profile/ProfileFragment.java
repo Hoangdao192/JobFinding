@@ -20,8 +20,6 @@ import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
 import com.uet.fwork.account.ChangePasswordActivity;
 import com.uet.fwork.account.login.LoginActivity;
-import com.uet.fwork.account.profile.UpdateCandidateProfileActivity;
-import com.uet.fwork.account.profile.UpdateEmployerProfileActivity;
 import com.uet.fwork.database.model.CandidateModel;
 import com.uet.fwork.database.model.EmployerModel;
 import com.uet.fwork.database.model.UserModel;
@@ -40,13 +38,12 @@ public class ProfileFragment extends Fragment{
     private ImageView imgAvatar;
     private TextView txvName, txvEmail, txvPhone, txvSex, txvBirth, txvYearOfExperience, txvMajor;
     private TextView txvCompanyDescription, txvAddress;
-    private TextView txtChangePassword;
 
     private String userRole = "";
     private UserModel user;
 
     public ProfileFragment() {
-        super(R.layout.fragment_profile);
+        super(R.layout.fragment_profile_candidate);
     }
 
     @Override
@@ -63,7 +60,7 @@ public class ProfileFragment extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (userRole.equals(UserRole.CANDIDATE)) {
-            return inflater.inflate(R.layout.fragment_profile, container, false);
+            return inflater.inflate(R.layout.fragment_profile_candidate, container, false);
         } else if (userRole.equals(UserRole.EMPLOYER)) {
             return inflater.inflate(R.layout.fragment_profile_employer, container, false);
         }
@@ -73,22 +70,6 @@ public class ProfileFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        txtChangePassword = view.findViewById(R.id.txtChangePassword);
-        txtChangePassword.setOnClickListener(textView -> {
-                Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
-                startActivity(intent);
-            });
-
-        //  Đối với những tài khoản đăng nhập bằng Facebook hoặc Google thì không
-        //  có mật khẩu nên không thể sử dụng chức năng đổi mật khẩu
-        //  nên ẩn nút đổi mật khẩu đối với các user này
-        firebaseAuthHelper.getUserSignInMethod(firebaseAuth.getCurrentUser().getEmail(),
-                signInMethodList -> {
-                    if (signInMethodList.contains(FirebaseSignInMethod.PASSWORD)) {
-                        txtChangePassword.setVisibility(View.VISIBLE);
-                    }
-                });
 
         Button btnLogout = view.findViewById(R.id.return_button);
         btnLogout.setOnClickListener(button -> {

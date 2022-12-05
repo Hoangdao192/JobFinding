@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.uet.fwork.Constants;
 import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.model.post.PostApplyModel;
+import com.uet.fwork.database.model.post.PostModel;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -102,6 +103,66 @@ public class PostApplyRepository extends Repository {
         });
     }
 
+    public void update(
+            PostApplyModel postApplyModel,
+            @Nullable OnQuerySuccessListener<PostApplyModel> listener) {
+        isPostApplyExists(postApplyModel, new OnQuerySuccessListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                if (result) {
+                    rootDatabaseReference
+                            .child(postApplyModel.getPostId())
+                            .child(postApplyModel.getApplyId())
+                            .setValue(postApplyModel)
+                            .addOnSuccessListener(unused -> {
+                                Log.d(LOG_TAG, "Update post apply model success " + postApplyModel.toString());
+                                DatabaseReference databaseReference = firebaseDatabase.getReference("/posts/userApply");
+                                databaseReference.child(postApplyModel.getUserId())
+                                        .child(postApplyModel.getApplyId()).setValue(postApplyModel);
+
+                                if (listener != null) {
+                                    listener.onSuccess(postApplyModel);
+                                }
+                            })
+                            .addOnFailureListener(exception -> {
+                                Log.d(LOG_TAG, "Update post apply model failed " + postApplyModel.toString());
+                                if (listener != null) {
+                                    listener.onSuccess(null);
+                                }
+                            })
+                            .addOnCanceledListener(() -> {
+                                Log.d(LOG_TAG, "Update post apply model cancelled " + postApplyModel.toString());
+                                if (listener != null) {
+                                    listener.onSuccess(null);
+                                }
+                            });
+                }
+            }
+        });
+    }
+
+    public void isPostApplyExists(
+            PostApplyModel postApplyModel, @NonNull OnQuerySuccessListener<Boolean> listener) {
+        rootDatabaseReference.child(postApplyModel.getPostId()).get()
+                .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            listener.onSuccess(true);
+                        } else {
+                            listener.onSuccess(false);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    e.printStackTrace();
+                    listener.onSuccess(false);
+                })
+                .addOnCanceledListener(() -> {
+                    listener.onSuccess(false);
+                });
+    }
+
     public void isUserApplyPost(String postId, String userId, OnQuerySuccessListener<Boolean> listener) {
         DatabaseReference databaseReference = firebaseDatabase.getReference("/posts/userApply");
         databaseReference.child(userId).orderByChild("postId").equalTo(postId)
@@ -139,5 +200,172 @@ public class PostApplyRepository extends Repository {
                         listener.onSuccess(postApplyModels);
                     }
                 });
+    }
+
+    public void deletePostApplyByPostAndUser(
+            String postId, String userId, @Nullable OnQuerySuccessListener<Boolean> listener) {
+        rootDatabaseReference.child(postId)
+                .orderByChild("userId").equalTo(userId).get()
+                .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        dataSnapshot.getChildren().forEach(dataSnapshot1 -> {
+                            rootDatabaseReference.child(postId).child(dataSnapshot1.getKey()).removeValue()
+                                    .addOnSuccessListener(unused -> {
+                                        Log.d(LOG_TAG,
+                                                "Remove snapshot posts/apply/"
+                                                        + dataSnapshot1.getKey()
+                                                        + " successful");
+                                        firebaseDatabase.getReference("posts/userApply")
+                                                .child(userId).child(dataSnapshot1.getKey())
+                                                .removeValue()
+                                                .addOnSuccessListener(unused1 -> {
+                                                    Log.d(LOG_TAG,
+                                                            "Remove snapshot posts/userApply/"
+                                                                    + userId + " "
+                                                                    + dataSnapshot1.getKey()
+                                                                    + " successful");
+                                                    if (listener != null) {
+                                                        listener.onSuccess(true);
+                                                    }
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    e.printStackTrace();
+                                                    Log.d(LOG_TAG,
+                                                            "Remove snapshot posts/userApply/"
+                                                                    + userId + " "
+                                                                    + dataSnapshot1.getKey()
+                                                                    + " failed");
+                                                    if (listener != null) {
+                                                        listener.onSuccess(false);
+                                                    }
+                                                })
+                                                .addOnCanceledListener(() -> {
+                                                    Log.d(LOG_TAG,
+                                                            "Remove snapshot posts/userApply/"
+                                                                    + userId + " "
+                                                                    + dataSnapshot1.getKey()
+                                                                    + " cancelled");
+                                                    if (listener != null) {
+                                                        listener.onSuccess(false);
+                                                    }
+                                                });
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        e.printStackTrace();
+                                        Log.d(LOG_TAG, "Remove snapshot posts/apply/"
+                                                + dataSnapshot1.getKey()
+                                                + " failed");
+                                        if (listener != null) {
+                                            listener.onSuccess(false);
+                                        }
+                                    })
+                                    .addOnCanceledListener(() -> {
+                                        Log.d(LOG_TAG, "Remove snapshot posts/apply/"
+                                                + dataSnapshot1.getKey()
+                                                + " cancelled");
+                                        if (listener != null) {
+                                            listener.onSuccess(false);
+                                        }
+                                    });
+                        });
+                    }
+                })
+                .addOnFailureListener(e -> e.printStackTrace());
+    }
+
+    public void deletePostApply(PostApplyModel postApplyModel) {
+        String userId = postApplyModel.getUserId();
+        rootDatabaseReference.child(postApplyModel.getPostId())
+                .orderByChild("userId").equalTo(postApplyModel.getUserId()).get()
+                .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        dataSnapshot.getChildren().forEach(dataSnapshot1 -> {
+                            rootDatabaseReference.child(postApplyModel.getPostId()).child(dataSnapshot1.getKey()).removeValue()
+                                    .addOnSuccessListener(unused -> {
+                                        Log.d(LOG_TAG,
+                                                "Remove snapshot posts/apply/"
+                                                        + dataSnapshot1.getKey()
+                                                        + " successful");
+                                        firebaseDatabase.getReference("posts/userApply")
+                                                .child(postApplyModel.getUserId()).child(dataSnapshot1.getKey())
+                                                .removeValue()
+                                                .addOnSuccessListener(unused1 -> {
+                                                    Log.d(LOG_TAG,
+                                                            "Remove snapshot posts/userApply/"
+                                                                    + userId + " "
+                                                                    + dataSnapshot1.getKey()
+                                                                    + " successful");
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    e.printStackTrace();
+                                                    Log.d(LOG_TAG,
+                                                            "Remove snapshot posts/userApply/"
+                                                                    + userId + " "
+                                                                    + dataSnapshot1.getKey()
+                                                                    + " failed");
+                                                })
+                                                .addOnCanceledListener(() -> {
+                                                    Log.d(LOG_TAG,
+                                                            "Remove snapshot posts/userApply/"
+                                                                    + userId + " "
+                                                                    + dataSnapshot1.getKey()
+                                                                    + " cancelled");
+                                                });
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        e.printStackTrace();
+                                        Log.d(LOG_TAG, "Remove snapshot posts/apply/"
+                                                + dataSnapshot1.getKey()
+                                                + " failed");
+                                    })
+                                    .addOnCanceledListener(() -> {
+                                        Log.d(LOG_TAG, "Remove snapshot posts/apply/"
+                                                + dataSnapshot1.getKey()
+                                                + " cancelled");
+                                    });
+                        });
+                    }
+                })
+                .addOnFailureListener(e -> e.printStackTrace());
+    }
+
+    public void deletePostApplyByPostId(String postId) {
+        rootDatabaseReference.child(postId).get()
+                .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        List<PostApplyModel> postApplyModels  = new ArrayList<>();
+                        dataSnapshot.getChildren().forEach(snapshot -> {
+                            postApplyModels.add(snapshot.getValue(PostApplyModel.class));
+                        });
+                        postApplyModels.forEach(postApplyModel -> {
+                            deletePostApply(postApplyModel);
+                        });
+                    }
+                })
+                .addOnFailureListener(e -> e.printStackTrace());
+    }
+
+    public void getAllPostApplyByPostOwner(
+            String postOwnerId, OnQuerySuccessListener<List<PostApplyModel>> listener) {
+
+    }
+
+    public void getAllByPost(
+            PostModel postModel, @NonNull OnQuerySuccessListener<List<PostApplyModel>> listener) {
+        rootDatabaseReference.child(postModel.getPostId()).get()
+                .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        List<PostApplyModel> postApplyList = new ArrayList<>();
+                        dataSnapshot.getChildren().forEach(snapshot -> {
+                            postApplyList.add(snapshot.getValue(PostApplyModel.class));
+                        });
+                        listener.onSuccess(postApplyList);
+                    }
+                })
+                .addOnFailureListener(e -> e.printStackTrace());
     }
 }

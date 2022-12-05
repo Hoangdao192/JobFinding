@@ -1,5 +1,6 @@
 package com.uet.fwork.database.repository;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -13,17 +14,25 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.uet.fwork.database.model.post.PostModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PostRepository extends Repository {
     private static final String LOG_TAG = "Post repository";
 
     public final static String DATABASE_PATH = "posts/list";
 
-    public PostRepository(FirebaseDatabase firebaseDatabase, FirebaseFirestore firebaseFirestore) {
-        super(firebaseDatabase, firebaseFirestore, DATABASE_PATH);
-    }
+    private PostApplyRepository postApplyRepository;
+    private CommentRepository commentRepository;
+    private PostReactionRepository postReactionRepository;
+    private Context context;
 
-    public PostRepository(FirebaseDatabase firebaseDatabase) {
+    public PostRepository(Context context, FirebaseDatabase firebaseDatabase) {
         super(firebaseDatabase, DATABASE_PATH);
+        this.context = context;
+        postApplyRepository = new PostApplyRepository(context, FirebaseDatabase.getInstance());
+        postReactionRepository = new PostReactionRepository(context, firebaseDatabase);
+        commentRepository = new CommentRepository(context, firebaseDatabase);
     }
 
     public void insert(PostModel postModel, @Nullable OnQuerySuccessListener<Boolean> listener) {
@@ -90,5 +99,38 @@ public class PostRepository extends Repository {
                         Log.d(LOG_TAG, "Get post by id " + postId + " cancelled");
                     }
                 });
+    }
+
+    public void getAllByUserId(
+            String userId, @NonNull OnQuerySuccessListener<List<PostModel>> listener) {
+        rootDatabaseReference.orderByChild("userId").equalTo(userId).get()
+                .addOnSuccessListener(dataSnapshot -> {
+                    if (dataSnapshot.exists()) {
+                        List<PostModel> postModels = new ArrayList<>();
+                        dataSnapshot.getChildren().forEach(snapshot -> {
+                            postModels.add(snapshot.getValue(PostModel.class));
+                        });
+                        Log.d(LOG_TAG,
+                                "Get all post by user id successful "
+                                        + userId + " " + postModels.toString());
+                        listener.onSuccess(postModels);
+                    } else {
+                        Log.d(LOG_TAG, "Get all by user id: data snapshot not exists");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    e.printStackTrace();
+                    Log.d(LOG_TAG, "Get all by user id failed " + userId);
+                })
+                .addOnCanceledListener(() -> {
+                    Log.d(LOG_TAG, "Get all by user id cancelled " + userId);
+                });
+    }
+
+    public void deletePost(PostModel postModel) {
+        postApplyRepository.deletePostApplyByPostId(postModel.getPostId());
+        commentRepository.deleteCommentByPostId(postModel.getPostId());
+        postReactionRepository.deletePostReactionByPostId(postModel.getPostId());
+        rootDatabaseReference.child(postModel.getPostId()).removeValue();
     }
 }

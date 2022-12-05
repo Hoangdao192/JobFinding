@@ -20,6 +20,7 @@ import com.uet.fwork.account.login.LoginActivity;
 import com.uet.fwork.account.register.RegisterActivity;
 import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.repository.PostApplyRepository;
+import com.uet.fwork.database.repository.PostRepository;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
@@ -146,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = this.getSharedPreferences("MAIN", MODE_PRIVATE);
         sharedPreferences.edit().putString("USER", firebaseAuth.getUid()).apply();
         FirebaseAuthHelper.initialize(FirebaseDatabase.getInstance(), FirebaseAuth.getInstance(), getApplicationContext());
+        PostApplyRepository postApplyRepository = new PostApplyRepository(this, FirebaseDatabase.getInstance());
+        postApplyRepository.deletePostApplyByPostAndUser("-NID4UkOsOowmWJa5P7i", "mWRHRejdpNbHoNShgtLKjWnSPas1", null);
 
         Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);

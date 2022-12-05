@@ -11,13 +11,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
+import com.uet.fwork.account.ChangePasswordActivity;
 import com.uet.fwork.account.login.LoginActivity;
 import com.uet.fwork.account.profile.ProfileFragment;
+import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.model.UserRole;
 import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
 import com.uet.fwork.firebasehelper.FirebaseSignInMethod;
 import com.uet.fwork.post.CandidateShowPostApplyFragment;
+import com.uet.fwork.post.ShowMyPostFragment;
+import com.uet.fwork.post.ShowPostLikeFragment;
 
 import java.util.List;
 
@@ -61,6 +66,12 @@ public class CandidateDashboardFragment extends Fragment {
         if (!signInMethod.equals(FirebaseSignInMethod.PASSWORD)) {
             lltChangePassword.setVisibility(View.GONE);
         }
+        UserModel userModel = FirebaseAuthHelper.getUser();
+        if (!userModel.getAvatar().equals("")) {
+            Picasso.get().load(userModel.getAvatar()).into(cirImgAvatar);
+        }
+        txvFullName.setText(userModel.getFullName());
+        txvEmail.setText(userModel.getEmail());
 
         lltProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,14 +84,44 @@ public class CandidateDashboardFragment extends Fragment {
             }
         });
 
+        lltPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .addToBackStack("PostListFragment")
+                        .replace(R.id.content, new ShowMyPostFragment())
+                        .commit();
+            }
+        });
+
+        lltInterest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .addToBackStack("PostLikeFragment")
+                        .replace(R.id.content, new ShowPostLikeFragment())
+                        .commit();
+            }
+        });
+
         lltPostApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .addToBackStack("ProfileFragment")
+                        .addToBackStack("PostApplyFragment")
                         .replace(R.id.content, new CandidateShowPostApplyFragment())
                         .commit();
+            }
+        });
+
+        lltChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+                startActivity(intent);
             }
         });
 

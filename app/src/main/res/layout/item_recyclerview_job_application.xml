@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="20dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/default_avatar"
+        android:id="@+id/cirImgAvatar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/txvFullName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nguyễn Văn A"
+        android:textSize="18sp"
+        android:fontFamily="@font/quicksand_bold"
+        app:layout_constraintLeft_toRightOf="@id/cirImgAvatar"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toTopOf="@id/cirImgAvatar"
+        app:layout_constraintBottom_toBottomOf="@id/cirImgAvatar"
+        android:textColor="@color/black"/>
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txvTitleMajor"
+        android:text="Chuyên ngành"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/cirImgAvatar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txvMajor"
+        android:text="Công nghệ thông tin"
+        android:fontFamily="@font/quicksand"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toRightOf="@id/txvTitleMajor"
+        app:layout_constraintBaseline_toBaselineOf="@id/txvTitleMajor"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txvTitleExperience"
+        android:text="Kinh nghiệm"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/txvTitleMajor"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txvExperience"
+        android:text="20 năm"
+        android:fontFamily="@font/quicksand"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        app:layout_constraintBaseline_toBaselineOf="@id/txvTitleExperience"
+        app:layout_constraintLeft_toRightOf="@id/txvTitleExperience"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txvTitlePhoneNumber"
+        android:text="Số điện thoại"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/txvTitleExperience"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txvPhoneNumber"
+        android:text="0325135251"
+        android:fontFamily="@font/quicksand"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        app:layout_constraintBaseline_toBaselineOf="@id/txvTitlePhoneNumber"
+        app:layout_constraintLeft_toRightOf="@id/txvTitlePhoneNumber"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txvTitleEmail"
+        android:text="Email"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/txvTitlePhoneNumber"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:maxLines="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txvEmail"
+        android:text="0325135251"
+        android:fontFamily="@font/quicksand"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        app:layout_constraintBaseline_toBaselineOf="@id/txvTitleEmail"
+        app:layout_constraintLeft_toRightOf="@id/txvTitleEmail"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txvTitleJob"
+        android:text="Ứng tuyển công việc"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/txvTitleEmail"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txvJobName"
+        android:text="0325135251"
+        android:fontFamily="@font/quicksand"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        app:layout_constraintBaseline_toBaselineOf="@id/txvTitleJob"
+        app:layout_constraintLeft_toRightOf="@id/txvTitleJob"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/txvTitleJob"
+        android:layout_marginTop="20dp">
+        <Button
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnShowCandidate"
+            android:text="Xem ứng viên"
+            style="@style/Theme.FWork.Button.RoundedCorner.47"/>
+
+        <Button
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnAccept"
+            android:text="Chấp nhận"
+            style="@style/Theme.FWork.Button.RoundedCorner.47"
+            android:layout_marginHorizontal="15dp"/>
+
+        <Button
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnReject"
+            android:text="Từ chối"
+            style="@style/Theme.FWork.Button.RoundedCorner.47"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

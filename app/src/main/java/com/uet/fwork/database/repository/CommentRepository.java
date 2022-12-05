@@ -104,4 +104,8 @@ public class CommentRepository extends Repository {
                     }
                 });
     }
+
+    public void deleteCommentByPostId(String postId) {
+        rootDatabaseReference.child(postId).removeValue();
+    }
 }

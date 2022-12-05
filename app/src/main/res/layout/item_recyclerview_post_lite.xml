@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -26,26 +26,24 @@
                 android:layout_height="40dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/user" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
                 <TextView
                     android:id="@+id/txvPostOwnerName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="all"
                     android:padding="5dp"
-                    android:layout_toRightOf="@id/imgPostOwnerAvatar"
                     android:layout_marginLeft="10dp"
                     android:text="Name"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
-                <ImageView
-                    android:padding="10dp"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_x_thick"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:id="@+id/btnDelete"/>
-        </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/txvJobName"
@@ -101,14 +99,5 @@
             android:text="Mô tả: "
             android:textSize="16sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Trạng thái: "
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:padding="5dp"
-            android:id="@+id/txvStatus"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

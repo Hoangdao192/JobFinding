@@ -19,11 +19,14 @@ import com.uet.fwork.database.model.post.PostModel;
 import com.uet.fwork.database.model.post.ReactionModel;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PostReactionRepository extends Repository {
     private static final String REFERENCE_PATH = "posts/reactions";
+    private static final String USER_REACTION_PATH = "/posts/userReactions";
     private static final String LOG_TAG = "PostReaction repository";
 
     private Context context;
@@ -68,10 +71,23 @@ public class PostReactionRepository extends Repository {
                     }
                 })
                 .addOnSuccessListener(unused -> {
-                    Log.d(LOG_TAG, "Insert reaction successful " + reactionModel.toString());
-                    if (listener != null) {
-                        listener.onSuccess(true);
-                    }
+                    firebaseDatabase.getReference(USER_REACTION_PATH)
+                            .child(reactionModel.getUserId())
+                            .child(reactionModel.getReactionId())
+                            .setValue(reactionModel)
+                            .addOnSuccessListener(unused1 -> {
+                                Log.d(LOG_TAG, "Insert reaction successful " + reactionModel.toString());
+                                if (listener != null) {
+                                    listener.onSuccess(true);
+                                }
+                            })
+                            .addOnFailureListener(exception -> {
+                                exception.printStackTrace();
+                                Log.d(LOG_TAG, "Insert reaction failed " + reactionModel.toString());
+                            })
+                            .addOnCanceledListener(() -> {
+                                Log.d(LOG_TAG, "Insert reaction cancelled " + reactionModel.toString());
+                            });
                 })
                 .addOnCanceledListener(() ->
                         Log.d(LOG_TAG, "Insert reaction cancelled " + reactionModel.toString()));
@@ -83,9 +99,17 @@ public class PostReactionRepository extends Repository {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            System.out.println(dataSnapshot);
                             dataSnapshot.getChildren().forEach(dataSnapshot1 -> {
-                                rootDatabaseReference.child(postId).child(dataSnapshot1.getKey()).removeValue();
+                                rootDatabaseReference.child(postId).child(dataSnapshot1.getKey()).removeValue()
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                firebaseDatabase.getReference(USER_REACTION_PATH)
+                                                        .child(userId).child(dataSnapshot1.getKey())
+                                                        .removeValue()
+                                                        .addOnFailureListener(e -> e.printStackTrace());
+                                            }
+                                        });
                             });
                             String key = dataSnapshot.getKey();
                         }
@@ -112,4 +136,104 @@ public class PostReactionRepository extends Repository {
                     }
                 }).addOnFailureListener(e -> e.printStackTrace());
     }
+
+    public void getAllByUserId(
+            String userId, @NonNull OnQuerySuccessListener<List<ReactionModel>> listener) {
+        firebaseDatabase.getReference(USER_REACTION_PATH)
+                .child(userId).get()
+                .addOnSuccessListener(dataSnapshot -> {
+                    if (dataSnapshot.exists()) {
+                        List<ReactionModel> reactionModelList = new ArrayList<>();
+                        dataSnapshot.getChildren().forEach(snapshot -> {
+                            reactionModelList.add(snapshot.getValue(ReactionModel.class));
+                        });
+                        Log.d(LOG_TAG,
+                                "Get all by user successful " + reactionModelList.toString());
+                        listener.onSuccess(reactionModelList);
+                    } else {
+                        Log.d(LOG_TAG, "Get all by user: data snapshot not exists " + userId);
+                    }
+                })
+                .addOnFailureListener(exception -> {
+                    exception.printStackTrace();
+                    Log.d(LOG_TAG, "Get all by user failed");
+                })
+                .addOnCanceledListener(() -> {
+                    Log.d(LOG_TAG, "Get all by user cancelled");
+                });
+    }
+
+    public void deletePostReaction(
+            ReactionModel reactionModel, @Nullable OnQuerySuccessListener<Boolean> listener) {
+        rootDatabaseReference.child(reactionModel.getPostId()).child(reactionModel.getReactionId())
+                .removeValue()
+                .addOnSuccessListener(unused -> {
+                    Log.d(LOG_TAG, "Remove snapshot posts/reactions/"
+                            + reactionModel.getPostId() + "/"
+                            + reactionModel.getReactionId() + " successful");
+                    firebaseDatabase.getReference(USER_REACTION_PATH)
+                            .child(reactionModel.getUserId())
+                            .child(reactionModel.getReactionId()).removeValue()
+                            .addOnSuccessListener(unused1 -> {
+                                if (listener != null) {
+                                    listener.onSuccess(true);
+                                }
+                                Log.d(LOG_TAG, "Remove snapshot posts/userReactions/"
+                                        + reactionModel.getUserId() + "/"
+                                        + reactionModel.getReactionId() + " successful");
+                            })
+                            .addOnFailureListener(e -> {
+                                e.printStackTrace();
+                                if (listener != null) {
+                                    listener.onSuccess(false);
+                                }
+                                Log.d(LOG_TAG, "Remove snapshot posts/userReactions/"
+                                        + reactionModel.getUserId() + "/"
+                                        + reactionModel.getReactionId() + " failed");
+                            })
+                            .addOnCanceledListener(() -> {
+                                if (listener != null) {
+                                    listener.onSuccess(false);
+                                }
+                                Log.d(LOG_TAG, "Remove snapshot posts/userReactions/"
+                                        + reactionModel.getUserId() + "/"
+                                        + reactionModel.getReactionId() + " cancelled");
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    if (listener != null) {
+                        listener.onSuccess(false);
+                    }
+                    e.printStackTrace();
+                    Log.d(LOG_TAG, "Remove snapshot posts/reactions/"
+                            + reactionModel.getPostId() + "/"
+                            + reactionModel.getReactionId() + " failed");
+                })
+                .addOnCanceledListener(() -> {
+                    if (listener != null) {
+                        listener.onSuccess(false);
+                    }
+                    Log.d(LOG_TAG, "Remove snapshot posts/reactions/"
+                            + reactionModel.getPostId() + "/"
+                            + reactionModel.getReactionId() + " cancelled");
+                });
+    }
+
+
+    public void deletePostReactionByPostId(String postId) {
+        rootDatabaseReference.child(postId).get()
+                .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        List<ReactionModel> reactionModelList = new ArrayList<>();
+                        dataSnapshot.getChildren().forEach(snapshot -> {
+                            reactionModelList.add(dataSnapshot.getValue(ReactionModel.class));
+                        });
+                        reactionModelList.forEach(reactionModel -> {
+                            deletePostReaction(reactionModel, null);
+                        });
+                    }
+                });
+    }
+    
 }

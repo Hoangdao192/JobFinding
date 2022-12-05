@@ -5,6 +5,7 @@ public class PostApplyModel {
     private String postId = "";
     private String userId = "";
     private Long applyTime = 0L;
+    private String status = "";
 
     public PostApplyModel() {
     }
@@ -20,6 +21,29 @@ public class PostApplyModel {
         this.postId = postId;
         this.userId = userId;
         this.applyTime = applyTime;
+    }
+
+    public PostApplyModel(String postId, String userId, Long applyTime, String status) {
+        this.postId = postId;
+        this.userId = userId;
+        this.applyTime = applyTime;
+        this.status = status;
+    }
+
+    public PostApplyModel(String applyId, String postId, String userId, Long applyTime, String status) {
+        this.applyId = applyId;
+        this.postId = postId;
+        this.userId = userId;
+        this.applyTime = applyTime;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getApplyId() {

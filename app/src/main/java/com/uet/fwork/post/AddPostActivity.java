@@ -81,7 +81,7 @@ public class AddPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
 
-        postRepository = new PostRepository(FirebaseDatabase.getInstance());
+        postRepository = new PostRepository(this, FirebaseDatabase.getInstance());
 
         //display
         btnPickOnMap = findViewById(R.id.btnPickOnMap);
