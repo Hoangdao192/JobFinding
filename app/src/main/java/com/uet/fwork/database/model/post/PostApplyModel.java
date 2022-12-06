@@ -5,7 +5,7 @@ public class PostApplyModel {
     private String postId = "";
     private String userId = "";
     private Long applyTime = 0L;
-    private String status = "";
+    private String status = PostApplyStatus.WAITING;
 
     public PostApplyModel() {
     }

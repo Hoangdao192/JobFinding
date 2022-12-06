@@ -21,9 +21,11 @@ import com.uet.fwork.database.model.post.PostApplyStatus;
 import com.uet.fwork.database.model.post.PostModel;
 import com.uet.fwork.database.repository.PostApplyRepository;
 import com.uet.fwork.database.repository.PostRepository;
+import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.dialog.ConfirmDialog;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,21 +35,31 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class EmployerPostApplyRecyclerViewAdapter extends RecyclerView.Adapter<EmployerPostApplyRecyclerViewAdapter.ViewHolder> {
 
     private Context context;
-    private List<PostApplyModel> postApplyList;
     private Map<String, PostModel> postMap;
     private Map<String, CandidateModel> candidateMap = new HashMap<>();
     private PostRepository postRepository;
     private PostApplyRepository postApplyRepository;
     private UserRepository userRepository;
 
+    private List<PostApplyModel> postApplyList = new ArrayList<>();
+    private List<PostApplyModel> unReadPostApplyList;
+    private List<PostApplyModel> acceptedPostApplyList;
+    private List<PostApplyModel> rejectedPostApplyList;
+
     public EmployerPostApplyRecyclerViewAdapter(
-            Context context, List<PostApplyModel> postApplyList, Map<String, PostModel> postMap) {
+            Context context, Map<String, PostModel> postMap,
+            List<PostApplyModel> unReadPostApplyList,
+            List<PostApplyModel> acceptedPostApplyList,
+            List<PostApplyModel> rejectedPostApplyList) {
         this.context = context;
         this.postMap = postMap;
-        this.postApplyList = postApplyList;
         this.postRepository = new PostRepository(context, FirebaseDatabase.getInstance());
         this.userRepository = new UserRepository(FirebaseDatabase.getInstance());
         this.postApplyRepository = new PostApplyRepository(context, FirebaseDatabase.getInstance());
+        this.postApplyList = unReadPostApplyList;
+        this.unReadPostApplyList = unReadPostApplyList;
+        this.acceptedPostApplyList = acceptedPostApplyList;
+        this.rejectedPostApplyList = rejectedPostApplyList;
     }
 
     @NonNull
@@ -75,17 +87,36 @@ public class EmployerPostApplyRecyclerViewAdapter extends RecyclerView.Adapter<E
         holder.btnReject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postApplyModel.setStatus(PostApplyStatus.REJECTED);
-                postApplyRepository.update(postApplyModel, null);
+                if (postApplyModel.getStatus().equals(PostApplyStatus.WAITING)) {
+                    postApplyModel.setStatus(PostApplyStatus.REJECTED);
+                    postApplyRepository.update(postApplyModel, result -> {
+                        unReadPostApplyList.remove(postApplyModel);
+                        rejectedPostApplyList.add(postApplyModel);
+                        notifyItemRemoved(holder.getBindingAdapterPosition());
+                    });
+                }
             }
         });
         holder.btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 postApplyModel.setStatus(PostApplyStatus.ACCEPTED);
-                postApplyRepository.update(postApplyModel, null);
+                postApplyRepository.update(postApplyModel, result -> {
+                    unReadPostApplyList.remove(postApplyModel);
+                    acceptedPostApplyList.add(postApplyModel);
+                    notifyItemRemoved(holder.getBindingAdapterPosition());
+                });
+
             }
         });
+
+        if (!postApplyModel.getStatus().equals(PostApplyStatus.WAITING)) {
+            holder.btnAccept.setVisibility(View.GONE);
+            holder.btnReject.setVisibility(View.GONE);
+        } else {
+            holder.btnAccept.setVisibility(View.VISIBLE);
+            holder.btnReject.setVisibility(View.VISIBLE);
+        }
     }
 
     private void loadCandidateApplication(
@@ -104,6 +135,26 @@ public class EmployerPostApplyRecyclerViewAdapter extends RecyclerView.Adapter<E
     @Override
     public int getItemCount() {
         return postApplyList.size();
+    }
+
+    public void setPostApplyList(List<PostApplyModel> postApplyList) {
+        this.postApplyList = postApplyList;
+        notifyDataSetChanged();
+    }
+
+    public void displayUnReadApplication() {
+        this.postApplyList = unReadPostApplyList;
+        notifyDataSetChanged();
+    }
+
+    public void displayAcceptedApplication() {
+        this.postApplyList = acceptedPostApplyList;
+        notifyDataSetChanged();
+    }
+
+    public void displayRejectedApplication() {
+        this.postApplyList = rejectedPostApplyList;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

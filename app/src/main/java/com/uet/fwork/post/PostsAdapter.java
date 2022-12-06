@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
+import com.uet.fwork.database.model.UserRole;
 import com.uet.fwork.database.model.post.PostApplyModel;
 import com.uet.fwork.database.model.post.PostApplyStatus;
 import com.uet.fwork.database.model.post.PostModel;
@@ -32,6 +33,7 @@ import com.uet.fwork.database.repository.PostApplyRepository;
 import com.uet.fwork.database.repository.PostReactionRepository;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.dialog.ErrorDialog;
+import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
 import com.uet.fwork.util.TimestampToString;
 
 import java.util.Calendar;
@@ -70,6 +72,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         PostModel post = postModelList.get(position);
+
+        if (!FirebaseAuthHelper.getUser().getRole().equals(UserRole.CANDIDATE)) {
+            holder.btnPostApply.setVisibility(View.GONE);
+        }
 
         //get data
         String uid = post.getUserId();
@@ -285,7 +291,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
             btnLike = itemView.findViewById(R.id.btnLike);
             commentButton = itemView.findViewById(R.id.postCommentButton);
             btnPostApply = itemView.findViewById(R.id.btnPostApply);
-
             txvCommentNumber = itemView.findViewById(R.id.txtCommentNumber);
             txvLikeNumber = itemView.findViewById(R.id.txtLikeNumber);
         }

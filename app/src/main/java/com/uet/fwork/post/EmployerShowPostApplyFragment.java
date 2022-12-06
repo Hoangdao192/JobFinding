@@ -2,6 +2,7 @@ package com.uet.fwork.post;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.uet.fwork.R;
 import com.uet.fwork.database.model.post.PostApplyModel;
+import com.uet.fwork.database.model.post.PostApplyStatus;
 import com.uet.fwork.database.model.post.PostModel;
 import com.uet.fwork.database.repository.PostApplyRepository;
 import com.uet.fwork.database.repository.PostRepository;
@@ -31,6 +33,12 @@ public class EmployerShowPostApplyFragment extends Fragment {
     private PostRepository postRepository;
     private FirebaseUser firebaseUser;
     private List<PostApplyModel> postApplyModels = new ArrayList<>();
+    private List<PostApplyModel> unReadPostApplyList = new ArrayList<>();
+    private List<PostApplyModel> acceptedPostApplyList = new ArrayList<>();
+    private List<PostApplyModel> rejectedPostApplyList = new ArrayList<>();
+    private List<PostModel> postList = new ArrayList<>();
+    private RadioGroup radGrpApplication;
+    private EmployerPostApplyRecyclerViewAdapter postApplyAdapter;
 
     public EmployerShowPostApplyFragment() {
         super(R.layout.fragment_show_application);
@@ -44,6 +52,7 @@ public class EmployerShowPostApplyFragment extends Fragment {
         postRepository = new PostRepository(getContext(), FirebaseDatabase.getInstance());
         postApplyRepository = new PostApplyRepository(getContext(), FirebaseDatabase.getInstance());
 
+        radGrpApplication = view.findViewById(R.id.radGrpApplication);
         recPostApply = view.findViewById(R.id.recPostApply);
 
 
@@ -54,24 +63,61 @@ public class EmployerShowPostApplyFragment extends Fragment {
                 postModelList.forEach(post -> {
                     postMap.put(post.getPostId(), post);
                 });
-                EmployerPostApplyRecyclerViewAdapter adapter = new EmployerPostApplyRecyclerViewAdapter(
-                    getContext(), postApplyModels, postMap
+               postApplyAdapter = new EmployerPostApplyRecyclerViewAdapter(
+                    getContext(), postMap,
+                       unReadPostApplyList, acceptedPostApplyList, rejectedPostApplyList
                 );
                 recPostApply.setLayoutManager(new LinearLayoutManager(getContext()));
-                recPostApply.setAdapter(adapter);
+                recPostApply.setAdapter(postApplyAdapter);
 
                 postModelList.forEach(post -> {
                     postApplyRepository.getAllByPost(post, new Repository.OnQuerySuccessListener<List<PostApplyModel>>() {
                         @Override
                         public void onSuccess(List<PostApplyModel> result) {
-                            int oldSize = postApplyModels.size();
-                            postApplyModels.addAll(result);
-                            adapter.notifyItemRangeInserted(oldSize, result.size());
+                            //  Lọc post apply theo trạng thái đã chọn
+                            result.forEach(postApplyModel -> {
+                                switch (postApplyModel.getStatus()) {
+                                    case PostApplyStatus.WAITING:
+                                        unReadPostApplyList.add(postApplyModel);
+                                        postApplyAdapter
+                                                .notifyItemInserted(unReadPostApplyList.size());
+                                        break;
+                                    case PostApplyStatus.ACCEPTED:
+                                        acceptedPostApplyList.add(postApplyModel);
+                                        postApplyAdapter
+                                                .notifyItemInserted(acceptedPostApplyList.size());
+                                        break;
+                                    case PostApplyStatus.REJECTED:
+                                        rejectedPostApplyList.add(postApplyModel);
+                                        postApplyAdapter
+                                                .notifyItemInserted(rejectedPostApplyList.size());
+                                        break;
+                                }
+                            });
                         }
                     });
                 });
             }
         });
 
+        radGrpApplication.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (postApplyAdapter != null) {
+                    int checkRadId = radGrpApplication.getCheckedRadioButtonId();
+                    switch (checkRadId) {
+                        case R.id.radNotRead:
+                            postApplyAdapter.displayUnReadApplication();
+                            break;
+                        case R.id.radAccepted:
+                            postApplyAdapter.displayAcceptedApplication();
+                            break;
+                        case R.id.radRejected:
+                            postApplyAdapter.displayRejectedApplication();
+                            break;
+                    }
+                }
+            }
+        });
     }
 }

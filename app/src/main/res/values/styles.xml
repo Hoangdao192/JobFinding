@@ -27,6 +27,17 @@
         <item name="android:textSize">15sp</item>
     </style>
 
+    <style name="Theme.FWork.RadioButton.RoundedCorner.47" parent="Widget.MaterialComponents.Button">
+        <item name="android:paddingVertical">10dp</item>
+        <item name="android:paddingHorizontal">20dp</item>
+        <item name="android:background">@drawable/radio_button_background_selector</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@drawable/radio_text_color_selector</item>
+        <item name="backgroundTint">@null</item>
+    </style>
+
     <style name="Theme.FWork.Button.RoundedCorner.47" parent="Widget.MaterialComponents.Button">
         <item name="android:background">@drawable/rounded_corner_47</item>
         <item name="android:minHeight">0dp</item>
