@@ -3,7 +3,6 @@ package com.uet.fwork.database.model.post;
 import com.uet.fwork.database.model.AddressModel;
 
 public class PostModel {
-
     private String postId = "";
     private String postName = "";
     private String postMajor = "";

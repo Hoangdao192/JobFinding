@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DDEFFF"
+    android:backgroundTint="#DDEFFF"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".ViewProfileActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:foregroundTint="#386893">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/return_button"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="23dp"
+                    android:background="@drawable/back_button"
+                    app:backgroundTint="@null"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/vector_116"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="31dp"
+                    android:fontFamily="@font/quicksand"
+                    android:text="Thông tin của tôi"
+                    android:textColor="#FFF"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/avatarIv"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="75dp"
+                    android:src="@drawable/wlop_33se"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/txtTitleName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="188dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Họ và tên"
+                android:textColor="#5A2D22"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/nameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtTitleName"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="136dp"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Hello"
+                android:textAlignment="center"
+                android:textColor="#5A2D22"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/txtTitleBirth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="248dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Ngày sinh"
+                android:textColor="#5A2D22"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/birthTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtTitleBirth"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="136dp"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Hello"
+                android:textAlignment="center"
+                android:textColor="#5A2D22"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/txtTitleSex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="308dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Giới tính"
+                android:textColor="#5A2D22"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/sexTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtTitleSex"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="136dp"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Hello"
+                android:textAlignment="center"
+                android:textColor="@color/dark_purple"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/txtTitleMajor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="368dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Chuyên ngành"
+                android:textColor="#5A2D22"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/jobTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtTitleMajor"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="136dp"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Hello"
+                android:textAlignment="center"
+                android:textColor="#5A2D22"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/txtTitleExperience"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="428dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Kinh nghiệm"
+                android:textColor="#5A2D22"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/workYearTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtTitleExperience"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="136dp"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Hello"
+                android:textAlignment="center"
+                android:textColor="#5A2D22"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/txtTitlePhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="488dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Điện thoại"
+                android:textColor="#5A2D22"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/phoneTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtTitlePhone"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="136dp"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Hello"
+                android:textAlignment="center"
+                android:textColor="#5A2D22"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/txtTitleEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="548dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Email"
+                android:textColor="#5A2D22"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/emailTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtTitleEmail"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="136dp"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="nguyendanghoangdao11a@gmail.com"
+                android:textAlignment="center"
+                android:textColor="#5A2D22"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/txtViewPost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/emailTv"
+                android:layout_marginStart="173dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Bài Viết"
+                android:textColor="#001D85"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerviewPosts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/txtViewPost"
+                android:layout_marginTop="-20dp" />
+        </RelativeLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

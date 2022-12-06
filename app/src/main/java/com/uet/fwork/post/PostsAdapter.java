@@ -1,7 +1,7 @@
 package com.uet.fwork.post;
 
 import android.content.Context;
-import android.text.format.DateFormat;
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,7 +14,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
+import com.uet.fwork.ViewProfileActivity;
 import com.uet.fwork.database.model.post.PostApplyModel;
 import com.uet.fwork.database.model.post.PostModel;
 import com.uet.fwork.database.model.post.ReactionModel;
@@ -35,7 +35,6 @@ import com.uet.fwork.util.TimestampToString;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
 
@@ -57,6 +56,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
+
+
 
     @NonNull
     @Override
@@ -119,6 +120,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
 
             }
         }
+
+        holder.uNameTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ViewProfileActivity.class);
+                intent.putExtra("id",uid);
+                context.startActivity(intent);
+            }
+        });
 
         //Buttons click
         holder.moreButton.setOnClickListener(new View.OnClickListener() {

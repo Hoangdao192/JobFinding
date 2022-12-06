@@ -62,6 +62,7 @@ public class ProfileFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         if (userRole.equals(UserRole.CANDIDATE)) {
             return inflater.inflate(R.layout.fragment_profile, container, false);
         } else if (userRole.equals(UserRole.EMPLOYER)) {
