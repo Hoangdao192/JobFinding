@@ -74,7 +74,7 @@ public class FirebaseAuthHelper {
             return;
         }
 
-        UserRepository userRepository = new UserRepository(firebaseDatabase);
+        UserRepository userRepository = UserRepository.getInstance();
         userRepository.getUserByUID(firebaseAuth.getUid(), user -> {
             if (user == null) return;
 

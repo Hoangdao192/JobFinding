@@ -68,7 +68,7 @@ public class UpdateCandidateProfileActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        userRepository = new UserRepository(FirebaseDatabase.getInstance());
+        userRepository = UserRepository.getInstance();
 
         edtName = findViewById(R.id.edtFullName);
         edtEmail = findViewById(R.id.edtContactEmail);

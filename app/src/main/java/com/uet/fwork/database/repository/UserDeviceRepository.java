@@ -9,12 +9,8 @@ import com.uet.fwork.database.model.UserDeviceModel;
 public class UserDeviceRepository extends Repository {
     private final static String databaseReferencePath = "userDevices";
 
-    public UserDeviceRepository(FirebaseDatabase firebaseDatabase, FirebaseFirestore firebaseFirestore) {
-        super(firebaseDatabase, firebaseFirestore, databaseReferencePath);
-    }
-
     public UserDeviceRepository(FirebaseDatabase firebaseDatabase) {
-        super(firebaseDatabase, databaseReferencePath);
+        super(databaseReferencePath);
     }
 
     public void insert(UserDeviceModel userDevice) {

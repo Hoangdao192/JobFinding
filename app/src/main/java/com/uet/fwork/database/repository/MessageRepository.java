@@ -36,12 +36,8 @@ public class MessageRepository extends Repository {
     private Context context;
 
     public MessageRepository(Context context, FirebaseDatabase firebaseDatabase) {
-        super(firebaseDatabase, databaseReferencePath);
+        super(databaseReferencePath);
         this.context = context;
-    }
-
-    public MessageRepository(FirebaseDatabase firebaseDatabase, FirebaseFirestore firebaseFirestore) {
-        super(firebaseDatabase, firebaseFirestore, databaseReferencePath);
     }
 
     /**

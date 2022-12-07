@@ -37,7 +37,7 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         this.context = context;
         this.notificationList = notificationList;
         Collections.reverse(this.notificationList);
-        this.userRepository = new UserRepository(FirebaseDatabase.getInstance());
+        this.userRepository = UserRepository.getInstance();
     }
 
     @NonNull

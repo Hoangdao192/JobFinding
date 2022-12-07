@@ -48,7 +48,7 @@ public class CandidatePostApplyRecyclerViewAdapter extends RecyclerView.Adapter<
     public CandidatePostApplyRecyclerViewAdapter(Context context, List<PostApplyModel> postApplyList) {
         this.context = context;
         this.postRepository = new PostRepository(context, FirebaseDatabase.getInstance());
-        this.userRepository = new UserRepository(FirebaseDatabase.getInstance());
+        this.userRepository = UserRepository.getInstance();
         this.postApplyRepository = new PostApplyRepository(context, FirebaseDatabase.getInstance());
 
         postApplyList.forEach(postApplyModel -> {

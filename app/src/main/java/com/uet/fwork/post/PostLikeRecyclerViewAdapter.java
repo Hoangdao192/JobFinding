@@ -39,7 +39,7 @@ public class PostLikeRecyclerViewAdapter extends RecyclerView.Adapter<PostLikeRe
         this.context = context;
         this.reactionModels = reactionModels;
         this.postRepository = new PostRepository(context, FirebaseDatabase.getInstance());
-        this.userRepository = new UserRepository(FirebaseDatabase.getInstance());
+        this.userRepository = UserRepository.getInstance();
         this.postReactionRepository = new PostReactionRepository(context, FirebaseDatabase.getInstance());
     }
 

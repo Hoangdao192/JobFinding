@@ -52,7 +52,7 @@ public class ProfileFragment extends Fragment{
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuthHelper = FirebaseAuthHelper.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        userRepository = new UserRepository(FirebaseDatabase.getInstance());
+        userRepository = UserRepository.getInstance();
         userRole = getArguments().getString("USER_ROLE");
     }
 

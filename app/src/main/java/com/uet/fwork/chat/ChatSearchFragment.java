@@ -45,7 +45,7 @@ public class ChatSearchFragment extends Fragment {
     public ChatSearchFragment() {
         super(R.layout.fragment_chat_search);
         userResultList = new ArrayList<>();
-        userRepository = new UserRepository(FirebaseDatabase.getInstance(), FirebaseFirestore.getInstance());
+        userRepository = UserRepository.getInstance();
         chatRepository = new ChatRepository(FirebaseDatabase.getInstance());
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }

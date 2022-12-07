@@ -19,12 +19,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ChatRepository extends Repository {
     private final static String databaseReferencePath = "chats/list";
 
-    public ChatRepository(FirebaseDatabase firebaseDatabase, FirebaseFirestore firebaseFirestore) {
-        super(firebaseDatabase, firebaseFirestore, databaseReferencePath);
-    }
-
     public ChatRepository(FirebaseDatabase firebaseDatabase) {
-        super(firebaseDatabase, databaseReferencePath);
+        super(databaseReferencePath);
     }
 
     public void createNewChat(List<String> chatMembersUID, @Nullable OnQuerySuccessListener<ChanelModel> listener) {

@@ -72,7 +72,7 @@ public class RegisterMainFragment extends Fragment {
     public RegisterMainFragment() {
         super(R.layout.fragment_register_main);
         firebaseAuth = FirebaseAuth.getInstance();
-        userRepository = new UserRepository(FirebaseDatabase.getInstance());
+        userRepository = UserRepository.getInstance();
         firebaseAuthHelper = FirebaseAuthHelper.getInstance();
     }
 

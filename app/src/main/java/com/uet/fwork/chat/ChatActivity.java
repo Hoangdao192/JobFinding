@@ -78,7 +78,7 @@ public class ChatActivity extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
         chatRepository = new ChatRepository(FirebaseDatabase.getInstance());
         messageRepository = new MessageRepository(ChatActivity.this, FirebaseDatabase.getInstance());
-        userRepository = new UserRepository(FirebaseDatabase.getInstance());
+        userRepository = UserRepository.getInstance();
     }
 
     @Override

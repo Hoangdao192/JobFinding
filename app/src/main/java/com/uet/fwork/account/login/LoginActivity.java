@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         super();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuthHelper = FirebaseAuthHelper.getInstance();
-        userRepository = new UserRepository(FirebaseDatabase.getInstance());
+        userRepository = UserRepository.getInstance();
         userDeviceRepository = new UserDeviceRepository(FirebaseDatabase.getInstance());
     }
 

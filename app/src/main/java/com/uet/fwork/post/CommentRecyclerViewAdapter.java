@@ -32,7 +32,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
     public CommentRecyclerViewAdapter(Context context, List<CommentModel> commentList) {
         this.context = context;
         this.commentList = commentList;
-        this.userRepository = new UserRepository(FirebaseDatabase.getInstance());
+        this.userRepository = UserRepository.getInstance();
     }
 
     @NonNull

@@ -28,7 +28,7 @@ public class PostRepository extends Repository {
     private Context context;
 
     public PostRepository(Context context, FirebaseDatabase firebaseDatabase) {
-        super(firebaseDatabase, DATABASE_PATH);
+        super(DATABASE_PATH);
         this.context = context;
         postApplyRepository = new PostApplyRepository(context, FirebaseDatabase.getInstance());
         postReactionRepository = new PostReactionRepository(context, firebaseDatabase);

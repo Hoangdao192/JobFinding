@@ -67,7 +67,7 @@ public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<Message
         this.user = user;
         this.partner = partner;
         this.chatChanelId = chatChanelId;
-        this.userRepository = new UserRepository(firebaseDatabase);
+        this.userRepository = UserRepository.getInstance();
 
         userAvatarTarget = new Target() {
             @Override

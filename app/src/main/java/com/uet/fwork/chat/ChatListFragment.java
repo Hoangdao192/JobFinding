@@ -57,7 +57,7 @@ public class ChatListFragment extends Fragment {
     public ChatListFragment() {
         super(R.layout.fragment_chat_main);
         userResultList = new ArrayList<>();
-        userRepository = new UserRepository(FirebaseDatabase.getInstance(), FirebaseFirestore.getInstance());
+        userRepository = UserRepository.getInstance();
         chatRepository = new ChatRepository(FirebaseDatabase.getInstance());
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         chanelIdList = new ArrayList<>();

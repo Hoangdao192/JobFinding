@@ -30,17 +30,28 @@ import java.util.Map;
 
 public class UserRepository extends Repository {
 
+    private static final String LOG_TAG = "UserRepository";
+
     private static UserRepository INSTANCE = null;
 
     //  Path from root node
     public static final String databaseReferencePath = "users/";
 
-    public UserRepository(FirebaseDatabase firebaseDatabase) {
-        super(firebaseDatabase, FirebaseFirestore.getInstance(), databaseReferencePath);
+    public static UserRepository getInstance() {
+        if (!Repository.isInitialize()) {
+            Log.d(LOG_TAG, "Repository has not been initialized yet");
+            return null;
+        }
+
+        if (INSTANCE == null) {
+            INSTANCE = new UserRepository();
+        }
+
+        return INSTANCE;
     }
 
-    public UserRepository(FirebaseDatabase firebaseDatabase, FirebaseFirestore firebaseFirestore) {
-        super(firebaseDatabase, firebaseFirestore, databaseReferencePath);
+    public UserRepository() {
+        super(databaseReferencePath);
     }
 
     public void isUserExists(String userUID, OnQuerySuccessListener<Boolean> onQuerySuccessListener) {
@@ -88,6 +99,22 @@ public class UserRepository extends Repository {
         });
     }
 
+    public QueryTask<UserModel> insert(UserModel user) {
+        return new QueryTask<UserModel>() {
+            @Override
+            public void execute() {
+                String userId = user.getId();
+                if (user instanceof CandidateModel) {
+                    rootDatabaseReference.child(userId).setValue(((CandidateModel) user));
+                } else if (user instanceof EmployerModel) {
+                    rootDatabaseReference.child(userId).setValue(((EmployerModel) user));
+                } else {
+                    rootDatabaseReference.child(userId).setValue(user);
+                }
+            }
+        };
+    }
+
     public void insertUser(UserModel userModel) {
         String userUID = userModel.getId();
         if (userModel instanceof CandidateModel) {
@@ -97,19 +124,6 @@ public class UserRepository extends Repository {
         } else {
             rootDatabaseReference.child(userUID).setValue(userModel);
         }
-
-        //  Update vào FireStore
-        rootCollectionReference.document(userUID).set(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                e.printStackTrace();
-            }
-        });
     }
 
     public void insertUser(
@@ -122,7 +136,6 @@ public class UserRepository extends Repository {
 
     public void updateUser(String userUID, Map<String, Object> updateDataMap) {
         rootDatabaseReference.child(userUID).updateChildren(updateDataMap);
-        rootCollectionReference.document(userUID).update(updateDataMap);
     }
 
     public void updateUser(String userUID, UserModel userModel) {
@@ -130,12 +143,6 @@ public class UserRepository extends Repository {
             rootDatabaseReference.child(userUID).setValue(((CandidateModel) userModel));
         } else if (userModel.getRole().equals(UserRole.EMPLOYER)) {
             rootDatabaseReference.child(userUID).setValue(((EmployerModel) userModel));
-        }
-
-        if (userModel.getRole().equals(UserRole.CANDIDATE)) {
-            rootCollectionReference.document(userUID).set(((CandidateModel) userModel));
-        } else if (userModel.getRole().equals(UserRole.EMPLOYER)) {
-            rootCollectionReference.document(userUID).set(((EmployerModel) userModel));
         }
     }
 

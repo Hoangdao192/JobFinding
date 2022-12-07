@@ -15,7 +15,7 @@ public class NotificationRepository extends Repository {
     private static final String LOG_TAG = "Notification repository";
 
     public NotificationRepository(FirebaseDatabase firebaseDatabase) {
-        super(firebaseDatabase, REFERENCE_PATH);
+        super(REFERENCE_PATH);
     }
 
     public void getAllByUserId(

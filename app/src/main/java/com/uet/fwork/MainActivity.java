@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.core.Repo;
 import com.uet.fwork.account.login.LoginActivity;
 import com.uet.fwork.account.register.RegisterActivity;
 import com.uet.fwork.database.model.UserModel;
@@ -39,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
     public MainActivity() {
         super();
-        this.firebaseAuth = FirebaseAuth.getInstance();
-        this.userRepository = new UserRepository(FirebaseDatabase.getInstance());
     }
 
     @Override
@@ -49,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         CloudMessagingHelper.initialize(this);
+        Repository.initialize(this, FirebaseDatabase.getInstance());
+        this.firebaseAuth = FirebaseAuth.getInstance();
+        this.userRepository = UserRepository.getInstance();
 
         //  Truy cập lần đầu
         SharedPreferences sharedPreferences = this.getSharedPreferences("MAIN", MODE_PRIVATE);

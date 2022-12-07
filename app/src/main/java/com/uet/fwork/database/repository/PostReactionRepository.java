@@ -32,7 +32,7 @@ public class PostReactionRepository extends Repository {
     private Context context;
 
     public PostReactionRepository(Context context, FirebaseDatabase firebaseDatabase) {
-        super(firebaseDatabase, REFERENCE_PATH);
+        super(REFERENCE_PATH);
         this.context = context;
     }
 

@@ -44,7 +44,7 @@ public class DashboardActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuthHelper = FirebaseAuthHelper.getInstance();
 
-        userRepository = new UserRepository(FirebaseDatabase.getInstance());
+        userRepository = UserRepository.getInstance();
 
         bottomNavigationView = findViewById(R.id.navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.content, homeFragment).commit();

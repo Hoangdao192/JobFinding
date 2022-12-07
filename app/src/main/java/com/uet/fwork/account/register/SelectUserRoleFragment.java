@@ -32,7 +32,7 @@ public class SelectUserRoleFragment extends Fragment {
 
     public SelectUserRoleFragment() {
         super(R.layout.fragment_select_user_role);
-        userRepository = new UserRepository(FirebaseDatabase.getInstance());
+        userRepository = UserRepository.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 

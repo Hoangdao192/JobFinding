@@ -73,7 +73,7 @@ public class CreateCandidateProfileFragment extends Fragment {
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-        userRepository = new UserRepository(FirebaseDatabase.getInstance());
+        userRepository = UserRepository.getInstance();
 
         calendar = Calendar.getInstance();
     }

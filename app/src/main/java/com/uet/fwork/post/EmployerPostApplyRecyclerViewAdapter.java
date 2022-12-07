@@ -56,7 +56,7 @@ public class EmployerPostApplyRecyclerViewAdapter extends RecyclerView.Adapter<E
         this.context = context;
         this.postMap = postMap;
         this.postRepository = new PostRepository(context, FirebaseDatabase.getInstance());
-        this.userRepository = new UserRepository(FirebaseDatabase.getInstance());
+        this.userRepository = UserRepository.getInstance();
         this.postApplyRepository = new PostApplyRepository(context, FirebaseDatabase.getInstance());
         this.postApplyList = unReadPostApplyList;
         this.unReadPostApplyList = unReadPostApplyList;

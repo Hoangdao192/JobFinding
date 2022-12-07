@@ -1,47 +1,53 @@
 package com.uet.fwork.database.repository;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public abstract class Repository {
-    protected FirebaseDatabase firebaseDatabase;
-    protected FirebaseFirestore firebaseFirestore;
+    private static final String LOG_TAG = "Repository";
+
     protected DatabaseReference rootDatabaseReference;
-    protected CollectionReference rootCollectionReference;
-    protected String referencePathFromRoot = "";
+    protected String referencePath = "";
 
-    public Repository(FirebaseDatabase firebaseDatabase) {
-        this.firebaseDatabase = firebaseDatabase;
-        this.rootDatabaseReference = this.firebaseDatabase.getReference(referencePathFromRoot);
+    private static Context applicationContext = null;
+    protected static FirebaseDatabase firebaseDatabase = null;
+
+    /**
+     * You must call this before use any Repository
+     * @param context
+     * @param firebaseDatabase
+     */
+    public static void initialize(Context context, FirebaseDatabase firebaseDatabase) {
+        if (Repository.applicationContext != null && Repository.firebaseDatabase != null) {
+            Log.d(LOG_TAG, "Repository has been initialized already");
+            return;
+        }
+
+        Repository.applicationContext = context.getApplicationContext();
+        Repository.firebaseDatabase = firebaseDatabase;
     }
 
-    public Repository(FirebaseDatabase firebaseDatabase, FirebaseFirestore firebaseFirestore, String referencePathFromRoot) {
-        this.referencePathFromRoot = referencePathFromRoot;
-        this.firebaseDatabase = firebaseDatabase;
-        this.firebaseFirestore = firebaseFirestore;
-        this.rootDatabaseReference = this.firebaseDatabase.getReference(referencePathFromRoot);
-        this.rootCollectionReference = this.firebaseFirestore.collection(referencePathFromRoot);
+    public static boolean isInitialize() {
+        return applicationContext != null && firebaseDatabase != null;
     }
 
-    public Repository(FirebaseDatabase firebaseDatabase, String referencePathFromRoot) {
-        this.referencePathFromRoot = referencePathFromRoot;
-        this.firebaseDatabase = firebaseDatabase;
-        this.referencePathFromRoot = referencePathFromRoot;
-        this.rootDatabaseReference = this.firebaseDatabase.getReference(referencePathFromRoot);
+    protected Repository() {
+        this.rootDatabaseReference = firebaseDatabase.getReference(referencePath);
+    }
+
+
+    protected Repository(String referencePath) {
+        this.referencePath = referencePath;
+        this.rootDatabaseReference = firebaseDatabase.getReference(referencePath);
     }
 
     public FirebaseDatabase getFirebaseDatabase() {
         return firebaseDatabase;
-    }
-
-    public void setFirebaseDatabase(FirebaseDatabase firebaseDatabase) {
-        this.firebaseDatabase = firebaseDatabase;
-    }
-
-    public void setFirebaseFirestore(FirebaseFirestore firebaseFirestore) {
-        this.firebaseFirestore = firebaseFirestore;
     }
 
     public DatabaseReference getRootDatabaseReference() {
