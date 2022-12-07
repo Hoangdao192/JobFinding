@@ -11,6 +11,8 @@ import com.algolia.search.saas.Index;
 import com.algolia.search.saas.Query;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -99,18 +101,63 @@ public class UserRepository extends Repository {
         });
     }
 
-    public QueryTask<UserModel> insert(UserModel user) {
-        return new QueryTask<UserModel>() {
+    public QueryTask<Boolean> insert(UserModel user) {
+        return new QueryTask<Boolean>() {
             @Override
             public void execute() {
-                String userId = user.getId();
-                if (user instanceof CandidateModel) {
-                    rootDatabaseReference.child(userId).setValue(((CandidateModel) user));
-                } else if (user instanceof EmployerModel) {
-                    rootDatabaseReference.child(userId).setValue(((EmployerModel) user));
-                } else {
-                    rootDatabaseReference.child(userId).setValue(user);
+                if (!user.getId().equals("")) {
+                    rootDatabaseReference.child(user.getId()).setValue(user)
+                            .addOnSuccessListener(unused -> onSuccess(true))
+                            .addOnFailureListener(getOnFailedListener())
+                            .addOnCanceledListener(getOnCancelledListener());
                 }
+            }
+        };
+    }
+
+    public QueryTask<Boolean> update(UserModel user) {
+        return new QueryTask<Boolean>() {
+            @Override
+            public void execute() {
+                if (!user.getId().equals("")) {
+                    isUserExists(user.getId())
+                            .addOnSuccessListener(isExists -> {
+                                if (isExists) {
+                                    rootDatabaseReference
+                                            .child(user.getId())
+                                            .setValue(user)
+                                            .addOnSuccessListener(unused -> onSuccess(true))
+                                            .addOnFailureListener(getOnFailedListener())
+                                            .addOnCanceledListener(getOnCancelledListener());
+                                } else {
+                                    Log.w(LOG_TAG, "Update: user is not exists");
+                                    onSuccess(false);
+                                }
+                            })
+                            .addOnFailedListener(getOnFailedListener())
+                            .addOnCancelledListener(getOnCancelledListener())
+                            .execute();
+                }
+            }
+        };
+    }
+
+    public QueryTask<Boolean> isUserExists(String userId) {
+        return new QueryTask<Boolean>() {
+            @Override
+            public void execute() {
+                rootDatabaseReference.child(userId).get()
+                        .addOnSuccessListener(dataSnapshot -> {
+                            if (dataSnapshot.exists()) {
+                                onSuccess(true);
+                            } else {
+                                onSuccess(false);
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            e.printStackTrace();
+                            onFailed(e);
+                        });
             }
         };
     }
@@ -124,14 +171,6 @@ public class UserRepository extends Repository {
         } else {
             rootDatabaseReference.child(userUID).setValue(userModel);
         }
-    }
-
-    public void insertUser(
-            UserModel userModel,
-            Repository.OnQuerySuccessListener<Void> listener
-    ) {
-        rootDatabaseReference.child(userModel.getId()).setValue(userModel)
-                .addOnSuccessListener(unused -> listener.onSuccess(unused));
     }
 
     public void updateUser(String userUID, Map<String, Object> updateDataMap) {

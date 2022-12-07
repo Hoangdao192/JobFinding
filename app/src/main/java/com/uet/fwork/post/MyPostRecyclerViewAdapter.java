@@ -35,7 +35,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
     public MyPostRecyclerViewAdapter(Context context, List<PostModel> postList) {
         this.context = context;
         this.postList = postList;
-        this.postRepository = new PostRepository(context, FirebaseDatabase.getInstance());
+        this.postRepository = PostRepository.getInstance();
         this.userRepository = UserRepository.getInstance();
     }
 

@@ -1,5 +1,7 @@
 package com.uet.fwork.database.repository;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,10 +19,25 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ChatRepository extends Repository {
+    private static final String LOG_TAG = "ChatRepository";
     private final static String databaseReferencePath = "chats/list";
+    private static ChatRepository INSTANCE = null;
 
-    public ChatRepository(FirebaseDatabase firebaseDatabase) {
+    private ChatRepository() {
         super(databaseReferencePath);
+    }
+
+    public static ChatRepository getInstance() {
+        if (!Repository.isInitialize()) {
+            Log.d(LOG_TAG, "Repository has not been initialized yet");
+            return null;
+        }
+
+        if (INSTANCE == null) {
+            INSTANCE = new ChatRepository();
+        }
+
+        return INSTANCE;
     }
 
     public void createNewChat(List<String> chatMembersUID, @Nullable OnQuerySuccessListener<ChanelModel> listener) {

@@ -19,7 +19,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.core.Repo;
 import com.uet.fwork.account.login.LoginActivity;
 import com.uet.fwork.account.register.RegisterActivity;
+import com.uet.fwork.database.model.CandidateModel;
 import com.uet.fwork.database.model.UserModel;
+import com.uet.fwork.database.model.UserRole;
 import com.uet.fwork.database.repository.PostApplyRepository;
 import com.uet.fwork.database.repository.PostRepository;
 import com.uet.fwork.database.repository.Repository;
@@ -63,9 +65,6 @@ public class MainActivity extends AppCompatActivity {
             initNotificationChanel();
             checking();
         }
-
-//        initNotificationChanel();
-//        checking();
     }
 
     private void checking() {

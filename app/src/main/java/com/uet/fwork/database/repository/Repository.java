@@ -14,7 +14,7 @@ public abstract class Repository {
     protected DatabaseReference rootDatabaseReference;
     protected String referencePath = "";
 
-    private static Context applicationContext = null;
+    protected static Context applicationContext = null;
     protected static FirebaseDatabase firebaseDatabase = null;
 
     /**

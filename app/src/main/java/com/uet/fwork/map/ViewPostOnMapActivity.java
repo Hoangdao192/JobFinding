@@ -32,7 +32,7 @@ public class ViewPostOnMapActivity extends AppCompatActivity implements OnMapRea
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_post_on_map);
 
-        postRepository = new PostRepository(this, FirebaseDatabase.getInstance());
+        postRepository = PostRepository.getInstance();
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(null);
         mapView.getMapAsync(this);

@@ -34,7 +34,7 @@ public class NotificationFragment extends Fragment {
 
     public NotificationFragment() {
         super(R.layout.fragment_notification);
-        this.notificationRepository = new NotificationRepository(FirebaseDatabase.getInstance());
+        this.notificationRepository = NotificationRepository.getInstance();
         this.firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 

@@ -31,17 +31,29 @@ import java.util.Map;
 public class PostApplyRepository extends Repository {
     private static final String REFERENCE_PATH = "posts/apply";
     private static final String LOG_TAG = "Post apply repository";
-    private Context context;
+    private static PostApplyRepository INSTANCE = null;
 
-    public PostApplyRepository(Context context, FirebaseDatabase firebaseDatabase) {
+    private PostApplyRepository() {
         super(REFERENCE_PATH);
-        this.context = context;
+    }
+
+    public static PostApplyRepository getInstance() {
+        if (!Repository.isInitialize()) {
+            Log.d(LOG_TAG, "Repository has not been initialized yet");
+            return null;
+        }
+
+        if (INSTANCE == null) {
+            INSTANCE = new PostApplyRepository();
+        }
+
+        return INSTANCE;
     }
 
     public void insert(
             PostApplyModel postApplyModel,
             @Nullable OnQuerySuccessListener<PostApplyModel> listener) {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(applicationContext);
         String apiUrl = Constants.SERVER_URL + "post/apply/notify";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, apiUrl, response -> {
             response = new String(

@@ -52,8 +52,8 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
         this.chanelIdList = chanelIdList;
         this.currentUserId = currentUserId;
         this.userRepository = UserRepository.getInstance();
-        this.chatRepository = new ChatRepository(firebaseDatabase);
-        this.messageRepository = new MessageRepository(context, firebaseDatabase);
+        this.chatRepository = ChatRepository.getInstance();
+        this.messageRepository = MessageRepository.getInstance();
         this.listener = listener;
     }
 

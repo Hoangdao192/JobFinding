@@ -43,7 +43,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        postRepository = new PostRepository(getContext(), FirebaseDatabase.getInstance());
+        postRepository = PostRepository.getInstance();
     }
 
     @Override

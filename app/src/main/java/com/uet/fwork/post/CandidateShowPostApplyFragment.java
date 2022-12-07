@@ -37,7 +37,7 @@ public class CandidateShowPostApplyFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        postApplyRepository = new PostApplyRepository(getContext(), FirebaseDatabase.getInstance());
+        postApplyRepository = PostApplyRepository.getInstance();
 
         recPostApply = view.findViewById(R.id.recPostApply);
         radGrpApplication = view.findViewById(R.id.radGrpApplication);

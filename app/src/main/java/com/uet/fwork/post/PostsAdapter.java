@@ -56,9 +56,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
     public PostsAdapter(Context context, List<PostModel> postModelList) {
         this.context = context;
         this.postModelList = postModelList;
-        postApplyRepository = new PostApplyRepository(context, FirebaseDatabase.getInstance());
-        reactionRepository = new PostReactionRepository(context, FirebaseDatabase.getInstance());
-        commentRepository = new CommentRepository(context, FirebaseDatabase.getInstance());
+        postApplyRepository = PostApplyRepository.getInstance();
+        reactionRepository = PostReactionRepository.getInstance();
+        commentRepository = CommentRepository.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 

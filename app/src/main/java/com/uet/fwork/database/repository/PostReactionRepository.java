@@ -28,16 +28,28 @@ public class PostReactionRepository extends Repository {
     private static final String REFERENCE_PATH = "posts/reactions";
     private static final String USER_REACTION_PATH = "/posts/userReactions";
     private static final String LOG_TAG = "PostReaction repository";
+    private static PostReactionRepository INSTANCE = null;
 
-    private Context context;
 
-    public PostReactionRepository(Context context, FirebaseDatabase firebaseDatabase) {
+    private PostReactionRepository() {
         super(REFERENCE_PATH);
-        this.context = context;
+    }
+
+    public static PostReactionRepository getInstance() {
+        if (!Repository.isInitialize()) {
+            Log.d(LOG_TAG, "Repository has not been initialized yet");
+            return null;
+        }
+
+        if (INSTANCE == null) {
+            INSTANCE = new PostReactionRepository();
+        }
+
+        return INSTANCE;
     }
 
     public void insert(ReactionModel reactionModel, @Nullable OnQuerySuccessListener<Boolean> listener) {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(applicationContext);
         String apiUrl = Constants.SERVER_URL + "post/reaction/notify";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, apiUrl, response -> {
             response = new String(

@@ -1,10 +1,14 @@
 package com.uet.fwork.database.repository;
 
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 public abstract class QueryTask<T> {
     private T result;
     private OnSuccessListener<T> onSuccessListener = null;
-    private OnFailedListener onFailedListener = null;
-    private OnCancelledListener onCancelledListener = null;
+    private OnFailureListener onFailedListener = null;
+    private OnCanceledListener onCancelledListener = null;
     private OnExecuteListener onExecuteListener = null;
 
     public QueryTask() {
@@ -21,32 +25,48 @@ public abstract class QueryTask<T> {
         return this;
     }
 
-    public QueryTask<T> addOnFailedListener(OnFailedListener onFailedListener) {
+    public QueryTask<T> addOnFailedListener(OnFailureListener onFailedListener) {
         this.onFailedListener = onFailedListener;
         return this;
     }
 
-    public QueryTask<T> addOnCancelledListener(OnCancelledListener onCancelledListener) {
+    public QueryTask<T> addOnCancelledListener(OnCanceledListener onCancelledListener) {
         this.onCancelledListener = onCancelledListener;
         return this;
     }
 
-    public void callOnSuccess(T result) {
+    public OnSuccessListener<T> getOnSuccessListener() {
+        return onSuccessListener;
+    }
+
+    public OnFailureListener getOnFailedListener() {
+        return onFailedListener;
+    }
+
+    public OnCanceledListener getOnCancelledListener() {
+        return onCancelledListener;
+    }
+
+    public void onSuccess(T result) {
         if (onSuccessListener != null) {
             onSuccessListener.onSuccess(result);
         }
     }
 
-    public void callOnFailed(Exception e) {
+    public void onFailed(Exception e) {
         if (onFailedListener != null) {
-            onFailedListener.onFailed(e);
+            onFailedListener.onFailure(e);
         }
     }
 
-    public void callOnCancelled() {
+    public void onCancelled() {
         if (onCancelledListener != null) {
-            onCancelledListener.onCancelled();
+            onCancelledListener.onCanceled();
         }
+    }
+
+    public T getResult() {
+        return result;
     }
 
     public T get() {
@@ -55,17 +75,5 @@ public abstract class QueryTask<T> {
 
     public interface OnExecuteListener {
         void onExecute();
-    }
-
-    public interface OnSuccessListener<T> {
-        void onSuccess(T result);
-    }
-
-    public interface OnFailedListener {
-        void onFailed(Exception exception);
-    }
-
-    public interface OnCancelledListener {
-        void onCancelled();
     }
 }

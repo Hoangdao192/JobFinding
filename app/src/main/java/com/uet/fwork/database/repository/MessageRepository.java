@@ -32,12 +32,25 @@ import java.util.Map;
 public class MessageRepository extends Repository {
     private static final String databaseReferencePath = "chats/messages";
     private static final String LOG_TAG = "Message repository";
+    private static MessageRepository INSTANCE = null;
 
     private Context context;
 
-    public MessageRepository(Context context, FirebaseDatabase firebaseDatabase) {
+    private MessageRepository() {
         super(databaseReferencePath);
-        this.context = context;
+    }
+
+    public static MessageRepository getInstance() {
+        if (!Repository.isInitialize()) {
+            Log.d(LOG_TAG, "Repository has not been initialized yet");
+            return null;
+        }
+
+        if (INSTANCE == null) {
+            INSTANCE = new MessageRepository();
+        }
+
+        return INSTANCE;
     }
 
     /**

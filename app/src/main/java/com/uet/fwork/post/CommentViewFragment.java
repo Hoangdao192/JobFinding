@@ -56,8 +56,8 @@ public class CommentViewFragment extends Fragment {
             Log.e(LOG_TAG, "Not receive argument postId");
         }
 
-        postRepository = new PostRepository(getContext(), FirebaseDatabase.getInstance());
-        commentRepository = new CommentRepository(getContext(), FirebaseDatabase.getInstance());
+        postRepository = PostRepository.getInstance();
+        commentRepository = CommentRepository.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 

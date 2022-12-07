@@ -25,14 +25,26 @@ public class PostRepository extends Repository {
     private PostApplyRepository postApplyRepository;
     private CommentRepository commentRepository;
     private PostReactionRepository postReactionRepository;
-    private Context context;
+    private static PostRepository INSTANCE = null;
 
-    public PostRepository(Context context, FirebaseDatabase firebaseDatabase) {
+    private PostRepository() {
         super(DATABASE_PATH);
-        this.context = context;
-        postApplyRepository = new PostApplyRepository(context, FirebaseDatabase.getInstance());
-        postReactionRepository = new PostReactionRepository(context, firebaseDatabase);
-        commentRepository = new CommentRepository(context, firebaseDatabase);
+        postApplyRepository = PostApplyRepository.getInstance();
+        postReactionRepository = PostReactionRepository.getInstance();
+        commentRepository = CommentRepository.getInstance();
+    }
+
+    public static PostRepository getInstance() {
+        if (!Repository.isInitialize()) {
+            Log.d(LOG_TAG, "Repository has not been initialized yet");
+            return null;
+        }
+
+        if (INSTANCE == null) {
+            INSTANCE = new PostRepository();
+        }
+
+        return INSTANCE;
     }
 
     public void insert(PostModel postModel, @Nullable OnQuerySuccessListener<Boolean> listener) {

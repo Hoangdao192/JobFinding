@@ -1,5 +1,7 @@
 package com.uet.fwork.database.repository;
 
+import android.util.Log;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
@@ -8,9 +10,24 @@ import com.uet.fwork.database.model.UserDeviceModel;
 
 public class UserDeviceRepository extends Repository {
     private final static String databaseReferencePath = "userDevices";
+    private static final String LOG_TAG = "UserDeviceRepository";
+    private static UserDeviceRepository INSTANCE = null;
 
-    public UserDeviceRepository(FirebaseDatabase firebaseDatabase) {
+    private UserDeviceRepository() {
         super(databaseReferencePath);
+    }
+
+    public static UserDeviceRepository getInstance() {
+        if (!Repository.isInitialize()) {
+            Log.d(LOG_TAG, "Repository has not been initialized yet");
+            return null;
+        }
+
+        if (INSTANCE == null) {
+            INSTANCE = new UserDeviceRepository();
+        }
+
+        return INSTANCE;
     }
 
     public void insert(UserDeviceModel userDevice) {

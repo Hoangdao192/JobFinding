@@ -49,8 +49,8 @@ public class EmployerShowPostApplyFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        postRepository = new PostRepository(getContext(), FirebaseDatabase.getInstance());
-        postApplyRepository = new PostApplyRepository(getContext(), FirebaseDatabase.getInstance());
+        postRepository = PostRepository.getInstance();
+        postApplyRepository = PostApplyRepository.getInstance();
 
         radGrpApplication = view.findViewById(R.id.radGrpApplication);
         recPostApply = view.findViewById(R.id.recPostApply);

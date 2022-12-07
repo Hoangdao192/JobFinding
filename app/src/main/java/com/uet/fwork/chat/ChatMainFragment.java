@@ -74,8 +74,8 @@ public class ChatMainFragment extends Fragment {
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        chatRepository = new ChatRepository(FirebaseDatabase.getInstance());
-        messageRepository = new MessageRepository(getContext(), FirebaseDatabase.getInstance());
+        chatRepository = ChatRepository.getInstance();
+        messageRepository = MessageRepository.getInstance();
         userRepository = UserRepository.getInstance();
     }
 

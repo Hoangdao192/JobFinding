@@ -35,7 +35,7 @@ public class ShowPostLikeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        postReactionRepository = new PostReactionRepository(getContext(), FirebaseDatabase.getInstance());
+        postReactionRepository = PostReactionRepository.getInstance();
 
         recPostApply = view.findViewById(R.id.recPostApply);
 

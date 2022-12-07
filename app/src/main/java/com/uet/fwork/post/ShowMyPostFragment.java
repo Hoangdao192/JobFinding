@@ -31,7 +31,7 @@ public class ShowMyPostFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        postRepository = new PostRepository(getContext(), FirebaseDatabase.getInstance());
+        postRepository = PostRepository.getInstance();
 
         recPostApply = view.findViewById(R.id.recPostApply);
 
