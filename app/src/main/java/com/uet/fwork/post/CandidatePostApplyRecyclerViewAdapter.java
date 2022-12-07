@@ -25,6 +25,7 @@ import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.dialog.ConfirmDialog;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +41,31 @@ public class CandidatePostApplyRecyclerViewAdapter extends RecyclerView.Adapter<
     private PostApplyRepository postApplyRepository;
     private UserRepository userRepository;
 
+    private List<PostApplyModel> unCheckApplicationList = new ArrayList<>();
+    private List<PostApplyModel> acceptedApplicationList = new ArrayList<>();
+    private List<PostApplyModel> rejectedApplicationList = new ArrayList<>();
+
     public CandidatePostApplyRecyclerViewAdapter(Context context, List<PostApplyModel> postApplyList) {
         this.context = context;
-        this.postApplyList = postApplyList;
         this.postRepository = new PostRepository(context, FirebaseDatabase.getInstance());
         this.userRepository = new UserRepository(FirebaseDatabase.getInstance());
         this.postApplyRepository = new PostApplyRepository(context, FirebaseDatabase.getInstance());
+
+        postApplyList.forEach(postApplyModel -> {
+            switch (postApplyModel.getStatus()) {
+                case PostApplyStatus.WAITING:
+                    unCheckApplicationList.add(postApplyModel);
+                    break;
+                case PostApplyStatus.ACCEPTED:
+                    acceptedApplicationList.add(postApplyModel);
+                    break;
+                case PostApplyStatus.REJECTED:
+                    rejectedApplicationList.add(postApplyModel);
+                    break;
+            }
+        });
+
+        this.postApplyList = unCheckApplicationList;
     }
 
     @NonNull
@@ -67,16 +87,6 @@ public class CandidatePostApplyRecyclerViewAdapter extends RecyclerView.Adapter<
         } else {
             loadPostDataIntoHolder(postMap.get(postApply.getPostId()), holder);
         }
-
-        String postApplyStatus = "";
-        if (postApply.getStatus().equals(PostApplyStatus.WAITING)) {
-            postApplyStatus = "Trạng thái: Đã gửi";
-        } else if (postApply.getStatus().equals(PostApplyStatus.ACCEPTED)) {
-            postApplyStatus = "Trạng thái: Đơn ứng tuyển được chấp nhận";
-        } else if (postApply.getStatus().equals(PostApplyStatus.REJECTED)) {
-            postApplyStatus = "Trạng thái: Đơn ứng tuyển không được chấp nhận";
-        }
-        holder.txvStatus.setText(postApplyStatus);
 
         holder.btnRemove.setOnClickListener(v -> {
             ConfirmDialog confirmDialog = new ConfirmDialog(
@@ -118,6 +128,21 @@ public class CandidatePostApplyRecyclerViewAdapter extends RecyclerView.Adapter<
         holder.txvJobAddress.setText("Địa chỉ: " + postModel.getPostAddress());
         holder.txvJobName.setText("Tên công việc: " + postModel.getPostName());
         holder.txvJobMajor.setText("Chuyên ngành: " + postModel.getPostMajor());
+    }
+
+    public void displayUnReadApplication() {
+        this.postApplyList = unCheckApplicationList;
+        notifyDataSetChanged();
+    }
+
+    public void displayAcceptedApplication() {
+        this.postApplyList = acceptedApplicationList;
+        notifyDataSetChanged();
+    }
+
+    public void displayRejectedApplication() {
+        this.postApplyList = rejectedApplicationList;
+        notifyDataSetChanged();
     }
 
     @Override

@@ -203,9 +203,12 @@ public class LoginActivity extends AppCompatActivity {
     private void onLoginSuccessful() {
         registerFirebaseMessaging();
         Log.d(LOG_TAG, "Firebase auth: Login successful");
-        FirebaseAuthHelper.initialize(FirebaseDatabase.getInstance(), FirebaseAuth.getInstance(), getApplicationContext());
-        Intent intent = new Intent(this, DashboardActivity.class);
-        startActivity(intent);
+        FirebaseAuthHelper.initialize(
+                FirebaseDatabase.getInstance(), FirebaseAuth.getInstance(),
+                getApplicationContext(), result -> {
+                    Intent intent = new Intent(this, DashboardActivity.class);
+                    startActivity(intent);
+                });
     }
 
     private void onFirebaseLoginSuccess() {
@@ -336,8 +339,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     /**
      * Xử lý login bằng Facebook

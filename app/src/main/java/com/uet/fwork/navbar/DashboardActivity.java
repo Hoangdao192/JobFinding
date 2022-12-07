@@ -17,6 +17,7 @@ import com.uet.fwork.database.model.UserRole;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
+import com.uet.fwork.notification.NotificationFragment;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -29,9 +30,9 @@ public class DashboardActivity extends AppCompatActivity {
     HomeFragment homeFragment = new HomeFragment();
     private CandidateDashboardFragment candidateDashboardFragment = new CandidateDashboardFragment();
     private EmployerDashboardFragment employerDashboardFragment = new EmployerDashboardFragment();
+    private NotificationFragment notificationFragment = new NotificationFragment();
     ProfileFragment profileFragment = new ProfileFragment();
     SearchFragment searchFragment = new SearchFragment();
-    NotificationsFragment notificationsFragment = new NotificationsFragment();
     ChatListFragment inboxFragment = new ChatListFragment();
 
     @Override
@@ -74,7 +75,7 @@ public class DashboardActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.content, searchFragment).commit();
                         return true;
                     case R.id.nav_notifications:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content, notificationsFragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content, notificationFragment).commit();
                         return true;
                     case R.id.nav_inbox:
                         getSupportFragmentManager().beginTransaction().replace(R.id.content, inboxFragment).commit();

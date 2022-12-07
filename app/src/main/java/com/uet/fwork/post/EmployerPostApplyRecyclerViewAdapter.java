@@ -24,6 +24,7 @@ import com.uet.fwork.database.repository.PostRepository;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.dialog.ConfirmDialog;
+import com.uet.fwork.firebasehelper.CloudMessagingHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ public class EmployerPostApplyRecyclerViewAdapter extends RecyclerView.Adapter<E
     private PostRepository postRepository;
     private PostApplyRepository postApplyRepository;
     private UserRepository userRepository;
+    private CloudMessagingHelper cloudMessagingHelper;
 
     private List<PostApplyModel> postApplyList = new ArrayList<>();
     private List<PostApplyModel> unReadPostApplyList;
@@ -60,6 +62,7 @@ public class EmployerPostApplyRecyclerViewAdapter extends RecyclerView.Adapter<E
         this.unReadPostApplyList = unReadPostApplyList;
         this.acceptedPostApplyList = acceptedPostApplyList;
         this.rejectedPostApplyList = rejectedPostApplyList;
+        this.cloudMessagingHelper = CloudMessagingHelper.getInstance();
     }
 
     @NonNull
@@ -90,6 +93,7 @@ public class EmployerPostApplyRecyclerViewAdapter extends RecyclerView.Adapter<E
                 if (postApplyModel.getStatus().equals(PostApplyStatus.WAITING)) {
                     postApplyModel.setStatus(PostApplyStatus.REJECTED);
                     postApplyRepository.update(postApplyModel, result -> {
+                        cloudMessagingHelper.sendPostApplicationRejectNotify(postApplyModel);
                         unReadPostApplyList.remove(postApplyModel);
                         rejectedPostApplyList.add(postApplyModel);
                         notifyItemRemoved(holder.getBindingAdapterPosition());
@@ -102,6 +106,7 @@ public class EmployerPostApplyRecyclerViewAdapter extends RecyclerView.Adapter<E
             public void onClick(View v) {
                 postApplyModel.setStatus(PostApplyStatus.ACCEPTED);
                 postApplyRepository.update(postApplyModel, result -> {
+                    cloudMessagingHelper.sendPostApplicationAcceptNotify(postApplyModel);
                     unReadPostApplyList.remove(postApplyModel);
                     acceptedPostApplyList.add(postApplyModel);
                     notifyItemRemoved(holder.getBindingAdapterPosition());

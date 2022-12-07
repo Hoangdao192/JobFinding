@@ -2,6 +2,7 @@ package com.uet.fwork.post;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +25,8 @@ public class CandidateShowPostApplyFragment extends Fragment {
     private RecyclerView recPostApply;
     private PostApplyRepository postApplyRepository;
     private FirebaseUser firebaseUser;
+    private RadioGroup radGrpApplication;
+    private  CandidatePostApplyRecyclerViewAdapter adapter;
 
     public CandidateShowPostApplyFragment() {
         super(R.layout.fragment_my_apply);
@@ -37,13 +40,31 @@ public class CandidateShowPostApplyFragment extends Fragment {
         postApplyRepository = new PostApplyRepository(getContext(), FirebaseDatabase.getInstance());
 
         recPostApply = view.findViewById(R.id.recPostApply);
+        radGrpApplication = view.findViewById(R.id.radGrpApplication);
 
         postApplyRepository.getAllPostApplyByUserId(firebaseUser.getUid(), postApplyList -> {
-            CandidatePostApplyRecyclerViewAdapter adapter = new CandidatePostApplyRecyclerViewAdapter(
+            adapter = new CandidatePostApplyRecyclerViewAdapter(
                     getContext(), postApplyList
             );
             recPostApply.setAdapter(adapter);
             recPostApply.setLayoutManager(new LinearLayoutManager(getContext()));
+
+            radGrpApplication.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    switch (checkedId) {
+                        case R.id.radNotRead:
+                            adapter.displayUnReadApplication();
+                            break;
+                        case R.id.radAccepted:
+                            adapter.displayAcceptedApplication();
+                            break;
+                        case R.id.radRejected:
+                            adapter.displayRejectedApplication();
+                            break;
+                    }
+                }
+            });
         });
     }
 }

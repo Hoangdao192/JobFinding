@@ -23,6 +23,7 @@ import com.uet.fwork.database.repository.PostApplyRepository;
 import com.uet.fwork.database.repository.PostRepository;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
+import com.uet.fwork.firebasehelper.CloudMessagingHelper;
 import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
 import com.uet.fwork.firebasehelper.FirebaseSignInMethod;
 import com.uet.fwork.landingpage.LandingPage1;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        CloudMessagingHelper.initialize(this);
 
         //  Truy cập lần đầu
         SharedPreferences sharedPreferences = this.getSharedPreferences("MAIN", MODE_PRIVATE);
@@ -146,12 +149,12 @@ public class MainActivity extends AppCompatActivity {
     private void startDashboardActivity() {
         SharedPreferences sharedPreferences = this.getSharedPreferences("MAIN", MODE_PRIVATE);
         sharedPreferences.edit().putString("USER", firebaseAuth.getUid()).apply();
-        FirebaseAuthHelper.initialize(FirebaseDatabase.getInstance(), FirebaseAuth.getInstance(), getApplicationContext());
-        PostApplyRepository postApplyRepository = new PostApplyRepository(this, FirebaseDatabase.getInstance());
-        postApplyRepository.deletePostApplyByPostAndUser("-NID4UkOsOowmWJa5P7i", "mWRHRejdpNbHoNShgtLKjWnSPas1", null);
-
-        Intent intent = new Intent(this, DashboardActivity.class);
-        startActivity(intent);
+        FirebaseAuthHelper.initialize(
+                FirebaseDatabase.getInstance(), FirebaseAuth.getInstance(),
+                getApplicationContext(), result -> {
+                    Intent intent = new Intent(this, DashboardActivity.class);
+                    startActivity(intent);
+                });
     }
 
     private void startLoginActivity() {

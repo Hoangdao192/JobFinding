@@ -41,27 +41,31 @@ public class FirebaseAuthHelper {
         this.applicationContext = context.getApplicationContext();
     }
 
-    public static final void initialize(FirebaseDatabase firebaseDatabase, FirebaseAuth firebaseAuth, Context context) {
+    public static final void initialize(
+            FirebaseDatabase firebaseDatabase, FirebaseAuth firebaseAuth,
+            Context context, OnSuccessListener<Boolean> listener) {
         userRepository = new UserRepository(firebaseDatabase);
         applicationContext = context.getApplicationContext();
         userRepository.getUserByUID(firebaseAuth.getUid(), new Repository.OnQuerySuccessListener<UserModel>() {
             @Override
             public void onSuccess(UserModel userModel) {
                 user = userModel;
+                firebaseAuth.fetchSignInMethodsForEmail(firebaseAuth.getCurrentUser().getEmail())
+                        .addOnSuccessListener(signInMethodQueryResult -> {
+                            signInMethod = signInMethodQueryResult.getSignInMethods().get(0);
+                            listener.onSuccess(true);
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                e.printStackTrace();
+                                Log.d("FirebaseAuthHelper", "Firebase auth: Fetch sign in method failed");
+                            }
+                        });
             }
         });
 
-        firebaseAuth.fetchSignInMethodsForEmail(firebaseAuth.getCurrentUser().getEmail())
-                .addOnSuccessListener(signInMethodQueryResult -> {
-                    signInMethod = signInMethodQueryResult.getSignInMethods().get(0);
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                        Log.d("FirebaseAuthHelper", "Firebase auth: Fetch sign in method failed");
-                    }
-                });
+
     }
 
     public static UserModel getUser() {

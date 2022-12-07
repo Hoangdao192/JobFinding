@@ -33,7 +33,11 @@
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:requiresFadingEdge="horizontal"
+        android:fadingEdge="horizontal"
+        android:fadingEdgeLength="20dp"
         android:scrollbars="none">
         <RadioGroup
             android:orientation="horizontal"
