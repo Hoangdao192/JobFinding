@@ -19,29 +19,38 @@ import java.util.Map;
 
 public class CloudMessagingHelper {
     private static CloudMessagingHelper INSTANCE = null;
-    private static Context applicationContext = null;
+    private Context applicationContext = null;
     private static final String LOG_TAG = "CloudMessagingHelper";
 
-    private CloudMessagingHelper() {}
+    private CloudMessagingHelper(Context applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
+    /**
+     * You must call this method before call getInstance() method
+     */
     public static void initialize(Context context) {
-        if (applicationContext != null) {
+        if (INSTANCE != null) {
             Log.d("CloudMessagingHelper", "CloudMessagingHelper has been initialized already.");
         } else {
             Log.d("CloudMessagingHelper", "CloudMessagingHelper initialize successful.");
-            applicationContext = context.getApplicationContext();
+            INSTANCE = new CloudMessagingHelper(context.getApplicationContext());
         }
     }
 
+    /**
+     * You must call initialize method before call this method
+     * If method initialize has not been called yet
+     * @return null
+     * Else
+     * @return INSTANCE
+     */
     public static CloudMessagingHelper getInstance() {
-        if (applicationContext == null) {
+        if (INSTANCE == null) {
             Log.d("CloudMessagingHelper", "CloudMessagingHelper has not been initialized yet.");
             return null;
         }
 
-        if (INSTANCE == null) {
-            INSTANCE = new CloudMessagingHelper();
-        }
         return INSTANCE;
     }
 

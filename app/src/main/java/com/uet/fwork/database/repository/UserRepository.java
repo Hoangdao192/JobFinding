@@ -65,49 +65,28 @@ public class UserRepository extends Repository {
             String userUID,
             Repository.OnQuerySuccessListener<UserModel> listener
     ) {
-        System.out.println("GET USER BY UID" + userUID);
 
-        rootDatabaseReference.child(userUID).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-            @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-                System.out.println(userUID);
-                System.out.println("GET USER SNAPSHOT: " + dataSnapshot);
-                if (dataSnapshot.exists()) {
-                    System.out.println("GET USER OK");
-                    String userRole = (String) dataSnapshot.child("role").getValue();
-                    if (userRole.equals(UserRole.CANDIDATE)) {
-                        UserModel userModel = dataSnapshot.getValue(CandidateModel.class);
-                        listener.onSuccess(userModel);
-                    } else if (userRole.equals(UserRole.EMPLOYER)) {
-                        UserModel userModel = dataSnapshot.getValue(EmployerModel.class);
-                        listener.onSuccess(userModel);
-                    } else if (userRole.equals(UserRole.NOT_SET)) {
-                        UserModel userModel = dataSnapshot.getValue(UserModel.class);
-                        listener.onSuccess(userModel);
-                    }
-                } else {
-                    System.out.println("GET USER FAIL");
-                    listener.onSuccess(null);
+        rootDatabaseReference.child(userUID).get().addOnSuccessListener(dataSnapshot -> {
+            if (dataSnapshot.exists()) {
+                String userRole = (String) dataSnapshot.child("role").getValue();
+                if (userRole.equals(UserRole.CANDIDATE)) {
+                    UserModel userModel = dataSnapshot.getValue(CandidateModel.class);
+                    listener.onSuccess(userModel);
+                } else if (userRole.equals(UserRole.EMPLOYER)) {
+                    UserModel userModel = dataSnapshot.getValue(EmployerModel.class);
+                    listener.onSuccess(userModel);
+                } else if (userRole.equals(UserRole.NOT_SET)) {
+                    UserModel userModel = dataSnapshot.getValue(UserModel.class);
+                    listener.onSuccess(userModel);
                 }
+            } else {
+                listener.onSuccess(null);
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                e.printStackTrace();
-            }
+        }).addOnFailureListener(e -> {
+            e.printStackTrace();
+            listener.onSuccess(null);
         });
     }
-
-//    public void insertUser(UserModel userModel) {
-//        String userUID = userModel.getId();
-//        if (userModel.getRole().equals(UserRole.CANDIDATE)) {
-//            rootDatabaseReference.child(userUID).setValue(((CandidateModel) userModel));
-//        } else if (userModel.getRole().equals(UserRole.EMPLOYER)) {
-//            rootDatabaseReference.child(userUID).setValue(((EmployerModel) userModel));
-//        } else {
-//            rootDatabaseReference.child(userUID).setValue(userModel);
-//        }
-//    }
 
     public void insertUser(UserModel userModel) {
         String userUID = userModel.getId();

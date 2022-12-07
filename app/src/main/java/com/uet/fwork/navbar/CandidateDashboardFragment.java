@@ -40,7 +40,7 @@ public class CandidateDashboardFragment extends Fragment {
 
     public CandidateDashboardFragment() {
         super(R.layout.fragment_candidate_dashboard);
-        firebaseAuthHelper = new FirebaseAuthHelper(FirebaseAuth.getInstance());
+        firebaseAuthHelper = FirebaseAuthHelper.getInstance();
 
         profileFragment = new ProfileFragment();
         Bundle bundle = new Bundle();
@@ -62,11 +62,11 @@ public class CandidateDashboardFragment extends Fragment {
         lltChangePassword = view.findViewById(R.id.relChangePassword);
         lltSignOut = view.findViewById(R.id.relSignOut);
 
-        String signInMethod = FirebaseAuthHelper.getSignInMethod();
+        String signInMethod = firebaseAuthHelper.getSignInMethod();
         if (!signInMethod.equals(FirebaseSignInMethod.PASSWORD)) {
             lltChangePassword.setVisibility(View.GONE);
         }
-        UserModel userModel = FirebaseAuthHelper.getUser();
+        UserModel userModel = firebaseAuthHelper.getUser();
         if (!userModel.getAvatar().equals("")) {
             Picasso.get().load(userModel.getAvatar()).into(cirImgAvatar);
         }

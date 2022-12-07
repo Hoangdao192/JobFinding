@@ -24,6 +24,8 @@ public class DashboardActivity extends AppCompatActivity {
     private static final String LOG_TAG = "Dashboard activity";
 
     private UserRepository userRepository;
+    private FirebaseAuthHelper firebaseAuthHelper;
+
     FirebaseAuth firebaseAuth;
 
     BottomNavigationView bottomNavigationView;
@@ -40,6 +42,7 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuthHelper = FirebaseAuthHelper.getInstance();
 
         userRepository = new UserRepository(FirebaseDatabase.getInstance());
 
@@ -54,7 +57,7 @@ public class DashboardActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.content, homeFragment).commit();
                         return true;
                     case R.id.nav_profile:
-                        String userRole = FirebaseAuthHelper.getUser().getRole();
+                        String userRole = firebaseAuthHelper.getUser().getRole();
                         if (userRole != null) {
                             if (userRole.equals(UserRole.CANDIDATE)) {
                                 getSupportFragmentManager()

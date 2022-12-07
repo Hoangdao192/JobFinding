@@ -39,7 +39,7 @@ public class EmployerDashboardFragment extends Fragment {
 
     public EmployerDashboardFragment() {
         super(R.layout.fragment_employer_dashboard);
-        firebaseAuthHelper = new FirebaseAuthHelper(FirebaseAuth.getInstance());
+        firebaseAuthHelper = FirebaseAuthHelper.getInstance();
 
         profileFragment = new ProfileFragment();
         Bundle bundle = new Bundle();
@@ -61,11 +61,11 @@ public class EmployerDashboardFragment extends Fragment {
         lltChangePassword = view.findViewById(R.id.relChangePassword);
         lltSignOut = view.findViewById(R.id.relSignOut);
 
-        String signInMethod = FirebaseAuthHelper.getSignInMethod();
+        String signInMethod = firebaseAuthHelper.getSignInMethod();
         if (!signInMethod.equals(FirebaseSignInMethod.PASSWORD)) {
             lltChangePassword.setVisibility(View.GONE);
         }
-        UserModel userModel = FirebaseAuthHelper.getUser();
+        UserModel userModel = firebaseAuthHelper.getUser();
         if (!userModel.getAvatar().equals("")) {
             Picasso.get().load(userModel.getAvatar()).into(cirImgAvatar);
         }

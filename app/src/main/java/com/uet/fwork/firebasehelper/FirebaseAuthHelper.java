@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,55 +26,91 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class FirebaseAuthHelper {
-    private FirebaseAuth firebaseAuth;
-    private static  UserModel user = null;
-    private static String signInMethod = null;
-    private static UserRepository userRepository;
+    private static final String LOG_TAG = "FirebaseAuthHelper";
 
-    private static Context applicationContext = null;
+    private UserModel user = null;
+    private String signInMethod = null;
 
-    public FirebaseAuthHelper(FirebaseAuth firebaseAuth) {
+    private FirebaseAuth firebaseAuth = null;
+    private FirebaseDatabase firebaseDatabase = null;
+    private Context applicationContext = null;
+
+    private static FirebaseAuthHelper INSTANCE = null;
+
+    private FirebaseAuthHelper(Context applicationContext, FirebaseAuth firebaseAuth, FirebaseDatabase firebaseDatabase) {
         this.firebaseAuth = firebaseAuth;
+        this.firebaseDatabase = firebaseDatabase;
+        this.applicationContext = applicationContext;
     }
 
-    public FirebaseAuthHelper(FirebaseAuth firebaseAuth, Context context) {
-        this.firebaseAuth = firebaseAuth;
-        this.applicationContext = context.getApplicationContext();
+    /**
+     * You must call initialize method before call this method
+     * If method initialize has not been called yet
+     * @return null
+     * Else
+     * @return INSTANCE
+     */
+    public static FirebaseAuthHelper getInstance() {
+        if (INSTANCE == null) {
+            Log.e(LOG_TAG, "FirebaseAuthHelper has not been initialized yet");
+            return null;
+        }
+
+        return INSTANCE;
     }
 
-    public static final void initialize(
+    /**
+     * You must call this method before call getInstance() method
+     * @param firebaseDatabase
+     * @param firebaseAuth
+     * @param context
+     * @param listener
+     */
+    public static void initialize(
             FirebaseDatabase firebaseDatabase, FirebaseAuth firebaseAuth,
             Context context, OnSuccessListener<Boolean> listener) {
-        userRepository = new UserRepository(firebaseDatabase);
-        applicationContext = context.getApplicationContext();
-        userRepository.getUserByUID(firebaseAuth.getUid(), new Repository.OnQuerySuccessListener<UserModel>() {
-            @Override
-            public void onSuccess(UserModel userModel) {
-                user = userModel;
-                firebaseAuth.fetchSignInMethodsForEmail(firebaseAuth.getCurrentUser().getEmail())
-                        .addOnSuccessListener(signInMethodQueryResult -> {
-                            signInMethod = signInMethodQueryResult.getSignInMethods().get(0);
-                            listener.onSuccess(true);
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                e.printStackTrace();
-                                Log.d("FirebaseAuthHelper", "Firebase auth: Fetch sign in method failed");
-                            }
-                        });
-            }
+        if (INSTANCE != null) {
+            Log.d(LOG_TAG, "FirebaseAuthHelper has been initialized already");
+            return;
+        }
+
+        UserRepository userRepository = new UserRepository(firebaseDatabase);
+        userRepository.getUserByUID(firebaseAuth.getUid(), user -> {
+            if (user == null) return;
+
+            firebaseAuth.fetchSignInMethodsForEmail(firebaseAuth.getCurrentUser().getEmail())
+                    .addOnSuccessListener(signInMethodQueryResult -> {
+                        INSTANCE = new FirebaseAuthHelper(
+                                context.getApplicationContext(), firebaseAuth, firebaseDatabase
+                        );
+                        INSTANCE.user = user;
+                        INSTANCE.signInMethod = signInMethodQueryResult.getSignInMethods().get(0);
+                        listener.onSuccess(true);
+                    })
+                    .addOnFailureListener(e -> {
+                        e.printStackTrace();
+                        Log.d("FirebaseAuthHelper", "Firebase auth: Fetch sign in method failed");
+                        listener.onSuccess(false);
+                    })
+                    .addOnCanceledListener(() ->
+                            Log.e(LOG_TAG, "Firebase auth: Fetch sign in method cancelled"));
         });
-
-
     }
 
-    public static UserModel getUser() {
+    public UserModel getUser() {
         return user;
     }
 
-    public static String getSignInMethod() {
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
+
+    public String getSignInMethod() {
         return signInMethod;
+    }
+
+    public void setSignInMethod(String signInMethod) {
+        this.signInMethod = signInMethod;
     }
 
     public void isUserWithEmailExists(String email, OnSuccessListener<Boolean> onSuccessListener) {

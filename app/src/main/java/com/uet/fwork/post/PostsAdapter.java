@@ -51,6 +51,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
     private CommentRepository commentRepository;
     private FirebaseUser firebaseUser;
 
+    private FirebaseAuthHelper firebaseAuthHelper;
+
     public PostsAdapter(Context context, List<PostModel> postModelList) {
         this.context = context;
         this.postModelList = postModelList;
@@ -59,6 +61,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         commentRepository = new CommentRepository(context, FirebaseDatabase.getInstance());
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        firebaseAuthHelper = FirebaseAuthHelper.getInstance();
     }
 
     @NonNull
@@ -73,7 +77,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         PostModel post = postModelList.get(position);
 
-        if (!FirebaseAuthHelper.getUser().getRole().equals(UserRole.CANDIDATE)) {
+        if (!firebaseAuthHelper.getUser().getRole().equals(UserRole.CANDIDATE)) {
             holder.btnPostApply.setVisibility(View.GONE);
         }
 

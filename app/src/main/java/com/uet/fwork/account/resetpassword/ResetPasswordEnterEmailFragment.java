@@ -24,7 +24,7 @@ public class ResetPasswordEnterEmailFragment extends Fragment {
 
     public ResetPasswordEnterEmailFragment() {
         super(R.layout.fragment_reset_password_enter_email);
-        authHelper = new FirebaseAuthHelper(FirebaseAuth.getInstance());
+        authHelper = FirebaseAuthHelper.getInstance();
     }
 
     @Override

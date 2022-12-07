@@ -28,7 +28,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuthHelper = new FirebaseAuthHelper(firebaseAuth);
+        firebaseAuthHelper = FirebaseAuthHelper.getInstance();
 
         edtOldPassword = (TextInputLayout) findViewById(R.id.edtOldPassword);
         edtPassword = findViewById(R.id.edtPassword);

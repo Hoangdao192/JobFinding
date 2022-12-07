@@ -50,7 +50,7 @@ public class ProfileFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuthHelper = new FirebaseAuthHelper(firebaseAuth, getContext());
+        firebaseAuthHelper = FirebaseAuthHelper.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         userRepository = new UserRepository(FirebaseDatabase.getInstance());
         userRole = getArguments().getString("USER_ROLE");
