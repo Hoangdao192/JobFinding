@@ -33,6 +33,7 @@ import com.uet.fwork.database.repository.PostApplyRepository;
 import com.uet.fwork.database.repository.PostReactionRepository;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.dialog.ErrorDialog;
+import com.uet.fwork.firebasehelper.CloudMessagingHelper;
 import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
 import com.uet.fwork.util.TimestampToString;
 
@@ -149,25 +150,29 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
                 }
             }
         });
-        holder.btnLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                reactionRepository.isUserLikePost(post.getPostId(), firebaseUser.getUid(), new Repository.OnQuerySuccessListener<Boolean>() {
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        if (result) {
-                            holder.btnLike.setImageDrawable(context.getDrawable(R.drawable.ic_heart_no_fill));
-                            reactionRepository.removeReactionByPostAndUser(post.getPostId(), firebaseUser.getUid());
-                        } else {
-                            holder.btnLike.setImageDrawable(context.getDrawable(R.drawable.ic_heart_fill));
-                            reactionRepository.insert(new ReactionModel(
-                                    firebaseUser.getUid(), post.getPostId(), Calendar.getInstance().getTimeInMillis() / 1000
-                            ), null);
-                        }
+
+        holder.btnLike.setOnClickListener(button -> reactionRepository
+                .isUserReactionPost(post.getPostId(), firebaseUser.getUid())
+                .addOnSuccessListener(isExists -> {
+                    if (isExists) {
+                        holder.btnLike.setImageDrawable(context.getDrawable(R.drawable.ic_heart_no_fill));
+                        reactionRepository.removeReactionByPostAndUser(post.getPostId(), firebaseUser.getUid());
+                    } else {
+                        holder.btnLike.setImageDrawable(context.getDrawable(R.drawable.ic_heart_fill));
+                        ReactionModel reaction = new ReactionModel(
+                                firebaseUser.getUid(), post.getPostId(),
+                                Calendar.getInstance().getTimeInMillis()/1000
+                        );
+                        reactionRepository.insert(reaction)
+                                .addOnSuccessListener(isSuccess -> {
+                                    if (isSuccess) {
+                                        CloudMessagingHelper
+                                                .getInstance()
+                                                .sendPostReactionNotify(reaction);
+                                    }
+                                }).execute();
                     }
-                });
-            }
-        });
+                }).execute());
         holder.commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

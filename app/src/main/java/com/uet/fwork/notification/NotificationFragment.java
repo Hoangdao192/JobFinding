@@ -49,12 +49,13 @@ public class NotificationFragment extends Fragment {
         recNotification.setAdapter(adapter);
         recNotification.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        notificationList.clear();
         notificationRepository.getRootDatabaseReference().child(firebaseUser.getUid())
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        notificationList.add(snapshot.getValue(NotificationModel.class));
-                        adapter.notifyItemInserted(notificationList.size());
+                        notificationList.add(0, snapshot.getValue(NotificationModel.class));
+                        adapter.notifyItemInserted(0);
                     }
 
                     @Override

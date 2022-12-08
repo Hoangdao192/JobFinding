@@ -34,7 +34,6 @@ public class MessageRepository extends Repository {
     private static final String LOG_TAG = "Message repository";
     private static MessageRepository INSTANCE = null;
 
-    private Context context;
 
     private MessageRepository() {
         super(databaseReferencePath);
@@ -69,7 +68,7 @@ public class MessageRepository extends Repository {
     }
 
     private void notifyMessageSent(String chanelId, String messageId) {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(applicationContext);
         String apiUrl = Constants.SERVER_URL + "message/notify";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, apiUrl, response -> {
             response = new String(

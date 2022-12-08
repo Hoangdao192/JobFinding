@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.uet.fwork.Constants;
 import com.uet.fwork.database.model.post.PostApplyModel;
+import com.uet.fwork.database.model.post.ReactionModel;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -52,6 +53,31 @@ public class CloudMessagingHelper {
         }
 
         return INSTANCE;
+    }
+
+    public void sendPostReactionNotify(ReactionModel reaction) {
+        RequestQueue requestQueue = Volley.newRequestQueue(applicationContext);
+        String apiUrl = Constants.SERVER_URL + "post/reaction/notify";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, apiUrl, response -> {
+            response = new String(
+                    response.getBytes(StandardCharsets.ISO_8859_1),
+                    StandardCharsets.UTF_8);
+            Log.d(LOG_TAG, "Volley: Request response " + response);
+        }, error -> {
+            error.printStackTrace();
+            Log.d(LOG_TAG, "Volley: Send request failed " + apiUrl);
+        }) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("userId", reaction.getUserId());
+                params.put("postId", reaction.getPostId());
+                return params;
+            }
+        };
+        Log.d(LOG_TAG, "Volley: Add request to queue");
+        requestQueue.add(stringRequest);
     }
 
     public void sendPostApplicationAcceptNotify(PostApplyModel postApply) {

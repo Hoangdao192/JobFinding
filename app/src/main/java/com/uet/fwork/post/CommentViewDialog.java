@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +31,7 @@ import com.uet.fwork.database.repository.CommentRepository;
 import com.uet.fwork.database.repository.PostReactionRepository;
 import com.uet.fwork.database.repository.PostRepository;
 import com.uet.fwork.database.repository.Repository;
+import com.uet.fwork.firebasehelper.CloudMessagingHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -151,25 +153,28 @@ public class CommentViewDialog extends BottomSheetDialog {
                 }
             }
         });
-        btnLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                reactionRepository.isUserLikePost(postId, firebaseUser.getUid(), new Repository.OnQuerySuccessListener<Boolean>() {
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        if (result) {
-                            btnLike.setImageDrawable(getContext().getDrawable(R.drawable.ic_heart_no_fill));
-                            reactionRepository.removeReactionByPostAndUser(postId, firebaseUser.getUid());
-                        } else {
-                            btnLike.setImageDrawable(getContext().getDrawable(R.drawable.ic_heart_fill));
-                            reactionRepository.insert(new ReactionModel(
-                                    firebaseUser.getUid(), postId, Calendar.getInstance().getTimeInMillis()/1000
-                            ), null);
-                        }
+        btnLike.setOnClickListener(button -> reactionRepository
+                .isUserReactionPost(postId, firebaseUser.getUid())
+                .addOnSuccessListener(isExists -> {
+                    if (isExists) {
+                        btnLike.setImageDrawable(getContext().getDrawable(R.drawable.ic_heart_no_fill));
+                        reactionRepository.removeReactionByPostAndUser(postId, firebaseUser.getUid());
+                    } else {
+                        btnLike.setImageDrawable(getContext().getDrawable(R.drawable.ic_heart_fill));
+                        ReactionModel reaction = new ReactionModel(
+                                firebaseUser.getUid(), postId,
+                                Calendar.getInstance().getTimeInMillis()/1000
+                        );
+                        reactionRepository.insert(reaction)
+                                .addOnSuccessListener(isSuccess -> {
+                                    if (isSuccess) {
+                                        CloudMessagingHelper
+                                                .getInstance()
+                                                .sendPostReactionNotify(reaction);
+                                    }
+                                }).execute();
                     }
-                });
-            }
-        });
+                }).execute());
 
         setOnKeyListener(new OnKeyListener() {
             @Override

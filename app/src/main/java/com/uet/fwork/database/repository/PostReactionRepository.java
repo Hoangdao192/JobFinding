@@ -13,6 +13,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.uet.fwork.Constants;
 import com.uet.fwork.database.model.post.PostModel;
@@ -46,6 +47,48 @@ public class PostReactionRepository extends Repository {
         }
 
         return INSTANCE;
+    }
+
+    public QueryTask<Boolean> insert(ReactionModel reaction) {
+        return new QueryTask<Boolean>() {
+            @Override
+            public void execute() {
+                DatabaseReference newReference = rootDatabaseReference
+                        .child(reaction.getPostId()).push();
+
+                reaction.setReactionId(newReference.getKey());
+                newReference.setValue(reaction)
+                        .addOnFailureListener(exception -> {
+                            Log.d(LOG_TAG, "Insert reaction failed " + reaction);
+                            exception.printStackTrace();
+                            onFailed(exception);
+                        })
+                        .addOnSuccessListener(unused -> {
+                            firebaseDatabase.getReference(USER_REACTION_PATH)
+                                    .child(reaction.getUserId())
+                                    .child(reaction.getReactionId())
+                                    .setValue(reaction)
+                                    .addOnSuccessListener(unused1 -> {
+                                        Log.d(LOG_TAG, "Insert reaction successful " + reaction);
+                                        onSuccess(true);
+                                    })
+                                    .addOnFailureListener(exception -> {
+                                        exception.printStackTrace();
+                                        Log.d(LOG_TAG, "Insert reaction failed " + reaction);
+                                        onFailed(exception);
+                                    })
+                                    .addOnCanceledListener(() -> {
+                                        Log.d(LOG_TAG, "Insert reaction cancelled " + reaction);
+                                        onCancelled();
+                                    });
+                        })
+                        .addOnCanceledListener(() -> {
+                            Log.d(LOG_TAG, "Insert reaction cancelled " + reaction);
+                            onCancelled();
+                        });
+
+            }
+        };
     }
 
     public void insert(ReactionModel reactionModel, @Nullable OnQuerySuccessListener<Boolean> listener) {
@@ -137,6 +180,21 @@ public class PostReactionRepository extends Repository {
                         listener.onSuccess(dataSnapshot.getChildrenCount());
                     }
                 });
+    }
+
+    public QueryTask<Boolean> isUserReactionPost(String postId, String userId) {
+        return new QueryTask<Boolean>() {
+            @Override
+            public void execute() {
+                rootDatabaseReference.child(postId).orderByChild("userId").equalTo(userId).get()
+                        .addOnSuccessListener(dataSnapshot -> {
+                            onSuccess(dataSnapshot.exists());
+                        }).addOnFailureListener(e -> {
+                            e.printStackTrace();
+                            onFailed(e);
+                        });
+            }
+        };
     }
 
     public void isUserLikePost(String postId, String userId, @NonNull OnQuerySuccessListener<Boolean> listener) {
