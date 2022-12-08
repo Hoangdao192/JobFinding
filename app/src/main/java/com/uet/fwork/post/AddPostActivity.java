@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -69,7 +71,7 @@ public class AddPostActivity extends AppCompatActivity {
     private EditText edtJobDescription;
     private ImageView imgJobImage;
     private ImageView btnPickOnMap;
-    private Button btnUpload;
+    private Button btnUpload, btnBack;
 
     private Bitmap postImage = null;
 
@@ -93,10 +95,12 @@ public class AddPostActivity extends AppCompatActivity {
         edtJobDescription = findViewById(R.id.edtJobDescription);
         imgJobImage = findViewById(R.id.ivJobImage);
         btnUpload = findViewById(R.id.btnPostUpload);
+        btnBack = findViewById(R.id.btnBack);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
 
         loadMajorList();
+        btnBack.setOnClickListener(button -> finish());
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -246,8 +250,8 @@ public class AddPostActivity extends AppCompatActivity {
                                         ErrorDialog dialog = new ErrorDialog(
                                                 AddPostActivity.this, "Đăng bài thành công",
                                                 "Bài viết đã được đăng");
-                                        dialog.show();
                                         //reset views
+
                                         edtJobName.setText("");
                                         edtJobAddress.setText("");
                                         edtJobDescription.setText("");

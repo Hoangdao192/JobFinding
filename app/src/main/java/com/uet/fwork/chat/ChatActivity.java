@@ -63,6 +63,7 @@ public class ChatActivity extends AppCompatActivity {
     private UserRepository userRepository;
 
     private ImageView imgImage;
+    private ImageButton btnBack;
 
     private UserModel partnerUser;
 
@@ -97,6 +98,7 @@ public class ChatActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         imgUserAvatar = findViewById(R.id.imgUserAvatar);
         imgImage = findViewById(R.id.imgBtnImage);
+        btnBack = findViewById(R.id.btnBack);
         createImagePicker();
 
         imgImage.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +126,7 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
+        btnBack.setOnClickListener(button -> finish());
 
         //  Load data của user đối diện
         txtPartnerFullName.setText(partnerUser.getFullName());
