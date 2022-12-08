@@ -64,26 +64,30 @@ public class FirebaseAuthHelper {
      * @param firebaseDatabase
      * @param firebaseAuth
      * @param context
-     * @param listener
      */
     public static void initialize(
             FirebaseDatabase firebaseDatabase, FirebaseAuth firebaseAuth,
-            Context context, OnSuccessListener<Boolean> listener) {
+            Context context) {
         if (INSTANCE != null) {
             Log.d(LOG_TAG, "FirebaseAuthHelper has been initialized already");
-            listener.onSuccess(true);
             return;
         }
 
+        INSTANCE = new FirebaseAuthHelper(
+                context.getApplicationContext(), firebaseAuth, firebaseDatabase
+        );
+    }
+
+    public void fetchCurrentUserData(OnSuccessListener<Boolean> listener) {
         UserRepository userRepository = UserRepository.getInstance();
         userRepository.getUserByUID(firebaseAuth.getUid(), user -> {
-            if (user == null) return;
+            if (user == null) {
+                Log.d(LOG_TAG, "FirebaseAuthHelper: Fetch user null");
+                return;
+            }
 
             firebaseAuth.fetchSignInMethodsForEmail(firebaseAuth.getCurrentUser().getEmail())
                     .addOnSuccessListener(signInMethodQueryResult -> {
-                        INSTANCE = new FirebaseAuthHelper(
-                                context.getApplicationContext(), firebaseAuth, firebaseDatabase
-                        );
                         INSTANCE.user = user;
                         INSTANCE.signInMethod = signInMethodQueryResult.getSignInMethods().get(0);
                         listener.onSuccess(true);

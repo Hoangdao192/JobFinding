@@ -51,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
 
         CloudMessagingHelper.initialize(this);
         Repository.initialize(this, FirebaseDatabase.getInstance());
+        FirebaseAuthHelper.initialize(
+                FirebaseDatabase.getInstance(), FirebaseAuth.getInstance(),
+                getApplicationContext());
+
         this.firebaseAuth = FirebaseAuth.getInstance();
         this.userRepository = UserRepository.getInstance();
 
@@ -150,12 +154,12 @@ public class MainActivity extends AppCompatActivity {
     private void startDashboardActivity() {
         SharedPreferences sharedPreferences = this.getSharedPreferences("MAIN", MODE_PRIVATE);
         sharedPreferences.edit().putString("USER", firebaseAuth.getUid()).apply();
-        FirebaseAuthHelper.initialize(
-                FirebaseDatabase.getInstance(), FirebaseAuth.getInstance(),
-                getApplicationContext(), result -> {
-                    Intent intent = new Intent(this, DashboardActivity.class);
-                    startActivity(intent);
-                });
+        FirebaseAuthHelper.getInstance().fetchCurrentUserData(result -> {
+            if (result) {
+                Intent intent = new Intent(this, DashboardActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void startLoginActivity() {
