@@ -34,7 +34,6 @@ public class MessageRepository extends Repository {
     private static final String LOG_TAG = "Message repository";
     private static MessageRepository INSTANCE = null;
 
-
     private MessageRepository() {
         super(databaseReferencePath);
     }

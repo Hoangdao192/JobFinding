@@ -1,6 +1,5 @@
 package com.uet.fwork.database.repository;
 
-import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,9 +13,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.uet.fwork.Constants;
-import com.uet.fwork.database.model.post.PostModel;
 import com.uet.fwork.database.model.post.ReactionModel;
 
 import java.nio.charset.StandardCharsets;
@@ -30,7 +27,6 @@ public class PostReactionRepository extends Repository {
     private static final String USER_REACTION_PATH = "/posts/userReactions";
     private static final String LOG_TAG = "PostReaction repository";
     private static PostReactionRepository INSTANCE = null;
-
 
     private PostReactionRepository() {
         super(REFERENCE_PATH);

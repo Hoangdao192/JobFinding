@@ -71,6 +71,7 @@ public class FirebaseAuthHelper {
             Context context, OnSuccessListener<Boolean> listener) {
         if (INSTANCE != null) {
             Log.d(LOG_TAG, "FirebaseAuthHelper has been initialized already");
+            listener.onSuccess(true);
             return;
         }
 
