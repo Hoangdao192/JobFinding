@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.uet.fwork.JobSearchFragment;
 import com.uet.fwork.database.repository.PostRepository;
 import com.uet.fwork.post.AddPostActivity;
 import com.uet.fwork.database.model.post.PostModel;
@@ -75,13 +76,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postModelList.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     PostModel postModel = ds.getValue(PostModel.class);
 
                     postModelList.add(postModel);
 
                     //adapter
-                    postsAdapter = new PostsAdapter(getActivity(),postModelList);
+                    postsAdapter = new PostsAdapter(getActivity(), postModelList);
                     //set adapter to recyclerview
                     recyclerView.setAdapter(postsAdapter);
                 }
@@ -89,15 +90,14 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), ""+error.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "" + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void searchPosts(String searchQuery){
+    private void searchPosts(String searchQuery) {
 
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -109,6 +109,13 @@ public class HomeFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_add_post) {
                     startActivity(new Intent(getActivity(), AddPostActivity.class));
+                }
+                if (item.getItemId() == R.id.action_search) {
+                    getActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .addToBackStack("HomeFragment")
+                            .replace(R.id.content, new JobSearchFragment())
+                            .commit();
                 } else {
                     // do something
                 }

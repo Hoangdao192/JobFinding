@@ -2,63 +2,160 @@ package com.uet.fwork;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link JobSearchFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.uet.fwork.adapter.SpinnerAdapter;
+import com.uet.fwork.database.model.UserModel;
+import com.uet.fwork.database.model.post.PostModel;
+import com.uet.fwork.post.AddPostActivity;
+import com.uet.fwork.post.PostsAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class JobSearchFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private FirebaseAuth auth;
+    private FirebaseDatabase firebaseDatabase;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private RecyclerView recyclerView;
+    private PostsAdapter postsAdapter;
+    private Spinner spnMajor;
+    private Button search;
+    private EditText edtAddress, edtSalary, edtExp;
+
+    private List<PostModel> postList;
+    private List<String> majorList = new ArrayList<>();
 
     public JobSearchFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment JobSearchFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static JobSearchFragment newInstance(String param1, String param2) {
-        JobSearchFragment fragment = new JobSearchFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        super(R.layout.fragment_job_search);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_job_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_job_search, container, false);
+
+        auth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        recyclerView = view.findViewById(R.id.recyclerviewSearch);
+
+        spnMajor = view.findViewById(R.id.spnJobMajor);
+        edtSalary = view.findViewById(R.id.edtJobSalary);
+        edtExp = view.findViewById(R.id.edtJobSalary);
+        search = view.findViewById(R.id.btnSearchJob);
+
+        postList = new ArrayList<>();
+        loadMajorList();
+
+        //double jobExperience = Double.parseDouble(edtExp.getText().toString().trim());
+        //Long jobSalary = Long.valueOf(edtExp.getText().toString().trim());
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                //show newest post first (load data from last)
+                layoutManager.setStackFromEnd(true);
+                layoutManager.setReverseLayout(true);
+                //set this layout to recyclerview
+                recyclerView.setLayoutManager(layoutManager);
+                if (spnMajor.getSelectedItem().toString().trim().length() == 0) {
+                    Toast.makeText(getActivity(), "Bạn chưa chọn chuyên ngành công việc!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (edtSalary.getText().toString().trim().length() == 0) {
+                    Toast.makeText(getActivity(), "Bạn chưa nhập lương mong muốn", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (edtExp.getText().toString().trim().length() == 0) {
+                    Toast.makeText(getActivity(), "Bạn chưa nhập kinh nghiệm!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                String jobMajor = spnMajor.getSelectedItem().toString().trim();
+                Long jobSalary = Long.valueOf(edtSalary.getText().toString().trim());
+                double jobExperience = Double.parseDouble(edtExp.getText().toString().trim());
+
+                //init post list
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("posts/list");
+                Query query = databaseReference.orderByChild("postMajor").equalTo(jobMajor);
+                query.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        postList.clear();
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            PostModel myPosts = ds.getValue(PostModel.class);
+                            if (myPosts.getPostSalary() >= jobSalary && myPosts.getPostExperience() == jobExperience) {
+                                //add to list
+                                postList.add(myPosts);
+
+                                //adapter
+                                postsAdapter = new PostsAdapter(getActivity(), postList);
+                                recyclerView.setAdapter(postsAdapter);
+                            } else {
+                                Toast.makeText(getActivity(), "Không tìm thấy công việc!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+            }
+        });
+
+        return view;
     }
+
+    private void loadMajorList() {
+        firebaseDatabase.getReference("userMajors")
+                .get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    @Override
+                    public void onSuccess(DataSnapshot dataSnapshot) {
+                        GenericTypeIndicator<List<String>> genericTypeIndicator =
+                                new GenericTypeIndicator<List<String>>() {
+                                };
+                        majorList.addAll(dataSnapshot.getValue(genericTypeIndicator));
+                        SpinnerAdapter<String> spinnerMajorAdapter = new SpinnerAdapter<>(
+                                getActivity(), majorList, R.layout.item_spinner,
+                                (itemView, position) -> {
+                                    TextView txtView = itemView.findViewById(R.id.txtView);
+                                    txtView.setText(majorList.get(position));
+                                }
+                        );
+                        spnMajor.setAdapter(spinnerMajorAdapter);
+                    }
+                })
+                .addOnFailureListener(System.out::println);
+    }
+
 }

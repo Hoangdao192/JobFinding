@@ -17,7 +17,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.model.post.PostModel;
+import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.post.PostsAdapter;
 
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class ViewProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_view_profile);
 
         postsRecyclerView = findViewById(R.id.recyclerviewPosts);
