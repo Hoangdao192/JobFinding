@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".navbar.HomeFragment">
+    tools:context=".navbar.HomeFragment"
+    android:background="#DDEEFF">
 
     <!-- TODO: Update blank fragment layout -->
     <include
@@ -18,7 +19,9 @@
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_home" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_home"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

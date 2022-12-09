@@ -2,6 +2,15 @@
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/light_blue_600">
+    android:background="@drawable/vector_116">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp"
+        android:text="Trang chủ"
+        android:textSize="35sp"
+        android:fontFamily="@font/quicksand"
+        android:textColor="@color/white"/>
 
 </androidx.appcompat.widget.Toolbar>
