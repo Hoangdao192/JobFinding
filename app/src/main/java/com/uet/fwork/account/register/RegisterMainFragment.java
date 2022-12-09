@@ -92,7 +92,7 @@ public class RegisterMainFragment extends Fragment {
         initRegisterWithGoogle();
         initRegisterWithFacebook();
 
-        btnBack.setOnClickListener(button -> getActivity().onBackPressed());
+        btnBack.setOnClickListener(button -> getActivity().finish());
 
         txtLogin.setOnClickListener(textView -> {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
