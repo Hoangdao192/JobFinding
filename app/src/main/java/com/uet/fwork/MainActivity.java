@@ -4,6 +4,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -66,8 +69,15 @@ public class MainActivity extends AppCompatActivity {
             sharedPreferences.edit().putBoolean("FIRST_LAUNCH", false).apply();
             startActivity(new Intent(this, FirstLaunchActivity.class));
         } else {
-            initNotificationChanel();
-            checking();
+            if (isNetworkAvailable()) {
+                listenNetworkState();
+                initNotificationChanel();
+                checking();
+            } else {
+                Intent intent = new Intent(MainActivity.this, InternetErrorActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
         }
     }
 
@@ -151,11 +161,34 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = getSystemService(ConnectivityManager.class);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
+    }
+
+    private void listenNetworkState() {
+        ConnectivityManager connectivityManager = getSystemService(ConnectivityManager.class);
+        connectivityManager.registerDefaultNetworkCallback(new ConnectivityManager.NetworkCallback() {
+            @Override
+            public void onAvailable(Network network) {
+            }
+
+            @Override
+            public void onLost(Network network) {
+                System.out.println("LOST CONNECTION");
+                Intent intent = new Intent(MainActivity.this, InternetErrorActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+    }
+
     private void startDashboardActivity() {
         SharedPreferences sharedPreferences = this.getSharedPreferences("MAIN", MODE_PRIVATE);
         sharedPreferences.edit().putString("USER", firebaseAuth.getUid()).apply();
-        FirebaseAuthHelper.getInstance().fetchCurrentUserData(result -> {
-            if (result) {
+        FirebaseAuthHelper.getInstance().fetchCurrentUserData(isSuccess -> {
+            if (isSuccess) {
                 Intent intent = new Intent(this, DashboardActivity.class);
                 startActivity(intent);
             }
