@@ -5,6 +5,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +28,7 @@ import com.uet.fwork.database.repository.ChatRepository;
 import com.uet.fwork.database.repository.MessageRepository;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
+import com.uet.fwork.dialog.ConfirmDialog;
 import com.uet.fwork.util.ImageHelper;
 
 import android.Manifest;
@@ -36,6 +38,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -108,21 +111,46 @@ public class ChatActivity extends AppCompatActivity {
 
         createImagePicker();
 
-//        imgBtnCall.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int permissionStatus = ContextCompat
-//                        .checkSelfPermission(ChatActivity.this, Manifest.permission.CALL_PHONE);
-//                if (permissionStatus != PackageManager.PERMISSION_GRANTED) {
-//
-//                }
-//
-//                System.out.println("CLICK");
-//                Intent phoneIntent = new Intent(Intent.ACTION_CALL);
-//                phoneIntent.setData(Uri.parse("tel:" + partnerUser.getPhoneNumber()));
-//                startActivity(phoneIntent);
-//            }
-//        });
+        imgBtnCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int permissionStatus = ContextCompat
+                        .checkSelfPermission(ChatActivity.this, Manifest.permission.CALL_PHONE);
+                if (permissionStatus == PackageManager.PERMISSION_GRANTED) {
+                    startPhoneCallActivity();
+                }
+                else if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        ChatActivity.this, Manifest.permission.CALL_PHONE)) {
+                    ConfirmDialog dialog = new ConfirmDialog(
+                            ChatActivity.this, "Cấp quyền sử dụng gọi điện",
+                            "Bạn đã từ chối cấp quyền này, hãy cấp lại quyền trong Cài đặt",
+                            new ConfirmDialog.OnEventListener() {
+                                @Override
+                                public void onConfirm() {
+                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                    intent.setData(uri);
+                                    startActivity(intent);
+//                                    ActivityCompat.requestPermissions(
+//                                            ChatActivity.this,
+//                                            new String[] { Manifest.permission.CALL_PHONE }, 100);
+                                }
+
+                                @Override
+                                public void onCancel() {
+
+                                }
+                            }
+                    );
+                    dialog.show();
+                } else {
+                    System.out.println("CALL");
+                    ActivityCompat.requestPermissions(
+                            ChatActivity.this,
+                            new String[] { Manifest.permission.CALL_PHONE }, 100);
+                }
+            }
+        });
 
         imgImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,6 +247,11 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    public void startPhoneCallActivity() {
+        Intent phoneIntent = new Intent(Intent.ACTION_CALL);
+        phoneIntent.setData(Uri.parse("tel:" + partnerUser.getPhoneNumber()));
+        startActivity(phoneIntent);
+    }
 
     private void createImagePicker() {
         this.getImageActivityLauncher = registerForActivityResult(
@@ -267,6 +300,45 @@ public class ChatActivity extends AppCompatActivity {
                     })
                     .addOnFailureListener(Throwable::printStackTrace);
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode,
+                permissions,
+                grantResults);
+
+        if (requestCode == 100) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startPhoneCallActivity();
+            } else {
+                ConfirmDialog dialog = new ConfirmDialog(
+                        ChatActivity.this, "Cấp quyền sử dụng gọi điện",
+                        "Bạn đã từ chối cấp quyền này, hãy cấp lại quyền trong Cài đặt",
+                        new ConfirmDialog.OnEventListener() {
+                            @Override
+                            public void onConfirm() {
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                intent.setData(uri);
+                                startActivity(intent);
+//                                    ActivityCompat.requestPermissions(
+//                                            ChatActivity.this,
+//                                            new String[] { Manifest.permission.CALL_PHONE }, 100);
+                            }
+
+                            @Override
+                            public void onCancel() {
+
+                            }
+                        }
+                );
+                dialog.show();
+            }
+        }
     }
 }
 
