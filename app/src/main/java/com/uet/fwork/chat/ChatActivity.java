@@ -5,6 +5,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,8 +29,10 @@ import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.util.ImageHelper;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,6 +42,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +57,7 @@ public class ChatActivity extends AppCompatActivity {
     private EditText edtMessage;
     private ImageButton btnSend;
     private CircleImageView imgUserAvatar;
+    private ImageButton imgBtnCall;
 
     private String chatChanelId;
     private FirebaseAuth firebaseAuth;
@@ -97,7 +102,25 @@ public class ChatActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         imgUserAvatar = findViewById(R.id.imgUserAvatar);
         imgImage = findViewById(R.id.imgBtnImage);
+        imgBtnCall = findViewById(R.id.imgBtnCall);
+
         createImagePicker();
+
+//        imgBtnCall.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int permissionStatus = ContextCompat
+//                        .checkSelfPermission(ChatActivity.this, Manifest.permission.CALL_PHONE);
+//                if (permissionStatus != PackageManager.PERMISSION_GRANTED) {
+//
+//                }
+//
+//                System.out.println("CLICK");
+//                Intent phoneIntent = new Intent(Intent.ACTION_CALL);
+//                phoneIntent.setData(Uri.parse("tel:" + partnerUser.getPhoneNumber()));
+//                startActivity(phoneIntent);
+//            }
+//        });
 
         imgImage.setOnClickListener(new View.OnClickListener() {
             @Override

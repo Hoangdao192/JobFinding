@@ -51,6 +51,7 @@ public class ChatMainFragment extends Fragment {
     private EditText edtMessage;
     private ImageButton btnSend;
     private CircleImageView imgUserAvatar;
+    private ImageButton imgBtnCall;
 
     private String chatChanelId;
     private FirebaseAuth firebaseAuth;
@@ -97,6 +98,17 @@ public class ChatMainFragment extends Fragment {
         btnSend = view.findViewById(R.id.btnSend);
         imgUserAvatar = view.findViewById(R.id.imgUserAvatar);
         imgImage = view.findViewById(R.id.imgBtnImage);
+        imgBtnCall = view.findViewById(R.id.imgBtnCall);
+        imgBtnCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("CLICK");
+                Intent phoneIntent = new Intent(Intent.ACTION_CALL);
+                phoneIntent.setData(Uri.parse("tel:" + partnerUser.getPhoneNumber()));
+                startActivity(phoneIntent);
+            }
+        });
+
         createImagePicker();
 
         imgImage.setOnClickListener(new View.OnClickListener() {
