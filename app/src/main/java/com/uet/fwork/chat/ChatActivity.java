@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +25,6 @@ import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.model.chat.MessageModel;
 import com.uet.fwork.database.repository.ChatRepository;
 import com.uet.fwork.database.repository.MessageRepository;
-import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.dialog.ConfirmDialog;
 import com.uet.fwork.util.ImageHelper;
@@ -45,7 +43,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +76,7 @@ public class ChatActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> getImageActivityLauncher;
 
     public ChatActivity() {
-        super(R.layout.fragment_chat_message);
+        super(R.layout.activiti_chat);
         messageList = new ArrayList<>();
 
         firebaseStorage = FirebaseStorage.getInstance();
@@ -93,7 +90,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_chat_message);
+        setContentView(R.layout.activiti_chat);
 
         Intent intent = getIntent();
         this.chatChanelId = intent.getStringExtra("chatChanelId");
@@ -131,9 +128,6 @@ public class ChatActivity extends AppCompatActivity {
                                     Uri uri = Uri.fromParts("package", getPackageName(), null);
                                     intent.setData(uri);
                                     startActivity(intent);
-//                                    ActivityCompat.requestPermissions(
-//                                            ChatActivity.this,
-//                                            new String[] { Manifest.permission.CALL_PHONE }, 100);
                                 }
 
                                 @Override
@@ -325,9 +319,6 @@ public class ChatActivity extends AppCompatActivity {
                                 Uri uri = Uri.fromParts("package", getPackageName(), null);
                                 intent.setData(uri);
                                 startActivity(intent);
-//                                    ActivityCompat.requestPermissions(
-//                                            ChatActivity.this,
-//                                            new String[] { Manifest.permission.CALL_PHONE }, 100);
                             }
 
                             @Override

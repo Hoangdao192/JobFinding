@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InternetErrorActivity">
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_internet_error"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp"
+        android:id="@+id/imgInternetError"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="35sp"
+        android:layout_below="@id/imgInternetError"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:text="Oops!"
+        android:layout_marginTop="20dp"
+        android:id="@+id/txvOops"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/quicksand_medium"
+        android:textSize="16sp"
+        android:layout_below="@id/txvOops"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="40dp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:text="Kết nối mạng của bạn gặp vấn đề. Hãy kết nối với internet và bấm Thử lại!"
+        android:id="@+id/txvMessage"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Theme.FWork.Button.RoundedCorner.47"
+        android:text="THỬ LẠI"
+        android:textSize="14sp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:id="@+id/btnTryAgain"/>
+
+</RelativeLayout>
