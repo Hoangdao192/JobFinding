@@ -4,12 +4,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#DDEEFF">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:background="#6B8CFF">
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đơn ứng tuyển"
+            android:textColor="@color/white"
             app:layout_constraintLeft_toRightOf="@id/btnBack"
             android:textSize="20sp"
             android:fontFamily="@font/quicksand_bold"
@@ -35,6 +38,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:paddingTop="10dp"
         android:requiresFadingEdge="horizontal"
         android:fadingEdge="horizontal"
         android:fadingEdgeLength="20dp"

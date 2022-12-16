@@ -4,12 +4,19 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#DDEEFF">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/ic_vector_116" />
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -17,18 +24,22 @@
             android:src="@drawable/back_button"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:paddingLeft="20dp"
+            android:paddingTop="40dp"
             android:id="@+id/btnBack"/>
 
         <TextView
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bài viết của bạn"
-            app:layout_constraintLeft_toRightOf="@id/btnBack"
-            android:textSize="20sp"
-            android:fontFamily="@font/quicksand_bold"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="54dp"
+            android:layout_marginTop="37dp"
             android:layout_toRightOf="@id/btnBack"
-            android:layout_marginLeft="30dp"/>
+            android:fontFamily="@font/quicksand_bold"
+            android:text="Bài viết của bạn"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintLeft_toRightOf="@id/btnBack" />
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_weight="1"
