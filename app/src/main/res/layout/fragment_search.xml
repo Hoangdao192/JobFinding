@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".navbar.SearchFragment">
+    tools:context=".navbar.SearchFragment"
+    android:background="#DDEEFF">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_user"
@@ -23,8 +24,11 @@
         android:id="@+id/search_recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:paddingTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_user" />
+        app:layout_constraintTop_toBottomOf="@+id/search_user"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
