@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 checking();
             } else {
                 Intent intent = new Intent(MainActivity.this, InternetErrorActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         }
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
             public void onLost(Network network) {
                 System.out.println("LOST CONNECTION");
                 Intent intent = new Intent(MainActivity.this, InternetErrorActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
