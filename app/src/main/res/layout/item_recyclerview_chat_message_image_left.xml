@@ -8,7 +8,7 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/user"
+        android:src="@drawable/default_avatar"
         android:id="@+id/imgUserAvatar"
         android:layout_alignBottom="@id/cardView"
         android:layout_alignParentStart="true"/>

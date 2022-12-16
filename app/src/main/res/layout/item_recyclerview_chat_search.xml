@@ -8,7 +8,7 @@
         android:layout_width="54dp"
         android:layout_height="54dp"
         android:id="@+id/imgAvatar"
-        android:src="@drawable/wlop_33se"/>
+        android:src="@drawable/default_avatar"/>
 
     <TextView
         android:id="@+id/txtFullName"
