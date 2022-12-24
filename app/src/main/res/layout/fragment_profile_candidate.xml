@@ -19,17 +19,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/return_button"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="23dp"
-                    app:backgroundTint="@null"
-                    android:background="@drawable/back_button"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <ImageView
                     android:id="@+id/imageView2"
                     android:layout_width="match_parent"

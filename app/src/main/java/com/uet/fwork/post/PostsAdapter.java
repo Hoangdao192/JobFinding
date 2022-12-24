@@ -121,7 +121,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
 
         //set post image
         //if post doesn't have any images, hide imageView
-        if (pJobImage.equals("noImage")) {
+        if (pJobImage.equals("")) {
             //hide imageView
             holder.postImageIv.setVisibility(View.GONE);
         } else {
