@@ -38,7 +38,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ViewProfileActivity"
+            android:name=".ViewProfileActivityCandidate"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ViewProfileActivityEmployer"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
