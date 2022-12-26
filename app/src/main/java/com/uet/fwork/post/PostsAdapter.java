@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
 import com.uet.fwork.ViewProfileActivity;
+import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.model.UserRole;
 import com.uet.fwork.database.model.post.PostApplyModel;
 import com.uet.fwork.database.model.post.PostApplyStatus;
@@ -31,6 +32,7 @@ import com.uet.fwork.database.repository.CommentRepository;
 import com.uet.fwork.database.repository.PostApplyRepository;
 import com.uet.fwork.database.repository.PostReactionRepository;
 import com.uet.fwork.database.repository.Repository;
+import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.dialog.ErrorDialog;
 import com.uet.fwork.firebasehelper.CloudMessagingHelper;
 import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
@@ -46,6 +48,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
     String myUid;
 
     private PostReactionRepository reactionRepository;
+    private UserRepository userRepository;
     private PostApplyRepository postApplyRepository;
     private CommentRepository commentRepository;
     private FirebaseUser firebaseUser;
@@ -56,6 +59,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         this.context = context;
         this.postModelList = postModelList;
         postApplyRepository = PostApplyRepository.getInstance();
+        userRepository = UserRepository.getInstance();
         reactionRepository = PostReactionRepository.getInstance();
         commentRepository = CommentRepository.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -63,8 +67,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
 
         firebaseAuthHelper = FirebaseAuthHelper.getInstance();
     }
-
-
 
     @NonNull
     @Override
@@ -81,6 +83,17 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         if (!firebaseAuthHelper.getUser().getRole().equals(UserRole.CANDIDATE)) {
             holder.btnPostApply.setVisibility(View.GONE);
         }
+
+        userRepository.getUserByUID(post.getUserId(), new Repository.OnQuerySuccessListener<UserModel>() {
+            @Override
+            public void onSuccess(UserModel userModel) {
+                if (userModel.getRole().equals(UserRole.CANDIDATE)) {
+                    holder.btnPostApply.setVisibility(View.GONE);
+                } else {
+                    holder.btnPostApply.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         //get data
         String uid = post.getUserId();
