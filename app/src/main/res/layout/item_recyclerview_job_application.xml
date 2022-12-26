@@ -158,30 +158,34 @@
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/txvTitleJob"
         android:layout_marginTop="20dp">
+
         <Button
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/btnShowCandidate"
-            android:text="Xem ứng viên"
-            style="@style/Theme.FWork.Button.RoundedCorner.47"/>
-
-        <Button
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnAccept"
-            android:text="Chấp nhận"
             style="@style/Theme.FWork.Button.RoundedCorner.47"
-            android:layout_marginHorizontal="15dp"/>
-
-        <Button
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/quicksand_medium"
+            android:text="Xem ứng viên" />
+
+        <Button
+            android:id="@+id/btnAccept"
+            style="@style/Theme.FWork.Button.RoundedCorner.47"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/quicksand_medium"
+            android:text="Chấp nhận" />
+
+        <Button
             android:id="@+id/btnReject"
-            android:text="Từ chối"
-            style="@style/Theme.FWork.Button.RoundedCorner.47"/>
+            style="@style/Theme.FWork.Button.RoundedCorner.47"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/quicksand_medium"
+            android:text="Từ chối" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

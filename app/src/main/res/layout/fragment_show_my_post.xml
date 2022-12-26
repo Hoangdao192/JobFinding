@@ -8,27 +8,27 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp">
-        <ImageButton
-            android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:src="@drawable/back_button"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:id="@+id/btnBack"/>
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/ic_vector_116" />
 
         <TextView
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bài viết của bạn"
-            app:layout_constraintLeft_toRightOf="@id/btnBack"
-            android:textSize="20sp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="90dp"
+            android:layout_marginLeft="54dp"
+            android:layout_marginTop="37dp"
             android:fontFamily="@font/quicksand_bold"
-            android:layout_toRightOf="@id/btnBack"
-            android:layout_marginLeft="30dp"/>
+            android:text="Bài viết của bạn"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_weight="1"

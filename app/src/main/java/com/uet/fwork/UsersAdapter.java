@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.uet.fwork.database.model.UserModel;
+import com.uet.fwork.database.repository.UserRepository;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyHolder> {
 
     Context context;
     List<UserModel> userModelList;
-
+    UserRepository userRepository;
     //constructor
     public UsersAdapter(Context context, List<UserModel> userModelList){
         this.context = context;
@@ -55,9 +56,18 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ViewProfileActivity.class);
-                intent.putExtra("id",uid);
-                context.startActivity(intent);
+                userRepository = UserRepository.getInstance();
+                userRepository.getUserRole(uid, g -> {
+                    if(g.equals("Candidate")) {
+                        Intent intent = new Intent(context, ViewProfileActivityCandidate.class);
+                        intent.putExtra("id",uid);
+                        context.startActivity(intent);
+                    } else if (g.equals("Employer")) {
+                        Intent intent = new Intent(context, ViewProfileActivityEmployer.class);
+                        intent.putExtra("id",uid);
+                        context.startActivity(intent);
+                    }
+                });
             }
         });
     }

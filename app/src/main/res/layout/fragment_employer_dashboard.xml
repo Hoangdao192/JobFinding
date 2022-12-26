@@ -13,12 +13,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/relUser"
             android:layout_marginTop="60dp">
+
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgAvatar"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/default_avatar"
-                android:id="@+id/imgAvatar"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/default_avatar" />
             <TextView
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"

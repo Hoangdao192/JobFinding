@@ -113,7 +113,7 @@ public class JobSearchFragment extends Fragment {
                         postList.clear();
                         for (DataSnapshot ds : snapshot.getChildren()) {
                             PostModel myPosts = ds.getValue(PostModel.class);
-                            if (myPosts.getPostSalary() >= jobSalary && myPosts.getPostExperience() == jobExperience) {
+                            if (myPosts.getPostSalary() <= jobSalary || myPosts.getPostExperience() <= jobExperience) {
                                 //add to list
                                 postList.add(myPosts);
 

@@ -72,14 +72,14 @@ public class ProfileFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button btnLogout = view.findViewById(R.id.return_button);
-        btnLogout.setOnClickListener(button -> {
-                firebaseAuthHelper.signOut();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                getActivity().finish();
-            });
+//        Button btnLogout = view.findViewById(R.id.return_button);
+//        btnLogout.setOnClickListener(button -> {
+//                firebaseAuthHelper.signOut();
+//                Intent intent = new Intent(getActivity(), LoginActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
+//                getActivity().finish();
+//            });
 
         TextView txtEditProfile = view.findViewById(R.id.edtProfile_button);
         txtEditProfile.setOnClickListener(editText -> {

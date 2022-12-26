@@ -21,8 +21,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
-import com.uet.fwork.ViewProfileActivity;
+//import com.uet.fwork.ViewProfileActivity;
 import com.uet.fwork.database.model.UserModel;
+import com.uet.fwork.ViewProfileActivityCandidate;
+import com.uet.fwork.ViewProfileActivityEmployer;
 import com.uet.fwork.database.model.UserRole;
 import com.uet.fwork.database.model.post.PostApplyModel;
 import com.uet.fwork.database.model.post.PostApplyStatus;
@@ -46,7 +48,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
     Context context;
     List<PostModel> postModelList;
     String myUid;
-
+//    UserRepository userRepository;
     private PostReactionRepository reactionRepository;
     private UserRepository userRepository;
     private PostApplyRepository postApplyRepository;
@@ -134,7 +136,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
 
         //set post image
         //if post doesn't have any images, hide imageView
-        if (pJobImage.equals("noImage")) {
+        if (pJobImage.equals("")) {
             //hide imageView
             holder.postImageIv.setVisibility(View.GONE);
         } else {
@@ -148,9 +150,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         holder.uNameTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ViewProfileActivity.class);
-                intent.putExtra("id",uid);
-                context.startActivity(intent);
+                userRepository = UserRepository.getInstance();
+                userRepository.getUserRole(uid, g -> {
+                    if(g.equals("Candidate")) {
+                        Intent intent = new Intent(context, ViewProfileActivityCandidate.class);
+                        intent.putExtra("id",uid);
+                        context.startActivity(intent);
+                    } else if (g.equals("Employer")) {
+                        Intent intent = new Intent(context, ViewProfileActivityEmployer.class);
+                        intent.putExtra("id",uid);
+                        context.startActivity(intent);
+                    }
+                });
+
+
             }
         });
 

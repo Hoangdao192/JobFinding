@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".account.profile.ProfileFragment">
-
+    android:background="#DDEFFF"
+    android:backgroundTint="#DDEFFF"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".ViewProfileActivityCandidate">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:foregroundTint="#386893">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/return_button"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="23dp"
+                    android:background="@drawable/back_button"
+                    app:backgroundTint="@null"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView2"
@@ -23,26 +39,7 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:src="@drawable/vector_116"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-                <TextView
-                    android:id="@+id/edtProfile_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="34dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:padding="0dp"
-                    android:text="Sửa"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    app:backgroundTint="@null"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/imageView2" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView8"
@@ -50,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="31dp"
                     android:fontFamily="@font/quicksand"
-                    android:text="Thông tin của tôi"
+                    android:text="Trang cá nhân"
                     android:textColor="#FFF"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -62,10 +59,11 @@
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_marginTop="75dp"
-                    android:src="@drawable/default_avatar"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:src="@drawable/wlop_33se"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
@@ -76,24 +74,24 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="188dp"
-                android:text="Họ và tên"
                 android:fontFamily="@font/quicksand_bold"
+                android:text="Họ và tên"
                 android:textColor="#5A2D22"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/nameTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
                 android:layout_alignBaseline="@id/txtTitleName"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="136dp"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Hello"
                 android:textAlignment="center"
                 android:textColor="#5A2D22"
-                android:text="Hello"
-                android:fontFamily="@font/quicksand_medium"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/txtTitleBirth"
@@ -103,8 +101,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="248dp"
-                android:text="Ngày sinh"
                 android:fontFamily="@font/quicksand_bold"
+                android:text="Ngày sinh"
                 android:textColor="#5A2D22"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -113,15 +111,15 @@
                 android:id="@+id/birthTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtTitleBirth"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_alignBaseline="@id/txtTitleBirth"
                 android:layout_marginStart="136dp"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Hello"
                 android:textAlignment="center"
                 android:textColor="#5A2D22"
-                android:text="Hello"
-                android:fontFamily="@font/quicksand_medium"
                 android:textSize="15sp" />
 
             <TextView
@@ -132,8 +130,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="308dp"
-                android:text="Giới tính"
                 android:fontFamily="@font/quicksand_bold"
+                android:text="Giới tính"
                 android:textColor="#5A2D22"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -142,16 +140,16 @@
                 android:id="@+id/sexTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtTitleSex"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="136dp"
-                android:layout_alignBaseline="@id/txtTitleSex"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Hello"
                 android:textAlignment="center"
                 android:textColor="@color/dark_purple"
-                android:text="Hello"
-                android:fontFamily="@font/quicksand_medium"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/txtTitleMajor"
@@ -161,8 +159,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="368dp"
-                android:text="Chuyên ngành"
                 android:fontFamily="@font/quicksand_bold"
+                android:text="Chuyên ngành"
                 android:textColor="#5A2D22"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -171,16 +169,16 @@
                 android:id="@+id/jobTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtTitleMajor"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="136dp"
-                android:layout_alignBaseline="@id/txtTitleMajor"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Hello"
                 android:textAlignment="center"
                 android:textColor="#5A2D22"
-                android:text="Hello"
-                android:fontFamily="@font/quicksand_medium"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/txtTitleExperience"
@@ -190,8 +188,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="428dp"
-                android:text="Kinh nghiệm"
                 android:fontFamily="@font/quicksand_bold"
+                android:text="Kinh nghiệm"
                 android:textColor="#5A2D22"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -200,16 +198,16 @@
                 android:id="@+id/workYearTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtTitleExperience"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="136dp"
-                android:layout_alignBaseline="@id/txtTitleExperience"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Hello"
                 android:textAlignment="center"
                 android:textColor="#5A2D22"
-                android:text="Hello"
-                android:fontFamily="@font/quicksand_medium"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/txtTitlePhone"
@@ -219,8 +217,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="488dp"
-                android:text="Điện thoại"
                 android:fontFamily="@font/quicksand_bold"
+                android:text="Điện thoại"
                 android:textColor="#5A2D22"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -229,16 +227,16 @@
                 android:id="@+id/phoneTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtTitlePhone"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="136dp"
-                android:layout_alignBaseline="@id/txtTitlePhone"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Hello"
                 android:textAlignment="center"
                 android:textColor="#5A2D22"
-                android:text="Hello"
-                android:fontFamily="@font/quicksand_medium"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/txtTitleEmail"
@@ -248,8 +246,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="548dp"
-                android:text="Email"
                 android:fontFamily="@font/quicksand_bold"
+                android:text="Email"
                 android:textColor="#5A2D22"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -258,17 +256,39 @@
                 android:id="@+id/emailTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/txtTitleEmail"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="136dp"
-                android:layout_alignBaseline="@id/txtTitleEmail"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="nguyendanghoangdao11a@gmail.com"
                 android:textAlignment="center"
                 android:textColor="#5A2D22"
-                android:text="nguyendanghoangdao11a@gmail.com"
-                android:fontFamily="@font/quicksand_medium"
-                android:textSize="15sp"
-                android:layout_marginBottom="40dp"/>
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/txtViewPost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/emailTv"
+                android:layout_marginStart="93dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="20dp"
+                android:layout_toEndOf="@+id/txtTitleEmail"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Bài Viết"
+                android:textColor="#001D85"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerviewPosts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/txtViewPost"
+                android:layout_marginTop="-20dp" />
         </RelativeLayout>
     </ScrollView>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
