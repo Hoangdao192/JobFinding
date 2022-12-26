@@ -25,6 +25,9 @@ import com.uet.fwork.database.repository.MessageRepository;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +45,8 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
     private UserRepository userRepository;
     private ChatRepository chatRepository;
     private MessageRepository messageRepository;
+
+    private List<Target> targetList = new ArrayList<>();
 
     private OnItemClickListener listener = null;
 
@@ -67,8 +72,8 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Target target;
-        chatRepository.getChatChanelById(chanelIdList.get(position), new Repository.OnQuerySuccessListener<ChanelModel>() {
+        String chanelId = chanelIdList.get(position);
+        chatRepository.getChatChanelById(chanelId, new Repository.OnQuerySuccessListener<ChanelModel>() {
             @Override
             public void onSuccess(ChanelModel chanel) {
                 chanel.getMembers().forEach(memberId -> {
@@ -78,44 +83,54 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
                             userRepository.getUserByUID(memberId, user -> {
                                 userMap.put(memberId, user);
                                 if (user.getAvatar() != null && !user.getAvatar().equals("")) {
+                                    Target target = new Target() {
+                                        @Override
+                                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                            holder.imgAvatar.setImageBitmap(bitmap);
+                                            userAvatarMap.put(memberId, bitmap);
+                                        }
+
+                                        @Override
+                                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                                        }
+
+                                        @Override
+                                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                                        }
+                                    };
+                                    targetList.add(target);
                                     Picasso.get().load(user.getAvatar())
                                             .resize(100, 100)
-                                            .into(new Target() {
-                                                @Override
-                                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                                                    holder.imgAvatar.setImageBitmap(bitmap);
-                                                    userAvatarMap.put(memberId, bitmap);
-                                                }
-
-                                                @Override
-                                                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                                                }
-
-                                                @Override
-                                                public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                                                }
-                                            });
+                                            .into(target);
+                                } else {
+                                    holder.imgAvatar.setImageDrawable(context.getDrawable(R.drawable.default_avatar));
                                 }
-                                if (!user.getAvatar().isEmpty()) {
-                                    Picasso.get().load(user.getAvatar())
-                                            .placeholder(R.drawable.wlop_33se)
-                                            .into(holder.imgAvatar);
-                                }
+
+//                                if (!user.getAvatar().isEmpty()) {
+//                                    Picasso.get().load(user.getAvatar())
+//                                            .placeholder(R.drawable.wlop_33se)
+//                                            .into(holder.imgAvatar);
+//                                } else {
+//                                    holder.imgAvatar.setImageDrawable(context.getDrawable(R.drawable.default_avatar));
+//                                }
                                 holder.userName.setText(user.getFullName());
-                                messageRepository.getLastMessage(chanelIdList.get(position), messageModel -> {
+                                messageRepository.getLastMessage(chanelId, messageModel -> {
                                     if (messageModel != null) {
                                         holder.txvLastMessage.setText(messageModel.getContent());
                                     }
                                 });
                             });
-                        } else {
+                        }
+                        else {
                             holder.userName.setText(userMap.get(memberId).getFullName());
                             if (userAvatarMap.containsKey(memberId)) {
                                 holder.imgAvatar.setImageBitmap(userAvatarMap.get(memberId));
+                            } else {
+                                holder.imgAvatar.setImageDrawable(context.getDrawable(R.drawable.default_avatar));
                             }
-                            messageRepository.getLastMessage(chanelIdList.get(position), messageModel -> {
+                            messageRepository.getLastMessage(chanelIdList.get(holder.getBindingAdapterPosition()), messageModel -> {
                                 if (messageModel != null) {
                                     holder.txvLastMessage.setText(messageModel.getContent());
                                 }
@@ -132,9 +147,9 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
         return chanelIdList.size();
     }
 
-    public void updateChanelList(List<String> chanelIdList) {
+    public void updateChanelList(List<String> newChanelIdList) {
         this.chanelIdList.clear();
-        this.chanelIdList.addAll(chanelIdList);
+        this.chanelIdList.addAll(newChanelIdList);
         notifyDataSetChanged();
     }
 

@@ -64,6 +64,18 @@ public class ChatListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("CALLL RESUME");
+        chatRepository.getAllChatIdByUserId(firebaseUser.getUid(), new Repository.OnQuerySuccessListener<List<String>>() {
+            @Override
+            public void onSuccess(List<String> chanelIdList) {
+                adapter.updateChanelList(chanelIdList);
+            }
+        });
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new ChatListRecyclerViewAdapter(
@@ -84,39 +96,50 @@ public class ChatListFragment extends Fragment {
                     }
                 }
         );
+//        chatRepository.getAllChatIdByUserId(firebaseUser.getUid(), new Repository.OnQuerySuccessListener<List<String>>() {
+//            @Override
+//            public void onSuccess(List<String> chanelIdList) {
+//                adapter.updateChanelList(chanelIdList);
+//            }
+//        });
 
-        FirebaseDatabase.getInstance().getReference("chats/userChats").child(firebaseUser.getUid())
-                        .addChildEventListener(new ChildEventListener() {
-                            @Override
-                            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                                chatRepository.getAllChatIdByUserId(firebaseUser.getUid(), new Repository.OnQuerySuccessListener<List<String>>() {
-                                    @Override
-                                    public void onSuccess(List<String> chanelIdList) {
-                                        adapter.updateChanelList(chanelIdList);
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                            }
-
-                            @Override
-                            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                            }
-
-                            @Override
-                            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
+//        FirebaseDatabase.getInstance().getReference("chats/userChats").child(firebaseUser.getUid())
+//                        .addChildEventListener(new ChildEventListener() {
+//                            @Override
+//                            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                                chatRepository.getAllChatIdByUserId(firebaseUser.getUid(), new Repository.OnQuerySuccessListener<List<String>>() {
+//                                    @Override
+//                                    public void onSuccess(List<String> chanelIdList) {
+//                                        adapter.updateChanelList(chanelIdList);
+//                                    }
+//                                });
+//                            }
+//
+//                            @Override
+//                            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                                chatRepository.getAllChatIdByUserId(firebaseUser.getUid(), new Repository.OnQuerySuccessListener<List<String>>() {
+//                                    @Override
+//                                    public void onSuccess(List<String> chanelIdList) {
+//                                        adapter.updateChanelList(chanelIdList);
+//                                    }
+//                                });
+//                            }
+//
+//                            @Override
+//                            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError error) {
+//
+//                            }
+//                        });
     }
 
     @Override

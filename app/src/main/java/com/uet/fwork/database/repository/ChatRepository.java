@@ -113,14 +113,41 @@ public class ChatRepository extends Repository {
 
     public void getAllChatIdByUserId(String userId, OnQuerySuccessListener<List<String>> listener) {
         DatabaseReference userChatsRef = firebaseDatabase.getReference("chats/userChats/" + userId);
-        userChatsRef.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+        System.out.println("CALLLLLLLLLLLLLLLLLLLLLLLL");
+        userChatsRef.orderByChild("lastUpdate").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 List<String> chatChanelIdList = new ArrayList<>();
+                List<ChanelModel> chanelModels = new ArrayList<>();
                 dataSnapshot.getChildren().forEach((snapshot) -> {
-                    chatChanelIdList.add(snapshot.getKey());
+                    chanelModels.add(snapshot.getValue(ChanelModel.class));
+                });
+                for (int i = 0; i < chanelModels.size() - 1; ++i) {
+                    for (int j = i + 1; j < chanelModels.size(); ++j) {
+                        if (chanelModels.get(i).getLastUpdate() < chanelModels.get(j).getLastUpdate()) {
+                            ChanelModel temp = chanelModels.get(i);
+                            chanelModels.set(i, chanelModels.get(j));
+                            chanelModels.set(j, temp);
+                        }
+                    }
+                }
+                chanelModels.forEach((chanelModel) -> {
+                    chatChanelIdList.add(chanelModel.getId());
                 });
                 listener.onSuccess(chatChanelIdList);
+            }
+        });
+    }
+
+    public void updateChanelLastUpdate(String chanelId, Long lastUpdate) {
+        getChatChanelById(chanelId, new OnQuerySuccessListener<ChanelModel>() {
+            @Override
+            public void onSuccess(ChanelModel chanelModel) {
+                chanelModel.getMembers().forEach((memberId) -> {
+                    DatabaseReference userChatsRef =
+                            firebaseDatabase.getReference("chats/userChats/" + memberId);
+                    userChatsRef.child(chanelId).child("lastUpdate").setValue(lastUpdate);
+                });
             }
         });
     }

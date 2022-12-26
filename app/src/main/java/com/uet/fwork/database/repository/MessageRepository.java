@@ -25,6 +25,7 @@ import com.uet.fwork.database.model.chat.MessageStatus;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,8 @@ public class MessageRepository extends Repository {
     private static final String databaseReferencePath = "chats/messages";
     private static final String LOG_TAG = "Message repository";
     private static MessageRepository INSTANCE = null;
+
+    private ChatRepository chatRepository = null;
 
     private MessageRepository() {
         super(databaseReferencePath);
@@ -56,9 +59,14 @@ public class MessageRepository extends Repository {
      * @param message
      */
     public void insertMessage(String chanelId, MessageModel message, @Nullable OnQuerySuccessListener<String> listener) {
+        if (chatRepository == null) {
+            chatRepository = ChatRepository.getInstance();
+        }
+
         DatabaseReference newMessageRef = rootDatabaseReference.child(chanelId).push();
         message.setId(newMessageRef.getKey());
         newMessageRef.setValue(message).addOnSuccessListener(unused -> {
+            chatRepository.updateChanelLastUpdate(chanelId, Calendar.getInstance().getTimeInMillis() / 1000);
             notifyMessageSent(chanelId, message.getId());
             if (listener != null) {
                 listener.onSuccess(message.getId());
