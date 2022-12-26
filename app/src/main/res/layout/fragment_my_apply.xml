@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:background="#DDEEFF">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -43,32 +42,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/radGrpApplication">
+
             <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Theme.FWork.RadioButton.RoundedCorner.47"
-                android:text="Chưa duyệt"
-                android:textSize="12sp"
-                android:button="@android:color/transparent"
                 android:id="@+id/radNotRead"
-                android:checked="true"/>
-            <RadioButton
+                style="@style/Theme.FWork.RadioButton.RoundedCorner.47"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:button="@android:color/transparent"
+                android:checked="true"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Chưa duyệt"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/radAccepted"
                 style="@style/Theme.FWork.RadioButton.RoundedCorner.47"
-                android:text="Đã chấp nhận"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:textSize="12sp"
                 android:button="@android:color/transparent"
-                android:id="@+id/radAccepted"/>
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Đã chấp nhận"
+                android:textSize="12sp" />
+
             <RadioButton
+                android:id="@+id/radRejected"
+                style="@style/Theme.FWork.RadioButton.RoundedCorner.47"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Theme.FWork.RadioButton.RoundedCorner.47"
-                android:text="Đã từ chối"
-                android:textSize="12sp"
                 android:button="@android:color/transparent"
-                android:id="@+id/radRejected"/>
+                android:fontFamily="@font/quicksand_medium"
+                android:text="Đã từ chối"
+                android:textSize="12sp" />
         </RadioGroup>
     </HorizontalScrollView>
 
