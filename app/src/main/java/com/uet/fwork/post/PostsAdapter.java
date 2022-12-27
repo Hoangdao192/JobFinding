@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -314,7 +315,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         ImageView uAvatarIv, postImageIv, btnLike;
         TextView uNameTv, pTimeTv, pJobNameTv, pJobMajorTv, pJobAddressTv, pJobExperienceTv, pJobSalaryTv, pJobDescriptionTv;
         ImageButton moreButton;
-        AppCompatButton commentButton, btnPostApply;
+        Button commentButton, btnPostApply;
 
         private TextView txvLikeNumber, txvCommentNumber;
 

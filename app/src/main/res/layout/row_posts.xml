@@ -267,32 +267,39 @@
 
             <ImageView
                 android:id="@+id/btnLike"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_weight="1"
                 android:src="@drawable/ic_heart_no_fill" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 android:id="@+id/postCommentButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
+                android:layout_weight="0.2"
                 android:fontFamily="@font/quicksand_medium"
                 android:text="Bình Luận"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"
+                android:textAllCaps="false"
+                style="?android:attr/borderlessButtonStyle"
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/comment_alt"
+                />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 android:id="@+id/btnPostApply"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
+                android:layout_weight="0.1"
                 android:fontFamily="@font/quicksand_medium"
                 android:text="Ứng tuyển"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"
+                android:textAllCaps="false"
+                style="?android:attr/borderlessButtonStyle"
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/star_alt" />
         </LinearLayout>
 
     </LinearLayout>
