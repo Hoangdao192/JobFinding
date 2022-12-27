@@ -268,8 +268,8 @@
 
             <ImageView
                 android:id="@+id/btnLike"
-                android:layout_width="27dp"
-                android:layout_height="27dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_weight="1"
                 android:src="@drawable/ic_heart_no_fill" />
 
@@ -281,6 +281,7 @@
                 android:background="@null"
                 android:fontFamily="@font/quicksand_medium"
                 android:text="Bình Luận"
+                android:textSize="15dp"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -291,6 +292,7 @@
                 android:background="@null"
                 android:fontFamily="@font/quicksand_medium"
                 android:text="Ứng tuyển"
+                android:textSize="15dp"
                 android:textStyle="bold" />
         </LinearLayout>
 
