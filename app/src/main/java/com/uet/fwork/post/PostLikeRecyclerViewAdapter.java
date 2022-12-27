@@ -1,6 +1,7 @@
 package com.uet.fwork.post;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
+import com.uet.fwork.ViewProfileActivityCandidate;
+import com.uet.fwork.ViewProfileActivityEmployer;
 import com.uet.fwork.database.model.post.PostModel;
 import com.uet.fwork.database.model.post.ReactionModel;
 import com.uet.fwork.database.repository.PostReactionRepository;
@@ -20,6 +23,7 @@ import com.uet.fwork.database.repository.PostRepository;
 import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.dialog.ConfirmDialog;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +38,7 @@ public class PostLikeRecyclerViewAdapter extends RecyclerView.Adapter<PostLikeRe
     private PostRepository postRepository;
     private UserRepository userRepository;
     private PostReactionRepository postReactionRepository;
+    DecimalFormat format = new DecimalFormat("0.#");
 
     public PostLikeRecyclerViewAdapter(Context context, List<ReactionModel> reactionModels) {
         this.context = context;
@@ -80,10 +85,27 @@ public class PostLikeRecyclerViewAdapter extends RecyclerView.Adapter<PostLikeRe
                 Picasso.get().load(user.getAvatar()).into(holder.imgPostOwnerAvatar);
             }
             holder.txvPostOwnerName.setText(user.getFullName());
+            holder.txvPostOwnerName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(user.getRole().equals("Candidate")) {
+                        Intent intent = new Intent(context, ViewProfileActivityCandidate.class);
+                        intent.putExtra("id",user.getId());
+                        context.startActivity(intent);
+                    } else if (user.getRole().equals("Employer")) {
+                        Intent intent = new Intent(context, ViewProfileActivityEmployer.class);
+                        intent.putExtra("id", user.getId());
+                        context.startActivity(intent);
+                    }
+
+
+                }
+            });
         });
         holder.txvJobDescription.setText("Mô tả công việc: " + postModel.getPostDescription());
-        holder.txvJobSalary.setText("Mức lương tối thiểu: " + postModel.getPostSalary());
-        holder.txvJobExperience.setText("Kinh nghiệm: " + postModel.getPostExperience() + " năm");
+        holder.txvJobSalary.setText("Mức lương tối thiểu: " + postModel.getPostSalary() + " triệu đồng");
+        holder.txvJobExperience.setText("Kinh nghiệm: " + format.format(postModel.getPostExperience()) + " năm");
         holder.txvJobAddress.setText("Địa chỉ: " + postModel.getPostAddress());
         holder.txvJobName.setText("Tên công việc: " + postModel.getPostName());
         holder.txvJobMajor.setText("Chuyên ngành: " + postModel.getPostMajor());

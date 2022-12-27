@@ -92,8 +92,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
             @Override
             public void onSuccess(UserModel userModel) {
                 if (userModel.getRole().equals(UserRole.CANDIDATE)) {
+                    holder.title.setText("Cần tìm việc:");
+                    holder.salaryTitle.setText("Mức lương mong muốn:");
+                    holder.locationTitle.setText("Khu vực mong muốn:");
                     holder.btnPostApply.setVisibility(View.GONE);
                 } else {
+                    holder.title.setText("Cần tuyển công việc:");
+                    holder.salaryTitle.setText("Mức lương dự kiến:");
                     holder.btnPostApply.setVisibility(View.VISIBLE);
                 }
             }
@@ -314,7 +319,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
 
         //views from row_posts.xml
         ImageView uAvatarIv, postImageIv, btnLike;
-        TextView uNameTv, pTimeTv, pJobNameTv, pJobMajorTv, pJobAddressTv, pJobExperienceTv, pJobSalaryTv, pJobDescriptionTv;
+        TextView uNameTv, pTimeTv, pJobNameTv, pJobMajorTv, pJobAddressTv, pJobExperienceTv, pJobSalaryTv, pJobDescriptionTv, title, salaryTitle,locationTitle;
         ImageButton moreButton;
         Button commentButton, btnPostApply;
 
@@ -326,6 +331,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
             uAvatarIv = itemView.findViewById(R.id.uPostAvatarIv);
             postImageIv = itemView.findViewById(R.id.jobImagePost);
             uNameTv = itemView.findViewById(R.id.uPostNameTv);
+            title = itemView.findViewById(R.id.jobTitle);
+            salaryTitle = itemView.findViewById(R.id.salaryTitle);
+            locationTitle = itemView.findViewById(R.id.locationTitle);
             pTimeTv = itemView.findViewById(R.id.pTimeTv);
             pJobNameTv = itemView.findViewById(R.id.jobNamePost);
             pJobMajorTv = itemView.findViewById(R.id.jobMajorPost);

@@ -1,6 +1,7 @@
 package com.uet.fwork.post;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.uet.fwork.R;
+import com.uet.fwork.ViewProfileActivityCandidate;
+import com.uet.fwork.ViewProfileActivityEmployer;
 import com.uet.fwork.database.model.CandidateModel;
 import com.uet.fwork.database.model.UserModel;
 import com.uet.fwork.database.model.post.PostApplyModel;
@@ -26,6 +29,7 @@ import com.uet.fwork.database.repository.UserRepository;
 import com.uet.fwork.dialog.ConfirmDialog;
 import com.uet.fwork.firebasehelper.CloudMessagingHelper;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +51,7 @@ public class EmployerPostApplyRecyclerViewAdapter extends RecyclerView.Adapter<E
     private List<PostApplyModel> unReadPostApplyList;
     private List<PostApplyModel> acceptedPostApplyList;
     private List<PostApplyModel> rejectedPostApplyList;
+    DecimalFormat format = new DecimalFormat("0.#");
 
     public EmployerPostApplyRecyclerViewAdapter(
             Context context, Map<String, PostModel> postMap,
@@ -101,6 +106,25 @@ public class EmployerPostApplyRecyclerViewAdapter extends RecyclerView.Adapter<E
                 }
             }
         });
+        holder.btnShowCandidate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userRepository = UserRepository.getInstance();
+                userRepository.getUserRole(postApplyModel.getUserId(), g -> {
+                    if(g.equals("Candidate")) {
+                        Intent intent = new Intent(context, ViewProfileActivityCandidate.class);
+                        intent.putExtra("id",postApplyModel.getUserId());
+                        context.startActivity(intent);
+                    } else if (g.equals("Employer")) {
+                        Intent intent = new Intent(context, ViewProfileActivityEmployer.class);
+                        intent.putExtra("id",postApplyModel.getUserId());
+                        context.startActivity(intent);
+                    }
+                });
+
+
+            }
+        });
         holder.btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +154,7 @@ public class EmployerPostApplyRecyclerViewAdapter extends RecyclerView.Adapter<E
             Picasso.get().load(candidateModel.getAvatar()).into(holder.cirImgAvatar);
         }
         holder.txvFullName.setText(candidateModel.getFullName());
-        holder.txvExperience.setText(candidateModel.getYearOfExperience() + " năm");
+        holder.txvExperience.setText(format.format(candidateModel.getYearOfExperience()) + " năm");
         holder.txvMajor.setText(candidateModel.getMajor());
         holder.txvPhoneNumber.setText(candidateModel.getPhoneNumber());
         holder.txvEmail.setText(candidateModel.getEmail());

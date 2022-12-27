@@ -44,7 +44,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/salaryTitle"
         tools:text="Đăng ký"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
         app:layout_constraintTop_toBottomOf="@id/edtRePassword"/>
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/locationTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -170,7 +170,7 @@
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView6"/>
+        app:layout_constraintTop_toBottomOf="@id/locationTitle"/>
 
     <Button
         android:id="@+id/btnLoginFacebook"

@@ -68,6 +68,7 @@ public class JobSearchFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerviewSearch);
 
         spnMajor = view.findViewById(R.id.spnJobMajor);
+        edtAddress = view.findViewById(R.id.edtJobAddress);
         edtSalary = view.findViewById(R.id.edtJobSalary);
         edtExp = view.findViewById(R.id.edtJobSalary);
         search = view.findViewById(R.id.btnSearchJob);
@@ -102,6 +103,7 @@ public class JobSearchFragment extends Fragment {
 
                 String jobMajor = spnMajor.getSelectedItem().toString().trim();
                 Long jobSalary = Long.valueOf(edtSalary.getText().toString().trim());
+                String adress =  edtAddress.getText().toString().trim();
                 double jobExperience = Double.parseDouble(edtExp.getText().toString().trim());
 
                 //init post list
@@ -113,18 +115,25 @@ public class JobSearchFragment extends Fragment {
                         postList.clear();
                         for (DataSnapshot ds : snapshot.getChildren()) {
                             PostModel myPosts = ds.getValue(PostModel.class);
-                            if (myPosts.getPostSalary() <= jobSalary || myPosts.getPostExperience() <= jobExperience) {
-                                //add to list
-                                postList.add(myPosts);
 
-                                //adapter
-                                postsAdapter = new PostsAdapter(getActivity(), postList);
-                                recyclerView.setAdapter(postsAdapter);
-                            } else {
-                                Toast.makeText(getActivity(), "Không tìm thấy công việc!", Toast.LENGTH_SHORT).show();
+
+                                if ( myPosts.getPostAddress().contains(adress)&&(myPosts.getPostSalary() >= jobSalary || myPosts.getPostExperience() <= jobExperience)) {
+
+
+                                        //add to list
+                                        postList.add(myPosts);
+
+                                        //adapter
+                                        postsAdapter = new PostsAdapter(getActivity(), postList);
+                                        recyclerView.setAdapter(postsAdapter);
+
+                                }
                             }
+                        if (postList.isEmpty()){
+                            Toast.makeText(getActivity(), "Không tìm thấy công việc!", Toast.LENGTH_SHORT).show();
                         }
-                    }
+                        }
+
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {

@@ -72,7 +72,7 @@
             android:layout_marginTop="10dp">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/jobTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_medium"
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_medium"
                 android:padding="5dp"
-                android:text="Chuyên ngành"
+                android:text="Chuyên ngành:"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +124,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/locationTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_medium"
@@ -185,7 +185,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/salaryTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_medium"
