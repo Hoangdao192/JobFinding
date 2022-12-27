@@ -140,26 +140,15 @@
                 app:layout_constraintTop_toTopOf="@id/txtTitleJobMajor"
                 app:layout_constraintVertical_bias="0.0" />
 
-            <Button
-                android:id="@+id/btnBack"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="23dp"
-                android:background="@drawable/back_button"
-                app:backgroundTint="@null"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/textView16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="31dp"
-                android:fontFamily="@font/quicksand"
-                android:text="Tìm Việc"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Tìm kiếm việc làm"
                 android:textColor="#FFF"
-                android:textSize="35sp"
+                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -185,9 +174,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="#9E1144"
-                android:text="Tìm Việc"
-                android:visibility="visible"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Tìm việc"
 
+                android:textAllCaps="false"
+                android:typeface="normal"
+                android:visibility="visible"
                 app:cornerRadius="47dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

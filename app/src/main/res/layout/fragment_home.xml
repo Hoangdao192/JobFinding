@@ -15,6 +15,9 @@
         android:id="@+id/postsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background=" #f2f2f2"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,7 +25,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_home"
         app:layout_constraintVertical_bias="0.0"
-        tools:listitem="@layout/row_posts"
-        android:background="#d7f0f1"/>
+        tools:listitem="@layout/row_posts" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

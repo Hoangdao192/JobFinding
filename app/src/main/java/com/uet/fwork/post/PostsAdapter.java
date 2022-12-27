@@ -41,6 +41,7 @@ import com.uet.fwork.firebasehelper.CloudMessagingHelper;
 import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
 import com.uet.fwork.util.TimestampToString;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
     private FirebaseUser firebaseUser;
 
     private FirebaseAuthHelper firebaseAuthHelper;
-
+    DecimalFormat format = new DecimalFormat("0.#");
     public PostsAdapter(Context context, List<PostModel> postModelList) {
         this.context = context;
         this.postModelList = postModelList;
@@ -126,7 +127,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
         holder.pJobSalaryTv.setText(Long.toString(pJobSalary));
         holder.pJobAddressTv.setText(pJobAddress);
         holder.pTimeTv.setText(TimestampToString.convert(post.getPostTime()));
-        holder.pJobExperienceTv.setText(String.valueOf(pJobExperience));
+        holder.pJobExperienceTv.setText(format.format(pJobExperience));
 
         //set user dp
         try {
