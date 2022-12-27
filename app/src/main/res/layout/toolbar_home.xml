@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/vector_116">
+    android:layout_height="50dp"
+    android:background="@color/ic_launcher_background">
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="2dp"
+        android:fontFamily="@font/quicksand_bold"
         android:text="Trang chủ"
-        android:textSize="25sp"
-        android:fontFamily="@font/quicksand"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
 
 </androidx.appcompat.widget.Toolbar>
