@@ -37,6 +37,29 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:src="@drawable/vector_116"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/edtProfile_button"
+                    android:layout_width="45dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginTop="32dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:padding="0dp"
+                    android:text="Chat
+"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null"
+                    app:layout_constraintStart_toEndOf="@+id/textView8"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
