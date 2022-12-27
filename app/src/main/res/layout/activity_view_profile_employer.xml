@@ -42,25 +42,15 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/edtProfile_button"
-                    android:layout_width="51dp"
-                    android:layout_height="22dp"
-
-                    android:layout_marginStart="60dp"
-                    android:layout_marginTop="36dp"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:padding="0dp"
-                    android:text="Chat"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:backgroundTint="@null"
-                    app:layout_constraintStart_toEndOf="@+id/textView8"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_open_chat"
+                    app:layout_constraintBottom_toBottomOf="@id/textView8"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="25dp"
+                    app:tint="@color/white"
+                    android:id="@+id/btnOpenChat"/>
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/avatarIv"

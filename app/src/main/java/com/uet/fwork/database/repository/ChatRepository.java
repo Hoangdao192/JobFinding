@@ -113,7 +113,6 @@ public class ChatRepository extends Repository {
 
     public void getAllChatIdByUserId(String userId, OnQuerySuccessListener<List<String>> listener) {
         DatabaseReference userChatsRef = firebaseDatabase.getReference("chats/userChats/" + userId);
-        System.out.println("CALLLLLLLLLLLLLLLLLLLLLLLL");
         userChatsRef.orderByChild("lastUpdate").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
@@ -151,4 +150,6 @@ public class ChatRepository extends Repository {
             }
         });
     }
+
+
 }
