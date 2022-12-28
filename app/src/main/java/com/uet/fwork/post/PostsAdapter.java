@@ -36,6 +36,7 @@ import com.uet.fwork.database.repository.PostApplyRepository;
 import com.uet.fwork.database.repository.PostReactionRepository;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
+import com.uet.fwork.dialog.ConfirmDialog;
 import com.uet.fwork.dialog.ErrorDialog;
 import com.uet.fwork.firebasehelper.CloudMessagingHelper;
 import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
@@ -282,6 +283,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
 
         if (uid.equals(myUid)) {
             popupMenu.getMenu().add(Menu.NONE, 0, 0, "Xóa Bài Viết");
+        } else {
+            popupMenu.getMenu().add(Menu.NONE, 0, 0, "Báo cáo");
         }
 
         //adding items
@@ -290,9 +293,30 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyHolder> {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
-                if (id == 0) {
+                if (id == 0 && uid.equals(myUid)) {
                     beginDelete(pId, pJobImage);
 
+                } else {
+                    ConfirmDialog confirmDialog = new ConfirmDialog(
+                            context, "Báo cáo bài viết",
+                            "Bạn có chắc chắn muốn báo cáo bài đăng này?",
+                            new ConfirmDialog.OnEventListener() {
+                                @Override
+                                public void onConfirm() {
+                                    ErrorDialog errorDialog = new ErrorDialog(
+                                            context, "Báo cáo thành công",
+                                            "Cảm ơn bạn đã báo cáo. \nChúng tôi sẽ xem xét bài đăng này."
+                                    );
+                                    errorDialog.show();
+                                }
+
+                                @Override
+                                public void onCancel() {
+
+                                }
+                            }
+                    );
+                    confirmDialog.show();
                 }
                 return false;
             }
