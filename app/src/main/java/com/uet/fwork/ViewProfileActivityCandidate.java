@@ -29,6 +29,8 @@ import com.uet.fwork.database.model.post.PostModel;
 import com.uet.fwork.database.repository.ChatRepository;
 import com.uet.fwork.database.repository.Repository;
 import com.uet.fwork.database.repository.UserRepository;
+import com.uet.fwork.dialog.ConfirmDialog;
+import com.uet.fwork.dialog.ErrorDialog;
 import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
 import com.uet.fwork.post.PostsAdapter;
 
@@ -95,6 +97,30 @@ public class ViewProfileActivityCandidate extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         userRepository = UserRepository.getInstance();
+        TextView txtEditProfile = findViewById(R.id.report_Btn);
+        txtEditProfile.setOnClickListener(editText -> {
+            ConfirmDialog confirmDialog = new ConfirmDialog(
+                    ViewProfileActivityCandidate.this, "Báo cáo người dùng",
+                    "Bạn có chắc chắn muốn báo cáo người dùng này?",
+                    new ConfirmDialog.OnEventListener() {
+                        @Override
+                        public void onConfirm() {
+                            ErrorDialog errorDialog = new ErrorDialog(
+                                    ViewProfileActivityCandidate.this, "Báo cáo thành công",
+                                    "Cảm ơn bạn đã báo cáo. \nChúng tôi sẽ xem xét người dùng này."
+                            );
+                            errorDialog.show();
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+                    }
+            );
+            confirmDialog.show();
+        });
+
 
         imgOpenChat.setOnClickListener(new View.OnClickListener() {
             @Override

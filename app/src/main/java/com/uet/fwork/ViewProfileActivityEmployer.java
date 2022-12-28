@@ -23,13 +23,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.uet.fwork.account.profile.UpdateCandidateProfileActivity;
+import com.uet.fwork.account.profile.UpdateEmployerProfileActivity;
 import com.uet.fwork.chat.ChatActivity;
 import com.uet.fwork.database.model.CandidateModel;
 import com.uet.fwork.database.model.EmployerModel;
 import com.uet.fwork.database.model.UserModel;
+import com.uet.fwork.database.model.UserRole;
 import com.uet.fwork.database.model.post.PostModel;
 import com.uet.fwork.database.repository.ChatRepository;
 import com.uet.fwork.database.repository.UserRepository;
+import com.uet.fwork.dialog.ConfirmDialog;
+import com.uet.fwork.dialog.ErrorDialog;
 import com.uet.fwork.firebasehelper.FirebaseAuthHelper;
 import com.uet.fwork.post.PostsAdapter;
 
@@ -89,6 +94,29 @@ public class ViewProfileActivityEmployer extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         userRepository = UserRepository.getInstance();
+        TextView txtEditProfile = findViewById(R.id.report);
+        txtEditProfile.setOnClickListener(editText -> {
+            ConfirmDialog confirmDialog = new ConfirmDialog(
+                    ViewProfileActivityEmployer.this, "Báo cáo công ty",
+                    "Bạn có chắc chắn muốn báo cáo công ty này?",
+                    new ConfirmDialog.OnEventListener() {
+                        @Override
+                        public void onConfirm() {
+                            ErrorDialog errorDialog = new ErrorDialog(
+                                    ViewProfileActivityEmployer.this, "Báo cáo thành công",
+                                    "Cảm ơn bạn đã báo cáo. \nChúng tôi sẽ xem xét công ty này."
+                            );
+                            errorDialog.show();
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+                    }
+            );
+            confirmDialog.show();
+        });
 
         imgOpenChat.setOnClickListener(new View.OnClickListener() {
             @Override
