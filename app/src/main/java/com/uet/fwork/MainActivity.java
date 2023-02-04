@@ -91,10 +91,10 @@ public class MainActivity extends AppCompatActivity {
                             new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    if (!currentUserId.equals("")) {
-                                        System.out.println(currentUserId);
-                                        startDashboardActivity();
-                                    }
+//                                    if (!currentUserId.equals("")) {
+//                                        System.out.println(currentUserId);
+//                                        startDashboardActivity();
+//                                    }
                                     FirebaseAuth.getInstance().fetchSignInMethodsForEmail(firebaseUser.getEmail())
                                             .addOnSuccessListener(new OnSuccessListener<SignInMethodQueryResult>() {
                                                 @Override
@@ -115,12 +115,14 @@ public class MainActivity extends AppCompatActivity {
                                                                 }
                                                             }
                                                         });
-                                                    } else {
+                                                    }
+                                                    else {
                                                         //  Kiểm tra email người dùng đã được xác mình chưa
                                                         if (!firebaseAuth.getCurrentUser().isEmailVerified()) {
                                                             Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
                                                             intent.putExtra("startDestinationId", R.id.registerVerifyRequestFragment);
                                                             startActivity(intent);
+                                                            System.out.println("CHECKING EMAIL");
                                                         }
                                                         //  Kiểm tra người dùng đã khai báo thông tin cá nhân chưa
                                                         else {
@@ -141,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                                                     }
                                                 }
                                             });
-                                    startDashboardActivity();
+//                                    startDashboardActivity();
                                 }
                             }
                     )
