@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.uet.fwork'
+    namespace 'com.vnsoftware.jobfinder'
     compileSdk 32
 
     defaultConfig {
-        applicationId 'com.uet.fwork'
+        applicationId 'com.vnsoftware.jobfinder'
         minSdk 26
         targetSdk 32
         versionCode 1

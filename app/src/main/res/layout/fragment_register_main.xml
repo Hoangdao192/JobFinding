@@ -1,194 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/background_color"
+    android:background="@color/white"
+    android:gravity="center"
+    android:scrollbars="none"
+    android:fillViewport="true"
     tools:context=".account.register.RegisterMainFragment">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/top_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="38dp"
-        android:background="@color/topview_color"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/button_return" />
-
-    <TextView
-        android:id="@+id/txtLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:fontFamily="@font/quicksand_medium"
-        android:text="@string/login_suggest"
-        android:textColor="#FFFFFF"
-        android:textSize="13sp"
-        android:layout_marginEnd="26dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/salaryTitle"
-        tools:text="Đăng ký"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="Đăng ký"
-        android:textColor="#213C5A"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="@id/edtEmail"
-        app:layout_constraintTop_toBottomOf="@id/imageView" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Theme.FWork.TextInputLayout"
-        app:startIconDrawable="@drawable/ic_message"
-        android:id="@+id/edtEmail"
-        android:layout_marginHorizontal="26dp"
-        android:layout_marginTop="215dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
-        <EditText
-            android:hint="Email"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/quicksand_medium"
-            android:background="@drawable/round_border"
-            android:inputType="textEmailAddress"
-            android:textSize="15sp"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="20dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Theme.FWork.TextInputLayout"
-        app:startIconDrawable="@drawable/ic_lock"
-        android:id="@+id/edtPassword"
-        android:layout_marginHorizontal="26dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtEmail"
-        app:passwordToggleEnabled="true">
-        <EditText
-            android:hint="Mật khẩu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/quicksand_medium"
-            android:background="@drawable/round_border"
-            android:inputType="textPassword"
-            android:textSize="15sp"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/txvLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="Tạo tài khoản"
+                android:elevation="10dp"
+                android:textColor="#0D0140"
+                android:textSize="30sp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Theme.FWork.TextInputLayout"
-        app:startIconDrawable="@drawable/ic_lock"
-        android:id="@+id/edtRePassword"
-        app:passwordToggleEnabled="true"
-        android:layout_marginHorizontal="26dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtPassword">
-        <EditText
-            android:hint="Nhập lại khẩu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/quicksand_medium"
-            android:background="@drawable/round_border"
-            android:inputType="textPassword"
-            android:textSize="15sp"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tạo một tài khoản để bắt đầu."
+                android:textColor="#524B6B"
+                android:layout_marginBottom="50dp"/>
 
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="65dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/rounded_corner_47"
-        android:fontFamily="@font/quicksand_medium"
-        android:textAllCaps="false"
-        android:textSize="15sp"
-        android:text="Đăng ký"
-        app:backgroundTint="#060F63"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtRePassword"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:layout_gravity="left"
+                android:textSize="14sp"
+                android:textColor="#0D0140"
+                android:fontFamily="@font/quicksand_bold"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Theme.FWork.TextInputLayout"
+                app:startIconDrawable="@drawable/ic_message"
+                android:id="@+id/tilEmail">
+                <EditText
+                    android:textColor="#0D0140"
+                    android:textColorHint="#aaaaaa"
+                    android:hint="example@example.com"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:background="@drawable/round_border"
+                    android:inputType="textEmailAddress"
+                    android:textSize="15sp"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/locationTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/quicksand_medium"
-        android:text="Hoặc"
-        android:textAlignment="center"
-        android:textColor="#B0B3B2"
-        android:textSize="15sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnRegister"/>
+            <TextView
+                android:layout_marginTop="14dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mật khẩu"
+                android:layout_gravity="left"
+                android:textSize="14sp"
+                android:textColor="#0D0140"
+                android:fontFamily="@font/quicksand_bold"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Theme.FWork.TextInputLayout"
+                app:startIconDrawable="@drawable/ic_lock"
+                android:id="@+id/tilPassword"
+                app:passwordToggleEnabled="true">
+                <EditText
+                    android:textColor="#0D0140"
+                    android:textColorHint="#aaaaaa"
+                    android:hint="Mật khẩu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:background="@drawable/round_border"
+                    android:inputType="textPassword"
+                    android:textSize="15sp"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/relLoginGoogle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="26dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/round_border"
-        android:drawableLeft="@drawable/ic_google"
-        android:fontFamily="@font/quicksand_bold"
-        android:textAllCaps="false"
-        android:text="Đăng ký bằng Google"
-        android:textColor="#5A2D22"
-        android:textSize="15sp"
-        app:backgroundTint="#FFFFFF"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/locationTitle"/>
+            <TextView
+                android:layout_marginTop="14dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Xác nhận mật khẩu"
+                android:layout_gravity="left"
+                android:textSize="14sp"
+                android:textColor="#0D0140"
+                android:fontFamily="@font/quicksand_bold"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Theme.FWork.TextInputLayout"
+                app:startIconDrawable="@drawable/ic_lock"
+                android:id="@+id/tilConfirmPassword"
+                app:passwordToggleEnabled="true">
+                <EditText
+                    android:textColor="#0D0140"
+                    android:textColorHint="#aaaaaa"
+                    android:hint="Nhập lại khẩu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:background="@drawable/round_border"
+                    android:inputType="textPassword"
+                    android:textSize="15sp"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/btnLoginFacebook"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="26dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/round_border"
-        android:drawableLeft="@drawable/ic_facebook"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="Đăng ký bằng Facebook"
-        android:textAllCaps="false"
-        android:textColor="#5A2D22"
-        android:textSize="15sp"
-        app:backgroundTint="#FFFFFF"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/relLoginGoogle"/>
+            <Button
+                android:layout_marginTop="20dp"
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corner_10"
+                app:backgroundTint="#0D0140"
+                android:fontFamily="@font/quicksand_medium"
+                android:textSize="15sp"
+                android:text="Đăng ký"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:layout_marginTop="15dp"
+                android:id="@+id/btnRegisterGoogle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_border"
+                android:drawableLeft="@drawable/ic_google"
+                android:fontFamily="@font/quicksand_bold"
+                android:textAllCaps="false"
+                android:text="Đăng ký bằng Google"
+                android:textColor="#5A2D22"
+                android:textSize="15sp"
+                app:backgroundTint="#FFFFFF"/>
+
+            <Button
+                android:layout_marginTop="15dp"
+                android:id="@+id/btnRegisterFacebook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_border"
+                android:drawableLeft="@drawable/ic_facebook"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="Đăng ký bằng Facebook"
+                android:textAllCaps="false"
+                android:textColor="#5A2D22"
+                android:textSize="15sp"
+                app:backgroundTint="#FFFFFF"/>
+
+            <TextView
+                android:id="@+id/txtLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="@string/login_suggest"
+                android:textColor="#524B6B"
+                android:textSize="13sp"
+                android:layout_marginTop="16dp"/>
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>
