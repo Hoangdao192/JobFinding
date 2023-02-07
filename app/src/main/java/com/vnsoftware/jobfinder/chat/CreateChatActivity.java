@@ -8,15 +8,12 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.squareup.picasso.Picasso;
 import com.vnsoftware.jobfinder.R;
 import com.vnsoftware.jobfinder.database.model.UserModel;
 import com.vnsoftware.jobfinder.database.repository.ChatRepository;
@@ -26,41 +23,62 @@ import com.vnsoftware.jobfinder.database.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+public class CreateChatActivity extends AppCompatActivity {
 
-public class ChatSearchFragment extends Fragment {
     private EditText edtSearch;
     private CountDownTimer countDownTimer;
     private RecyclerView recUserList;
+    private RecyclerView recRecommendList;
 
     private List<UserModel> userResultList;
+    private List<UserModel> userRecommendList;
 
     private FirebaseUser firebaseUser;
     private ChatRepository chatRepository;
     private UserRepository userRepository;
 
-    public ChatSearchFragment() {
-        super(R.layout.fragment_chat_create);
+    public CreateChatActivity() {
+        super();
         userResultList = new ArrayList<>();
         userRepository = UserRepository.getInstance();
         chatRepository = ChatRepository.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        edtSearch = view.findViewById(R.id.edtSearch);
-        recUserList = view.findViewById(R.id.recUserList);
-        edtSearch.requestFocus();
-
-        initSearchUser();
-    }
-
     private void initSearchUser() {
+        userRepository.getAllUser(new Repository.OnQuerySuccessListener<List<UserModel>>() {
+            @Override
+            public void onSuccess(List<UserModel> result) {
+                userRecommendList = result;
+                UserFoundRecyclerViewAdapter adapter = new UserFoundRecyclerViewAdapter(
+                        CreateChatActivity.this, userRecommendList,
+                        user -> {
+                            chatRepository.isChatChanelExists(firebaseUser.getUid(), user.getId(), chanelId -> {
+                                //  Chat chanel giữa hai user tồn tại
+                                if (chanelId != null) {
+                                    unFocusSearch();
+                                    startChatActivity(user, chanelId);
+                                }
+                                //  Tạo đoạn chat mới
+                                else {
+                                    List<String> chatMembers = new ArrayList<>();
+                                    chatMembers.add(firebaseUser.getUid());
+                                    chatMembers.add(user.getId());
+                                    chatRepository.createNewChat(chatMembers, chanelModel -> {
+                                        unFocusSearch();
+                                        startChatActivity(user, chanelModel.getId());
+                                    });
+                                }
+                            });
+                        }
+                );
+                recRecommendList.setAdapter(adapter);
+                recRecommendList.setLayoutManager(new LinearLayoutManager(CreateChatActivity.this));
+            }
+        });
+
         UserFoundRecyclerViewAdapter adapter = new UserFoundRecyclerViewAdapter(
-                getContext(), userResultList,
+                this, userResultList,
                 user -> {
                     chatRepository.isChatChanelExists(firebaseUser.getUid(), user.getId(), chanelId -> {
                         //  Chat chanel giữa hai user tồn tại
@@ -82,7 +100,7 @@ public class ChatSearchFragment extends Fragment {
                 }
         );
         recUserList.setAdapter(adapter);
-        recUserList.setLayoutManager(new LinearLayoutManager(getContext()));
+        recUserList.setLayoutManager(new LinearLayoutManager(this));
 
         countDownTimer = new CountDownTimer(50, 10) {
             @Override
@@ -121,7 +139,7 @@ public class ChatSearchFragment extends Fragment {
     }
 
     private void startChatActivity(UserModel partner, String chanelId) {
-        Intent intent = new Intent(getContext(), ChatActivity.class);
+        Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("partner", partner);
         intent.putExtra("chatChanelId", chanelId);
         startActivity(intent);
@@ -129,5 +147,18 @@ public class ChatSearchFragment extends Fragment {
 
     private void unFocusSearch() {
         edtSearch.getText().clear();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_chat);
+
+        edtSearch = findViewById(R.id.edtSearch);
+        recUserList = findViewById(R.id.recUserList);
+        recRecommendList = (RecyclerView) findViewById(R.id.recRecommendList);
+        edtSearch.requestFocus();
+
+        initSearchUser();
     }
 }

@@ -6,18 +6,9 @@
     android:layout_gravity="right"
     android:paddingHorizontal="10dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/default_avatar"
-        android:id="@+id/imgUserAvatar"
-        android:layout_alignParentRight="true"
-        android:layout_alignBottom="@id/txtMessage"
-        android:layout_marginLeft="15dp"/>
-
     <TextView
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/imgUserAvatar"
+        android:layout_alignParentRight="true"
         android:padding="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

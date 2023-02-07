@@ -27,4 +27,5 @@
     <string name="company_description"><b>Mô tả công ty:\n</b>%1$s</string>
     <string name="reset_password_email_sent">Chúng tôi đã gửi email đến địa chỉ email của bạn. Hãy kiểm tra hòm thư của bạn, email có thể được đưa vào mục spam</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="reset_password_email_not_received">Bạn không nhận được email?</string>
 </resources>

@@ -187,37 +187,39 @@ public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<Message
             }
         }
 
-        //  Đặt ảnh avatar của người gửi cho message
-        boolean lastInGroup = false;
-        if (position == messageList.size() - 1) {
-            lastInGroup = true;
-        } else if (position < messageList.size() - 1
-                && !messageList.get(position + 1).getSenderId().equals(messageModel.getSenderId())) {
-            lastInGroup = true;
-        }
-        if (lastInGroup) {
-            holder.imgAvatar.setVisibility(View.VISIBLE);
-            if (messageModel.getSenderId().equals(user.getId()) && userBitmap != null) {
-                holder.imgAvatar.setImageBitmap(userBitmap);
-            } else if (!messageModel.getSenderId().equals(user.getId()) && partnerBitmap != null) {
-                holder.imgAvatar.setImageBitmap(partnerBitmap);
+        if (holder.getItemViewType() != 1) {
+            //  Đặt ảnh avatar của người gửi cho message
+            boolean lastInGroup = false;
+            if (position == messageList.size() - 1) {
+                lastInGroup = true;
+            } else if (position < messageList.size() - 1
+                    && !messageList.get(position + 1).getSenderId().equals(messageModel.getSenderId())) {
+                lastInGroup = true;
             }
+            if (lastInGroup) {
+                holder.imgAvatar.setVisibility(View.VISIBLE);
+                if (messageModel.getSenderId().equals(user.getId()) && userBitmap != null) {
+                    holder.imgAvatar.setImageBitmap(userBitmap);
+                } else if (!messageModel.getSenderId().equals(user.getId()) && partnerBitmap != null) {
+                    holder.imgAvatar.setImageBitmap(partnerBitmap);
+                }
 
-            //  Convert dp to pixel
-            holder.view.setPadding(
-                    holder.view.getPaddingLeft(),
-                    0,
-                    holder.view.getPaddingRight(),
-                    DpToPixelConverter.convertDpToPixels(context, 10)
-            );
-        } else {
-            holder.imgAvatar.setVisibility(View.INVISIBLE);
-            holder.view.setPadding(
-                    holder.view.getPaddingLeft(),
-                    0,
-                    holder.view.getPaddingRight(),
-                    0
-            );
+                //  Convert dp to pixel
+                holder.view.setPadding(
+                        holder.view.getPaddingLeft(),
+                        0,
+                        holder.view.getPaddingRight(),
+                        DpToPixelConverter.convertDpToPixels(context, 10)
+                );
+            } else {
+                holder.imgAvatar.setVisibility(View.INVISIBLE);
+                holder.view.setPadding(
+                        holder.view.getPaddingLeft(),
+                        0,
+                        holder.view.getPaddingRight(),
+                        0
+                );
+            }
         }
 
         if (position == 0) {

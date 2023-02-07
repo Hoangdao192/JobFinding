@@ -55,26 +55,26 @@ public class MainActivity extends AppCompatActivity {
         this.firebaseAuth = FirebaseAuth.getInstance();
         this.userRepository = UserRepository.getInstance();
 
-        startActivity(new Intent(this, LoginActivity.class));
+//        startActivity(new Intent(this, LoginActivity.class));
 
-        //  Truy cập lần đầu
-//        SharedPreferences sharedPreferences = this.getSharedPreferences("MAIN", MODE_PRIVATE);
-//        boolean firstLaunch = sharedPreferences.getBoolean("FIRST_LAUNCH", true);
-//        String currentUserId = sharedPreferences.getString("USER", "");
-//        if (firstLaunch) {
-//            sharedPreferences.edit().putBoolean("FIRST_LAUNCH", false).apply();
-//            startActivity(new Intent(this, FirstLaunchActivity.class));
-//        } else {
-//            if (isNetworkAvailable()) {
-//                listenNetworkState();
-//                initNotificationChanel();
-//                checking();
-//            } else {
-//                Intent intent = new Intent(MainActivity.this, InternetErrorActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                startActivity(intent);
-//            }
-//        }
+//          Truy cập lần đầu
+        SharedPreferences sharedPreferences = this.getSharedPreferences("MAIN", MODE_PRIVATE);
+        boolean firstLaunch = sharedPreferences.getBoolean("FIRST_LAUNCH", true);
+        String currentUserId = sharedPreferences.getString("USER", "");
+        if (firstLaunch) {
+            sharedPreferences.edit().putBoolean("FIRST_LAUNCH", false).apply();
+            startActivity(new Intent(this, FirstLaunchActivity.class));
+        } else {
+            if (isNetworkAvailable()) {
+                listenNetworkState();
+                initNotificationChanel();
+                checking();
+            } else {
+                Intent intent = new Intent(MainActivity.this, InternetErrorActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        }
     }
 
     private void checking() {

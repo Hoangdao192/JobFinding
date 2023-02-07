@@ -1,15 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".navbar.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <include
-        android:id="@+id/toolbar_home"
-        layout="@layout/toolbar_home" />
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <ImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/default_avatar"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Nguyễn Đăng Hoàng Đạo"
+            android:maxLines="1"
+            android:textColor="#0D0140"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:ellipsize="end"
+            android:textSize="14sp"
+            android:fontFamily="@font/montserrat_semibold"/>
+        <ImageView
+            android:id="@+id/imgNotification"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/icon_notifications"
+            app:tint="#AAA6B9"
+            android:layout_gravity="center_vertical"/>
+        <ImageView
+            android:layout_marginLeft="15dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_search"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/postsRecyclerView"
@@ -27,4 +62,4 @@
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/row_posts" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

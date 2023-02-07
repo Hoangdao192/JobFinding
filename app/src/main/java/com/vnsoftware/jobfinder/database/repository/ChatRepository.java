@@ -130,7 +130,7 @@ public class ChatRepository extends Repository {
                 });
                 listener.onSuccess(chatChanelIdList);
             }
-        });
+        }).addOnFailureListener(System.out::println);
     }
 
     public void updateChanelLastUpdate(String chanelId, Long lastUpdate) {

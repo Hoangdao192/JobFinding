@@ -45,7 +45,7 @@ public class UserFoundRecyclerViewAdapter extends RecyclerView.Adapter<UserFound
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.item_recyclerview_chat_search, null);
+        View view = layoutInflater.inflate(R.layout.item_recyclerview_chat_search, parent, false);
         return new ViewHolder(view, this.clickListener);
     }
 

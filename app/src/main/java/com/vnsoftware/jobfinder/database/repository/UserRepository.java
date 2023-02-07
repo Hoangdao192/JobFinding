@@ -238,6 +238,21 @@ public class UserRepository extends Repository {
                 .addOnFailureListener(System.out::println);
     }
 
+    public void getAllUser(OnQuerySuccessListener<List<UserModel>> listener) {
+        rootDatabaseReference.get().addOnSuccessListener(dataSnapshot -> {
+            List<UserModel> userModels = new ArrayList<>();
+            dataSnapshot.getChildren().forEach(item -> {
+                String userRole = (String) item.child("role").getValue();
+                if (userRole.equals(UserRole.CANDIDATE)) {
+                    userModels.add(item.getValue(CandidateModel.class));
+                } else if (userRole.equals(UserRole.EMPLOYER)) {
+                    userModels.add(item.getValue(EmployerModel.class));
+                }
+            });
+            listener.onSuccess(userModels);
+        });
+    }
+
     public void getAllUserFullNameSimilarTo(String target, Integer limit, OnQuerySuccessListener<List<UserModel>> listener) {
         Client client = new Client(Constants.ALGOLIA_APPLICATION_ID, Constants.ALGOLIA_SEARCH_API_KEY);
         Index index = client.getIndex("users");

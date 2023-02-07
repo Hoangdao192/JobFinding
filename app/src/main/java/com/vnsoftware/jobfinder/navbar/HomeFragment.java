@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.vnsoftware.jobfinder.JobSearchFragment;
 import com.vnsoftware.jobfinder.database.repository.PostRepository;
+import com.vnsoftware.jobfinder.notification.NotificationActivity;
 import com.vnsoftware.jobfinder.post.AddPostActivity;
 import com.vnsoftware.jobfinder.database.model.post.PostModel;
 import com.vnsoftware.jobfinder.post.PostsAdapter;
@@ -32,7 +34,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    Toolbar toolbar;
+    private ImageView imgNotification;
 
     RecyclerView recyclerView;
     List<PostModel> postModelList;
@@ -101,25 +103,10 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar_home);
-        toolbar.inflateMenu(R.menu.menu_home);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.action_add_post) {
-                    startActivity(new Intent(getActivity(), AddPostActivity.class));
-                }
-                if (item.getItemId() == R.id.action_search) {
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .addToBackStack("HomeFragment")
-                            .replace(R.id.content, new JobSearchFragment())
-                            .commit();
-                } else {
-                    // do something
-                }
-                return false;
-            }
+
+        imgNotification = view.findViewById(R.id.imgNotification);
+        imgNotification.setOnClickListener(imgView -> {
+            startActivity(new Intent(getContext(), NotificationActivity.class));
         });
     }
 

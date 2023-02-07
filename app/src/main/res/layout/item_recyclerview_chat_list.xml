@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="30dp"
+    android:gravity="center_vertical">
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="54dp"
-        android:layout_height="54dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/imgAvatar"
         android:src="@drawable/default_avatar"/>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/imgAvatar"
-        android:layout_marginLeft="20dp"
-        android:layout_centerVertical="true">
+        android:layout_marginLeft="15dp">
         <TextView
             android:id="@+id/txtFullName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tên người dùng"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:fontFamily="@font/quicksand_bold"
             android:textColor="@color/black"
             />
@@ -31,9 +30,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Xin chào"
-            android:textSize="13sp"
-            android:fontFamily="@font/quicksand_medium"
-            android:textColor="#A0A0A0"
+            android:textSize="12sp"
+            android:fontFamily="@font/quicksand"
+            android:textColor="#AAA6B9"
             android:layout_below="@id/txtFullName"/>
     </RelativeLayout>
-</RelativeLayout>
+    <TextView
+        android:id="@+id/txvLastUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="5m"
+        android:fontFamily="@font/quicksand"/>
+</LinearLayout>

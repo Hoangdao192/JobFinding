@@ -30,6 +30,20 @@
         android:theme="@style/Theme.FWork"
         tools:targetApi="31">
         <activity
+            android:name=".notification.NotificationActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".chat.CreateChatActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".InternetErrorActivity"
             android:exported="false"
             android:noHistory="true">

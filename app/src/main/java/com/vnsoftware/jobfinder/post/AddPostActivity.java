@@ -60,13 +60,13 @@ public class AddPostActivity extends AppCompatActivity {
     private List<String> majorList = new ArrayList<>();
 
     private EditText edtJobName;
-    private Spinner spnJobMajor;
+    private EditText edtMajor;
     private EditText edtJobAddress;
     private EditText edtJobExperience;
     private EditText edtJobSalary;
     private EditText edtJobDescription;
-    private ImageView imgJobImage;
-    private ImageView btnPickOnMap;
+    private Button btnAddImage;
+    private Button btnPickOnMap;
     private Button btnUpload, btnBack;
 
     private Bitmap postImage = null;
@@ -84,12 +84,12 @@ public class AddPostActivity extends AppCompatActivity {
         //display
         btnPickOnMap = findViewById(R.id.btnPickOnMap);
         edtJobName = findViewById(R.id.edtJobName);
-        spnJobMajor = findViewById(R.id.spnJobMajor);
+        edtMajor = findViewById(R.id.edtMajor);
         edtJobAddress = findViewById(R.id.edtJobAddress);
-        edtJobExperience = findViewById(R.id.edtJobExperience);
-        edtJobSalary = findViewById(R.id.edtJobSalary);
+        edtJobExperience = findViewById(R.id.edtExperience);
+        edtJobSalary = findViewById(R.id.edtSalary);
         edtJobDescription = findViewById(R.id.edtJobDescription);
-        imgJobImage = findViewById(R.id.ivJobImage);
+        btnAddImage = findViewById(R.id.btnAddImage);
         btnUpload = findViewById(R.id.btnPostUpload);
         btnBack = findViewById(R.id.btnBack);
 
@@ -150,13 +150,14 @@ public class AddPostActivity extends AppCompatActivity {
                     Bitmap bitmap = ImagePicker.getImageFromResult(this, result);
                     if (bitmap != null) {
                         postImage = ImageHelper.reduceImageSize(bitmap, 1000, 1000);
-                        imgJobImage.setImageBitmap(postImage);
+                        //  TODO: Handle image upload
+//                        btnAddImage.setImageBitmap(postImage);
                     }
                 }
         );
 
         //get image from camera or gallery
-        imgJobImage.setOnClickListener(new View.OnClickListener() {
+        btnAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = ImagePicker.getPickImageIntent(AddPostActivity.this);
@@ -180,7 +181,7 @@ public class AddPostActivity extends AppCompatActivity {
                     Toast.makeText(AddPostActivity.this, "Bạn chưa nhập tên công việc!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (spnJobMajor.getSelectedItem().toString().trim().length() == 0) {
+                if (edtMajor.getText().toString().trim().length() == 0) {
                     Toast.makeText(AddPostActivity.this, "Bạn chưa chọn chuyên ngành công việc!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -196,7 +197,7 @@ public class AddPostActivity extends AppCompatActivity {
 
                 //get data from Edit Texts
                 String jobName = edtJobName.getText().toString().trim();
-                String jobMajor = spnJobMajor.getSelectedItem().toString().trim();
+                String jobMajor = edtMajor.getText().toString();
                 String jobAddress = edtJobAddress.getText().toString().trim();
                 double jobExperience = Double.parseDouble(edtJobExperience.getText().toString().trim());
                 Long jobSalary = Long.valueOf(edtJobSalary.getText().toString().trim());
@@ -254,7 +255,8 @@ public class AddPostActivity extends AppCompatActivity {
                                         edtJobExperience.setText("");
                                         //edtJobMajor.setText("");
                                         edtJobSalary.setText("");
-                                        imgJobImage.setImageBitmap(null);
+                                        //  TODO: Handle image upload
+//                                        btnAddImage.setImageBitmap(null);
                                     } else {
                                         ErrorDialog dialog = new ErrorDialog(
                                                 AddPostActivity.this, "Đăng bài không thành công",
@@ -300,7 +302,8 @@ public class AddPostActivity extends AppCompatActivity {
                     edtJobExperience.setText("");
                     //edtJobMajor.setText("");
                     edtJobSalary.setText("");
-                    imgJobImage.setImageBitmap(null);
+                    //  TODO: Handle image upload
+//                    btnAddImage.setImageBitmap(null);
                 } else {
                     dialog = new ErrorDialog(
                             AddPostActivity.this, "Đăng bài không thành công",
@@ -325,7 +328,7 @@ public class AddPostActivity extends AppCompatActivity {
                                 txtView.setText(majorList.get(position));
                             }
                     );
-                    spnJobMajor.setAdapter(spinnerMajorAdapter);
+//                    spnJobMajor.setAdapter(spinnerMajorAdapter);
                 })
                 .addOnFailureListener(System.out::println);
     }

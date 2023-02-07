@@ -2,9 +2,13 @@ package com.vnsoftware.jobfinder.navbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -16,6 +20,10 @@ import com.vnsoftware.jobfinder.database.model.UserRole;
 import com.vnsoftware.jobfinder.database.repository.UserRepository;
 import com.vnsoftware.jobfinder.firebasehelper.FirebaseAuthHelper;
 import com.vnsoftware.jobfinder.notification.NotificationFragment;
+import com.vnsoftware.jobfinder.post.AddPostActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -23,6 +31,10 @@ public class DashboardActivity extends AppCompatActivity {
 
     private UserRepository userRepository;
     private FirebaseAuthHelper firebaseAuthHelper;
+
+    private ImageView btnHome, btnAdd, btnChat, btnDashboard;
+    private int selectedButtonId;
+    List<ImageView> btnList;
 
     FirebaseAuth firebaseAuth;
 
@@ -43,48 +55,105 @@ public class DashboardActivity extends AppCompatActivity {
         firebaseAuthHelper = FirebaseAuthHelper.getInstance();
 
         userRepository = UserRepository.getInstance();
-
-        bottomNavigationView = findViewById(R.id.navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.content, homeFragment).commit();
 
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.nav_home:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content, homeFragment).commit();
-                        return true;
-                    case R.id.nav_profile:
-                        String userRole = firebaseAuthHelper.getUser().getRole();
-                        if (userRole != null) {
-                            if (userRole.equals(UserRole.CANDIDATE)) {
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.content, candidateDashboardFragment)
-                                        .commit();
-                            } else if (userRole.equals(UserRole.EMPLOYER)) {
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.content, employerDashboardFragment)
-                                        .commit();
-                            }
-                        } else {
-                            Log.d(LOG_TAG, "User role is null");
-                        }
-                        return true;
-                    case R.id.nav_search:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content, searchFragment).commit();
-                        return true;
-                    case R.id.nav_notifications:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content, notificationFragment).commit();
-                        return true;
-                    case R.id.nav_inbox:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content, inboxFragment).commit();
-                        return true;
+        btnHome = (ImageView) findViewById(R.id.btnHome);
+        btnAdd = (ImageView) findViewById(R.id.btnAdd);
+        btnChat = (ImageView) findViewById(R.id.btnChat);
+        btnDashboard = (ImageView) findViewById(R.id.btnDashboard);
+
+        selectedButtonId = btnHome.getId();
+
+        btnHome.setOnClickListener(imgView -> {
+            selectedButtonId = R.id.btnHome;
+            updateSelectedItem();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, homeFragment).commit();
+        });
+        btnAdd.setOnClickListener(imgView -> {
+            selectedButtonId = R.id.btnAdd;
+            updateSelectedItem();
+            startActivity(new Intent(this, AddPostActivity.class));
+        });
+        btnChat.setOnClickListener(imgView -> {
+            selectedButtonId = R.id.btnChat;
+            updateSelectedItem();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, inboxFragment).commit();
+        });
+        btnDashboard.setOnClickListener(imgView -> {
+            selectedButtonId = R.id.btnDashboard;
+            updateSelectedItem();
+            String userRole = firebaseAuthHelper.getUser().getRole();
+            if (userRole != null) {
+                if (userRole.equals(UserRole.CANDIDATE)) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content, candidateDashboardFragment)
+                            .commit();
+                } else if (userRole.equals(UserRole.EMPLOYER)) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content, employerDashboardFragment)
+                            .commit();
                 }
-                return false;
+            } else {
+                Log.d(LOG_TAG, "User role is null");
             }
         });
 
+        btnList = new ArrayList<>();
+        btnList.add(btnHome);
+        btnList.add(btnChat);
+        btnList.add(btnDashboard);
+
+//        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(MenuItem item) {
+//                switch (item.getItemId()) {
+//                    case R.id.nav_home:
+//
+//                        return true;
+//                    case R.id.nav_profile:
+//                        String userRole = firebaseAuthHelper.getUser().getRole();
+//                        if (userRole != null) {
+//                            if (userRole.equals(UserRole.CANDIDATE)) {
+//                                getSupportFragmentManager()
+//                                        .beginTransaction()
+//                                        .replace(R.id.content, candidateDashboardFragment)
+//                                        .commit();
+//                            } else if (userRole.equals(UserRole.EMPLOYER)) {
+//                                getSupportFragmentManager()
+//                                        .beginTransaction()
+//                                        .replace(R.id.content, employerDashboardFragment)
+//                                        .commit();
+//                            }
+//                        } else {
+//                            Log.d(LOG_TAG, "User role is null");
+//                        }
+//                        return true;
+//                    case R.id.nav_search:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.content, searchFragment).commit();
+//                        return true;
+//                    case R.id.nav_add_post:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.content, notificationFragment).commit();
+//                        return true;
+//                    case R.id.nav_inbox:
+//
+//                        return true;
+//                }
+//                return false;
+//            }
+//        });
+
+    }
+
+    private void updateSelectedItem() {
+        btnList.forEach(btn -> {
+            if (btn.getId() == selectedButtonId) {
+                System.out.println("SETTER");
+                btn.setColorFilter(Color.parseColor("#0D0140"));
+            } else {
+                btn.setColorFilter(Color.parseColor("#A49EB5"));
+            }
+        });
     }
 }

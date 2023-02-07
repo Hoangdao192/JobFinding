@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".chat.CreateChatActivity"
+    android:background="#F9F9F9"
+    android:gravity="center_horizontal">
+
+    <LinearLayout
+        android:paddingTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp">
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_back"
+                android:id="@+id/imgBack"/>
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="Tin nhắn mới"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đến:"
+                android:textSize="14sp"
+                android:textColor="@color/dark_gary"
+                android:fontFamily="@font/quicksand_medium"/>
+            <EditText
+                android:id="@+id/edtSearch"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:background="@drawable/rounded_corner_10"
+                app:backgroundTint="@color/white"
+                android:fontFamily="@font/quicksand_medium"
+                android:textColor="#150B3D"
+                android:layout_marginLeft="10dp"
+                android:hint="Nhập tên người dùng"
+                android:textColorHint="#aaaaaa"
+                android:paddingVertical="15dp"
+                android:inputType="text"
+                android:textSize="14dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+        <LinearLayout
+            android:paddingTop="35dp"
+            android:paddingHorizontal="20dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gợi ý"
+                    android:textColor="@color/gray"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/quicksand_bold"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_recyclerview_chat_search"
+                    android:id="@+id/recRecommendList"/>
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_recyclerview_chat_search"
+                android:id="@+id/recUserList"/>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

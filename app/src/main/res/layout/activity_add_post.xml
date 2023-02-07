@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -7,255 +8,264 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".post.AddPostActivity">
+    tools:context=".post.AddPostActivity"
+    android:background="#F9F9F9">
+
+    <RelativeLayout
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/ic_back"
+            app:backgroundTint="@null"/>
+        <TextView
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Đăng tuyển"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#150B3D"
+            android:textSize="20sp"/>
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
-        tools:layout_editor_absoluteX="-16dp"
-        tools:layout_editor_absoluteY="55dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        android:scrollbars="none">
+        <LinearLayout
+            android:paddingHorizontal="20dp"
+            android:paddingTop="30dp"
+            android:paddingBottom="20dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_marginBottom="10dp"
+                android:padding="20dp"
+                android:background="@drawable/rounded_corner_15"
+                android:backgroundTint="@color/white"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="Tên công việc"
+                    android:textColor="#5A2D22"
+                    android:textSize="14sp" />
 
-            <ImageView
+                <EditText
+                    android:id="@+id/edtJobName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:hint="Nhập tên công việc"
+                    android:paddingBottom="15dp"
+                    android:textColorHint="#AAA6B9"
+                    android:backgroundTint="#AAA6B9"
+                    android:textColor="#524B6B"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginBottom="10dp"
+                android:padding="20dp"
+                android:background="@drawable/rounded_corner_15"
+                android:backgroundTint="@color/white"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="Chuyên ngành"
+                    android:textColor="#5A2D22"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/edtMajor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:hint="Nhập chuyên ngành"
+                    android:paddingBottom="15dp"
+                    android:textColorHint="#AAA6B9"
+                    android:backgroundTint="#AAA6B9"
+                    android:textColor="#524B6B"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginBottom="10dp"
+                android:padding="20dp"
+                android:background="@drawable/rounded_corner_15"
+                android:backgroundTint="@color/white"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="Kinh nghiệm"
+                    android:textColor="#5A2D22"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:inputType="numberDecimal"
+                    android:id="@+id/edtExperience"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:hint="Nhập số năm kinh nghiệm"
+                    android:paddingBottom="15dp"
+                    android:textColorHint="#AAA6B9"
+                    android:backgroundTint="#AAA6B9"
+                    android:textColor="#524B6B"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginBottom="10dp"
+                android:padding="20dp"
+                android:background="@drawable/rounded_corner_15"
+                android:backgroundTint="@color/white"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="Mô tả công việc"
+                    android:textColor="#5A2D22"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:inputType="numberDecimal"
+                    android:id="@+id/edtJobDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:hint="Nhập mô tả công việc"
+                    android:paddingBottom="15dp"
+                    android:textColorHint="#AAA6B9"
+                    android:backgroundTint="#AAA6B9"
+                    android:textColor="#524B6B"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginBottom="10dp"
+                android:padding="20dp"
+                android:background="@drawable/rounded_corner_15"
+                android:backgroundTint="@color/white"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="Mức lương"
+                    android:textColor="#5A2D22"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:inputType="numberDecimal"
+                    android:id="@+id/edtSalary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:hint="Nhập mức lương"
+                    android:paddingBottom="15dp"
+                    android:textColorHint="#AAA6B9"
+                    android:backgroundTint="#AAA6B9"
+                    android:textColor="#524B6B"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginBottom="10dp"
+                android:padding="20dp"
+                android:background="@drawable/rounded_corner_15"
+                android:backgroundTint="@color/white"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="Nơi làm việc"
+                    android:textColor="#5A2D22"
+                    android:textSize="14sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+                    <EditText
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:id="@+id/edtAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/quicksand_medium"
+                        android:hint="Nhập địa chỉ làm việc"
+                        android:paddingBottom="15dp"
+                        android:textColorHint="#AAA6B9"
+                        android:backgroundTint="#AAA6B9"
+                        android:textColor="#524B6B"
+                        android:textSize="14sp" />
+                    <Button
+                        android:id="@+id/btnPickOnMap"
+                        app:backgroundTint="#FF9228"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:background="@drawable/ic_map_marker"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginBottom="10dp"
+                android:padding="20dp"
+                android:background="@drawable/rounded_corner_15"
+                android:backgroundTint="@color/white"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:foregroundTint="#EFD7D7"
-                android:src="@drawable/vector_116"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="-27dp" />
-
-            <TextView
-                android:id="@+id/txtTitleJobName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="172dp"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="Tên công việc"
-                android:textColor="#5A2D22"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/edtJobName"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="175dp"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/quicksand_medium"
-                android:hint="Nhập tên công việc"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                app:layout_constraintBaseline_toBaselineOf="@id/txtTitleJobName"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/txtTitleJobAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="260dp"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="Nơi làm việc"
-                android:textColor="#5A2D22"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <TextView
-                android:id="@+id/txtTitleJobSalary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="360dp"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="Mức lương"
-                android:textColor="#5A2D22"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/txtTitleJobDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="408dp"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="Mô tả công việc"
-                android:textColor="#5A2D22"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/txtTitleJobExperience"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="312dp"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="Kinh nghiệm"
-                android:textColor="#5A2D22"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/txtTitleJobMajor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="212dp"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="Chuyên ngành"
-                android:textColor="#5A2D22"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/edtJobAddress"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginStart="175dp"
-                android:fontFamily="@font/quicksand_medium"
-                android:hint="Nhập địa chỉ làm việc"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                app:layout_constraintBaseline_toBaselineOf="@id/txtTitleJobAddress"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <ImageView
-                android:id="@+id/btnPickOnMap"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_map_pin"
-                android:text="Chọn trên bản đồ"
-                app:layout_constraintBottom_toBottomOf="@id/edtJobAddress"
-                app:layout_constraintRight_toLeftOf="@id/edtJobAddress"
-                app:layout_constraintTop_toTopOf="@id/edtJobAddress" />
-
-            <EditText
-                android:id="@+id/edtJobSalary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="175dp"
-                android:fontFamily="@font/quicksand_medium"
-                android:hint="Nhập lương(triệu đồng)"
-                android:inputType="number"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                app:layout_constraintBaseline_toBaselineOf="@id/txtTitleJobSalary"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <Spinner
-                android:id="@+id/spnJobMajor"
-                style="@style/Theme.FWork.Spinner.Underlined"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="175dp"
-                android:layout_marginEnd="20dp"
-                android:hint="Chọn chuyên ngành"
-                app:layout_constraintBottom_toBottomOf="@id/txtTitleJobMajor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/txtTitleJobMajor"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <Button
-                android:id="@+id/btnBack"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="23dp"
-                android:background="@drawable/back_button"
-                app:backgroundTint="@null"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="31dp"
-                android:fontFamily="@font/quicksand"
-                android:text="Đăng bài"
-                android:textColor="#FFF"
-                android:textSize="35sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/edtJobExperience"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="175dp"
-                android:fontFamily="@font/quicksand_medium"
-                android:hint="Kinh nghiệm(năm)"
-                android:inputType="number"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                app:layout_constraintBaseline_toBaselineOf="@id/txtTitleJobExperience"
-                app:layout_constraintStart_toStartOf="parent" />
-
-
-            <EditText
-                android:id="@+id/edtJobDescription"
-                android:layout_width="373dp"
-                android:layout_height="88dp"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/quicksand_medium"
-                android:hint="Mô tả..."
-                android:inputType="text|textMultiLine"
-                android:minHeight="200dp"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="@+id/edtJobSalary"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/txtTitleJobDescription"
-                app:layout_constraintTop_toBottomOf="@+id/txtTitleJobDescription" />
-
-            <ImageView
-                android:id="@+id/ivJobImage"
-                android:layout_width="133dp"
-                android:layout_height="47dp"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.151"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edtJobDescription"
-                app:srcCompat="@drawable/button_upload" />
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="Hình ảnh"
+                    android:textColor="#5A2D22"
+                    android:textSize="14sp" />
+                <Button
+                    android:id="@+id/btnAddImage"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/ic_add_thick"
+                    app:backgroundTint="@null"/>
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btnPostUpload"
-                android:layout_width="140dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#9E1144"
-                android:text="Đăng bài"
+                android:backgroundTint="#130160"
+                android:layout_marginTop="20dp"
+                android:paddingVertical="15dp"
+                android:text="Đăng"
                 android:visibility="visible"
-                app:cornerRadius="47dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.71"
-                app:layout_constraintStart_toEndOf="@+id/ivJobImage"
-                app:layout_constraintTop_toBottomOf="@+id/edtJobDescription"
-                app:layout_constraintVertical_bias="1.0" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                app:cornerRadius="10dp"/>
+        </LinearLayout>
     </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

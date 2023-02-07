@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +33,7 @@ public class ChatListFragment extends Fragment {
 
     private EditText edtSearch;
     private RecyclerView recChatList;
-    private CircleImageView cirImgAvatar;
+    private ImageView btnEdit;
 
     private List<UserModel> userResultList;
     private List<String> chanelIdList;
@@ -42,8 +43,6 @@ public class ChatListFragment extends Fragment {
     private UserRepository userRepository;
 
     private ChatListRecyclerViewAdapter adapter;
-
-    private ChatSearchFragment chatSearchFragment = new ChatSearchFragment();
 
     public ChatListFragment() {
         super(R.layout.fragment_chat_main);
@@ -69,100 +68,27 @@ public class ChatListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         adapter = new ChatListRecyclerViewAdapter(
                 getContext(), chanelIdList, firebaseUser.getUid(), FirebaseDatabase.getInstance(),
-                new ChatListRecyclerViewAdapter.OnItemClickListener() {
-                    @Override
-                    public void onClick(ChanelModel chanel) {
-                        chanel.getMembers().forEach(userId -> {
-                            if (!userId.equals(firebaseUser.getUid())) {
-                                userRepository.getUserByUID(userId, new Repository.OnQuerySuccessListener<UserModel>() {
-                                    @Override
-                                    public void onSuccess(UserModel result) {
-                                        startChatActivity(result, chanel.getId());
-                                    }
-                                });
-                            }
-                        });
+                chanel -> chanel.getMembers().forEach(userId -> {
+                    if (!userId.equals(firebaseUser.getUid())) {
+                        userRepository.getUserByUID(userId, result -> startChatActivity(result, chanel.getId()));
                     }
-                }
+                })
         );
-//        chatRepository.getAllChatIdByUserId(firebaseUser.getUid(), new Repository.OnQuerySuccessListener<List<String>>() {
-//            @Override
-//            public void onSuccess(List<String> chanelIdList) {
-//                adapter.updateChanelList(chanelIdList);
-//            }
-//        });
-
-//        FirebaseDatabase.getInstance().getReference("chats/userChats").child(firebaseUser.getUid())
-//                        .addChildEventListener(new ChildEventListener() {
-//                            @Override
-//                            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                                chatRepository.getAllChatIdByUserId(firebaseUser.getUid(), new Repository.OnQuerySuccessListener<List<String>>() {
-//                                    @Override
-//                                    public void onSuccess(List<String> chanelIdList) {
-//                                        adapter.updateChanelList(chanelIdList);
-//                                    }
-//                                });
-//                            }
-//
-//                            @Override
-//                            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                                chatRepository.getAllChatIdByUserId(firebaseUser.getUid(), new Repository.OnQuerySuccessListener<List<String>>() {
-//                                    @Override
-//                                    public void onSuccess(List<String> chanelIdList) {
-//                                        adapter.updateChanelList(chanelIdList);
-//                                    }
-//                                });
-//                            }
-//
-//                            @Override
-//                            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        btnEdit = view.findViewById(R.id.imgEdit);
         edtSearch = view.findViewById(R.id.edtSearch);
         recChatList = view.findViewById(R.id.recChatList);
-        recChatList.addItemDecoration(new DividerItemDecoration(getContext(),
-                DividerItemDecoration.VERTICAL));
-        cirImgAvatar = view.findViewById(R.id.imgUserAvatar);
 
-        edtSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, chatSearchFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-
-        userRepository.getUserByUID(firebaseUser.getUid(), new Repository.OnQuerySuccessListener<UserModel>() {
-            @Override
-            public void onSuccess(UserModel result) {
-                if (result != null) {
-                    if (!result.getAvatar().isEmpty()) {
-                        Picasso.get().load(result.getAvatar())
-                                .placeholder(R.drawable.wlop_33se)
-                                .into(cirImgAvatar);
-                    }
-                }
-            }
+        btnEdit.setOnClickListener(imageView -> {
+            startActivity(new Intent(getContext(), CreateChatActivity.class));
         });
 
         loadChatList();
