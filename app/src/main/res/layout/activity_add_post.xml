@@ -150,7 +150,6 @@
                     android:textSize="14sp" />
 
                 <EditText
-                    android:inputType="numberDecimal"
                     android:id="@+id/edtJobDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -212,7 +211,6 @@
                     android:gravity="center_vertical">
                     <EditText
                         android:layout_weight="1"
-                        android:inputType="numberDecimal"
                         android:id="@+id/edtAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -236,24 +234,35 @@
                 android:padding="20dp"
                 android:background="@drawable/rounded_corner_15"
                 android:backgroundTint="@color/white"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical">
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:text="Hình ảnh"
-                    android:textColor="#5A2D22"
-                    android:textSize="14sp" />
-                <Button
-                    android:id="@+id/btnAddImage"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/ic_add_thick"
-                    app:backgroundTint="@null"/>
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:text="Hình ảnh"
+                        android:textColor="#5A2D22"
+                        android:textSize="14sp" />
+                    <Button
+                        android:id="@+id/btnAddImage"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/ic_add_thick"
+                        app:backgroundTint="@null"/>
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recUploadImage"
+                    tools:listitem="@layout/item_recyclerview_upload_image"/>
             </LinearLayout>
 
             <Button

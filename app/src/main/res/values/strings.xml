@@ -28,4 +28,5 @@
     <string name="reset_password_email_sent">Chúng tôi đã gửi email đến địa chỉ email của bạn. Hãy kiểm tra hòm thư của bạn, email có thể được đưa vào mục spam</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="reset_password_email_not_received">Bạn không nhận được email?</string>
+    <string name="example_company_description"><![CDATA[Monstarlab Việt Nam là doanh nghiệp IT thuộc tập đoàn Monstarlab có trụ sở chính tại Nhật Bản và 30 chi nhánh trên toàn thế giới (Trung Quốc, Singapore, Đan Mạch, Anh, Hà Lan, Mỹ, Canada, Việt Nam,...). Monstarlab Việt Nam hoạt động trên lĩnh vực phát triển phần mềm, hệ thống; cung cấp dịch vụ tư vấn đầu tư vào Việt Nam cho các thị trường Nhật Bản, EU và US với hơn 15 năm kinh nghiệm. Monstarlab Việt Nam hiện có hai chi nhánh Hà Nội & Đà Nẵng với quy mô hơn 500 nhân viên và sẽ tiếp tục mở rộng mạnh mẽ trong tương lai.]]></string>
 </resources>

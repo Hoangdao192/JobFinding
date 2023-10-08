@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    namespace 'com.vnsoftware.jobfinder'
-    compileSdk 32
+    namespace 'com.uet.fwork'
+    compileSdk 34
 
     defaultConfig {
-        applicationId 'com.vnsoftware.jobfinder'
-        minSdk 26
+        applicationId 'com.uet.fwork'
+        minSdk 22
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -40,11 +40,14 @@ apply plugin: 'com.google.gms.google-services'
 
 dependencies {
 
+    //  Flexbox Layout
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
-    implementation 'androidx.wear.tiles:tiles-material:1.1.0-alpha04'
+//    implementation 'androidx.wear.tiles:tiles-material:1.1.0-alpha04'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.libraries.places:places:2.5.0'
     testImplementation 'junit:junit:4.13.2'

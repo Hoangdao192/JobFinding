@@ -1,71 +1,42 @@
 {
   "project_info": {
-    "project_number": "399436243447",
-    "firebase_url": "https://job-finder-1418a-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "job-finder-1418a",
-    "storage_bucket": "job-finder-1418a.appspot.com"
+    "project_number": "557453445554",
+    "firebase_url": "https://ecommerceapplication-10d5c-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "ecommerceapplication-10d5c",
+    "storage_bucket": "ecommerceapplication-10d5c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:399436243447:android:1c422bf0b21b132634cef2",
+        "mobilesdk_app_id": "1:557453445554:android:9e7caeb23c3a159becfcab",
         "android_client_info": {
           "package_name": "com.uet.fwork"
         }
       },
       "oauth_client": [
         {
-          "client_id": "399436243447-cc2ib761q64nu1t6m133iliptd0hf3sa.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAu6L0Qaq0Ji14yZ_CNe9Yih3nAuBMk_yY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "399436243447-cc2ib761q64nu1t6m133iliptd0hf3sa.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:399436243447:android:527711fc8523ed3334cef2",
-        "android_client_info": {
-          "package_name": "com.vnsoftware.jobfinder"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "399436243447-8vc4nu0sl39svung833honhootr4la5r.apps.googleusercontent.com",
+          "client_id": "557453445554-qb2d1gihvs647s9ctcfl8fumjf2vvsjj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.vnsoftware.jobfinder",
+            "package_name": "com.uet.fwork",
             "certificate_hash": "da985c9f363e0a0c439d8addd7ce874dfa72b98c"
           }
         },
         {
-          "client_id": "399436243447-cc2ib761q64nu1t6m133iliptd0hf3sa.apps.googleusercontent.com",
+          "client_id": "557453445554-fd5oe95tkjtbbekq97qtrok6e748ohq6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAu6L0Qaq0Ji14yZ_CNe9Yih3nAuBMk_yY"
+          "current_key": "AIzaSyC-DL1GhShSQY-MkRdbweeHSOr13AJlNfw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "399436243447-cc2ib761q64nu1t6m133iliptd0hf3sa.apps.googleusercontent.com",
+              "client_id": "557453445554-fd5oe95tkjtbbekq97qtrok6e748ohq6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

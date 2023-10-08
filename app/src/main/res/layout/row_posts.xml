@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="10dp"
     app:cardElevation="0dp"
-    app:contentPadding="10dp">
+    app:contentPadding="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,8 +22,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/uPostAvatarIv"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginRight="15dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/default_avatar" />
@@ -38,12 +38,11 @@
                     android:id="@+id/uPostNameTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:autoLink="all"
-                    android:fontFamily="@font/quicksand_medium"
-
-                    android:text="Name"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="Công ty"
+                    android:layout_marginRight="10dp"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="14dp" />
 
                 <TextView
                     android:id="@+id/pTimeTv"
@@ -57,12 +56,10 @@
 
             <ImageButton
                 android:id="@+id/postMoreButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:background="@null"
-                android:minWidth="48dp"
-                android:minHeight="48dp"
-                android:src="@drawable/ic_more_black" />
+                android:src="@drawable/ic_mark" />
 
         </LinearLayout>
 
@@ -70,27 +67,50 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
-
-            <TextView
-                android:id="@+id/jobTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_medium"
-                android:padding="5dp"
-                android:text="Tên công việc:"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/jobNamePost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_medium"
-                android:padding="5dp"
-                android:text="Công việc: "
-                android:textSize="14sp" />
+                android:fontFamily="@font/quicksand_bold"
+                android:textColor="#150A33"
+                android:text="UI/UX Designer"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:padding="7dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#33CBC9D4"
+                android:src="@drawable/ic_major"/>
+            <LinearLayout
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:textColor="#524B6B"
+                    android:text="Chuyên ngành"
+                    android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/jobMajorPost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand"
+                    android:textColor="#524B6B"
+                    android:text="Công nghệ thông tin"
+                    android:textSize="14sp" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -98,225 +118,198 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_medium"
-                android:padding="5dp"
-                android:text="Chuyên ngành:"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/jobMajorPost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_medium"
-                android:padding="5dp"
-                android:text="Chuyên ngành: "
+                android:background="@drawable/rounded_corner_8"
+                android:backgroundTint="#33CBC9D4"
+                android:paddingVertical="7dp"
+                android:paddingHorizontal="20dp"
+                android:textColor="#524B6B"
+                android:text="Kinh nghiệm"
                 android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/locationTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_medium"
-                android:padding="5dp"
-                android:text="Nơi làm việc:"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/jobAddressPost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_medium"
-                android:padding="5dp"
-                android:text="Nơi làm việc: "
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_medium"
-                android:padding="5dp"
-                android:text="Số năm kinh nghiệm:"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
+                android:layout_marginLeft="5dp"
                 android:id="@+id/jobExperiencePost"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/quicksand_medium"
-                android:padding="5dp"
-                android:text="Yêu cầu kinh nghiệm: "
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand"
+                android:background="@drawable/rounded_corner_8"
+                android:backgroundTint="#33CBC9D4"
+                android:paddingVertical="7dp"
+                android:paddingHorizontal="20dp"
+                android:textColor="#524B6B"
+                android:text="1 đến 2 năm"
                 android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:fontFamily="@font/quicksand_medium"
-                android:padding="5dp"
-                android:text="năm" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp">
 
             <TextView
-                android:id="@+id/salaryTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_medium"
-                android:padding="5dp"
-                android:text="Mức lương dự kiến:"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:background="@drawable/rounded_corner_8"
+                android:backgroundTint="#33CBC9D4"
+                android:paddingVertical="7dp"
+                android:paddingHorizontal="20dp"
+                android:textColor="#524B6B"
+                android:text="Mức lương"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/jobSalaryPost"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand"
+                android:background="@drawable/rounded_corner_8"
+                android:backgroundTint="#33CBC9D4"
+                android:paddingVertical="7dp"
+                android:paddingHorizontal="20dp"
+                android:textColor="#524B6B"
+                android:text="12 triệu - 20 triệu"
+                android:layout_marginLeft="5dp"
+                android:textSize="14sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/quicksand_medium"
-                android:padding="5dp"
-                android:text="Mức lương dự kiến: "
+                android:background="@drawable/rounded_corner_8"
+                android:backgroundTint="#33CBC9D4"
+                android:paddingVertical="7dp"
+                android:paddingHorizontal="20dp"
+                android:textColor="#524B6B"
+                android:text="Địa chỉ"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/jobAddressPost"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:fontFamily="@font/quicksand_medium"
-                android:padding="5dp"
-                android:text="triệu đồng" />
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand"
+                android:background="@drawable/rounded_corner_8"
+                android:backgroundTint="#33CBC9D4"
+                android:paddingVertical="7dp"
+                android:paddingHorizontal="20dp"
+                android:textColor="#524B6B"
+                android:text="Hai Bà Trưng, Hà Nội"
+                android:textSize="14sp" />
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp">
 
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_medium"
-                android:padding="5dp"
-                android:text="Mô tả:"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:fontFamily="@font/quicksand_bold"
+                android:background="@drawable/rounded_corner_8"
+                android:backgroundTint="#33CBC9D4"
+                android:paddingVertical="7dp"
+                android:paddingHorizontal="20dp"
+                android:textColor="#524B6B"
+                android:text="Mô tả công việc"
+                android:textSize="14sp" />
 
             <TextView
+                android:layout_marginTop="5dp"
                 android:id="@+id/jobDescriptionPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autoLink="all"
-                android:fontFamily="@font/quicksand_medium"
-                android:padding="5dp"
-                android:text="Mô tả: "
+                android:fontFamily="@font/quicksand"
+                android:background="@drawable/rounded_corner_8"
+                android:backgroundTint="#33CBC9D4"
+                android:paddingVertical="7dp"
+                android:paddingHorizontal="20dp"
+                android:textColor="#524B6B"
+                android:text="@string/example_company_description"
                 android:textSize="14sp" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/jobImagePost"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
+            android:maxHeight="200dp"
             android:background="@color/white" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/txtLikeNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:fontFamily="@font/quicksand_medium"
-                android:text="1.5k Likes"
-                android:textSize="13dp" />
-
-            <TextView
-                android:id="@+id/txtCommentNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:fontFamily="@font/quicksand_medium"
-                android:text="10 Bình luận"
-                android:textSize="12dp" />
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray" />
-
         <LinearLayout
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:gravity="center"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/btnLike"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_weight="1"
-                android:src="@drawable/ic_heart_no_fill" />
-
-            <Button
-                android:id="@+id/postCommentButton"
-                style="?android:attr/borderlessButtonStyle"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:backgroundTint="@color/white"
-                android:drawableLeft="@drawable/comment_alt"
-                android:fontFamily="@font/quicksand_medium"
-                android:text="Bình luận"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/btnLike"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_like" />
+                <TextView
+                    android:id="@+id/txtLikeNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:text="1.5k"
+                    android:textColor="#6F6B80"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="12sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/postCommentButton"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:backgroundTint="@color/white"
+                    android:src="@drawable/ic_comment"/>
+                <TextView
+                    android:id="@+id/txtCommentNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_medium"
+                    android:textColor="#6F6B80"
+                    android:layout_marginLeft="5dp"
+                    android:text="10"
+                    android:textSize="12dp" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btnPostApply"
-                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:backgroundTint="@color/white"
-                android:drawableLeft="@drawable/star_alt"
+                android:backgroundTint="#130160"
+                app:cornerRadius="6dp"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="30dp"
                 android:fontFamily="@font/quicksand_medium"
                 android:text="Ứng tuyển"
                 android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
         </LinearLayout>
 
     </LinearLayout>

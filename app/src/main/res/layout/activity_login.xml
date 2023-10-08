@@ -120,34 +120,6 @@
                 android:background="@drawable/rounded_corner_10"
                 app:backgroundTint="#0D0140"/>
 
-            <Button
-                android:layout_marginTop="15dp"
-                android:id="@+id/btnLoginGoogle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_border"
-                android:drawableLeft="@drawable/ic_google"
-                android:fontFamily="@font/quicksand_bold"
-                android:textAllCaps="false"
-                android:text="Đăng nhập với Google"
-                android:textColor="#5A2D22"
-                android:textSize="15sp"
-                app:backgroundTint="#FFFFFF" />
-
-            <Button
-                android:layout_marginTop="15dp"
-                android:id="@+id/btnLoginFacebook"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_border"
-                android:drawableLeft="@drawable/ic_facebook"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="Đăng nhập với Facebook"
-                android:textAllCaps="false"
-                android:textColor="#5A2D22"
-                android:textSize="15sp"
-                app:backgroundTint="#FFFFFF"/>
-
             <TextView
                 android:id="@+id/txtCreateAccount"
                 android:layout_width="wrap_content"
