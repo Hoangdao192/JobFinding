@@ -202,9 +202,9 @@ public class PostApplyRepository extends Repository {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         List<PostApplyModel> postApplyModels = new ArrayList<>();
-                        dataSnapshot.getChildren().forEach(snapshot -> {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             postApplyModels.add(snapshot.getValue(PostApplyModel.class));
-                        });
+                        }
                         listener.onSuccess(postApplyModels);
                     }
                 });
@@ -217,7 +217,7 @@ public class PostApplyRepository extends Repository {
                 .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
-                        dataSnapshot.getChildren().forEach(dataSnapshot1 -> {
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                             rootDatabaseReference.child(postId).child(dataSnapshot1.getKey()).removeValue()
                                     .addOnSuccessListener(unused -> {
                                         Log.d(LOG_TAG,
@@ -276,7 +276,7 @@ public class PostApplyRepository extends Repository {
                                             listener.onSuccess(false);
                                         }
                                     });
-                        });
+                        }
                     }
                 })
                 .addOnFailureListener(e -> e.printStackTrace());
@@ -289,7 +289,7 @@ public class PostApplyRepository extends Repository {
                 .addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
-                        dataSnapshot.getChildren().forEach(dataSnapshot1 -> {
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                             rootDatabaseReference.child(postApplyModel.getPostId()).child(dataSnapshot1.getKey()).removeValue()
                                     .addOnSuccessListener(unused -> {
                                         Log.d(LOG_TAG,
@@ -333,7 +333,7 @@ public class PostApplyRepository extends Repository {
                                                 + dataSnapshot1.getKey()
                                                 + " cancelled");
                                     });
-                        });
+                        }
                     }
                 })
                 .addOnFailureListener(e -> e.printStackTrace());
@@ -345,12 +345,12 @@ public class PostApplyRepository extends Repository {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         List<PostApplyModel> postApplyModels  = new ArrayList<>();
-                        dataSnapshot.getChildren().forEach(snapshot -> {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             postApplyModels.add(snapshot.getValue(PostApplyModel.class));
-                        });
-                        postApplyModels.forEach(postApplyModel -> {
+                        }
+                        for (PostApplyModel postApplyModel : postApplyModels) {
                             deletePostApply(postApplyModel);
-                        });
+                        }
                     }
                 })
                 .addOnFailureListener(e -> e.printStackTrace());
@@ -368,9 +368,9 @@ public class PostApplyRepository extends Repository {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         List<PostApplyModel> postApplyList = new ArrayList<>();
-                        dataSnapshot.getChildren().forEach(snapshot -> {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             postApplyList.add(snapshot.getValue(PostApplyModel.class));
-                        });
+                        }
                         listener.onSuccess(postApplyList);
                     }
                 })

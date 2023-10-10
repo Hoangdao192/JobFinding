@@ -66,11 +66,14 @@ public class ChatListFragment extends Fragment {
 
         adapter = new ChatListRecyclerViewAdapter(
                 getContext(), chanelIdList, firebaseUser.getUid(), FirebaseDatabase.getInstance(),
-                chanel -> chanel.getMembers().forEach(userId -> {
-                    if (!userId.equals(firebaseUser.getUid())) {
-                        userRepository.getUserByUID(userId, result -> startChatActivity(result, chanel.getId()));
+                (chanel) ->
+                {
+                    for (String userId : chanel.getMembers()) {
+                        if (!userId.equals(firebaseUser.getUid())) {
+                            userRepository.getUserByUID(userId, result -> startChatActivity(result, chanel.getId()));
+                        }
                     }
-                })
+                }
         );
     }
 

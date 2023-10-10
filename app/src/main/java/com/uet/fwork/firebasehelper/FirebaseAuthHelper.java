@@ -117,7 +117,9 @@ public class FirebaseAuthHelper {
         firebaseAuth.fetchSignInMethodsForEmail(email)
                 .addOnSuccessListener(signInMethodQueryResult -> {
                     List<String> signInMethods = signInMethodQueryResult.getSignInMethods();
-                    signInMethods.forEach(System.out::println);
+                    for (String method : signInMethods) {
+                        System.out.println(method);
+                    }
                     onSuccessListener.onSuccess(!signInMethods.isEmpty());
                 })
                 .addOnFailureListener(new OnFailureListener() {

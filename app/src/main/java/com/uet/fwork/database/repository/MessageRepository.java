@@ -122,10 +122,10 @@ public class MessageRepository extends Repository {
         rootDatabaseReference.child(chanelId).orderByChild("sentTime").limitToLast(limit.intValue()).get()
                 .addOnSuccessListener(dataSnapshot -> {
                     List<MessageModel> messageList = new ArrayList<>();
-                    dataSnapshot.getChildren().forEach(snapshot -> {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         MessageModel message = snapshot.getValue(MessageModel.class);
                         messageList.add(message);
-                    });
+                    }
                     listener.onSuccess(messageList);
                 })
                 .addOnFailureListener(System.out::println);
@@ -137,10 +137,10 @@ public class MessageRepository extends Repository {
                 .addOnSuccessListener(dataSnapshot -> {
                     System.out.println(dataSnapshot);
                     if (dataSnapshot.exists()) {
-                        dataSnapshot.getChildren().forEach(snapshot -> {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             MessageModel message = snapshot.getValue(MessageModel.class);
                             listener.onSuccess(message);
-                        });
+                        }
                     } else {
                         listener.onSuccess(null);
                     }

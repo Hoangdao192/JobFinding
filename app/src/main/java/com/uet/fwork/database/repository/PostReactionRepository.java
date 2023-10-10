@@ -19,6 +19,7 @@ import com.uet.fwork.database.model.post.ReactionModel;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -150,18 +151,15 @@ public class PostReactionRepository extends Repository {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            dataSnapshot.getChildren().forEach(dataSnapshot1 -> {
+                            Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+                            while (iterator.hasNext()) {
+                                DataSnapshot dataSnapshot1 = iterator.next();
                                 rootDatabaseReference.child(postId).child(dataSnapshot1.getKey()).removeValue()
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                firebaseDatabase.getReference(USER_REACTION_PATH)
-                                                        .child(userId).child(dataSnapshot1.getKey())
-                                                        .removeValue()
-                                                        .addOnFailureListener(e -> e.printStackTrace());
-                                            }
-                                        });
-                            });
+                                        .addOnSuccessListener(unused -> firebaseDatabase.getReference(USER_REACTION_PATH)
+                                                .child(userId).child(dataSnapshot1.getKey())
+                                                .removeValue()
+                                                .addOnFailureListener(e -> e.printStackTrace()));
+                            }
                             String key = dataSnapshot.getKey();
                         }
                     }
@@ -210,9 +208,11 @@ public class PostReactionRepository extends Repository {
                 .addOnSuccessListener(dataSnapshot -> {
                     if (dataSnapshot.exists()) {
                         List<ReactionModel> reactionModelList = new ArrayList<>();
-                        dataSnapshot.getChildren().forEach(snapshot -> {
+                        Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+                        while (iterator.hasNext()) {
+                            DataSnapshot snapshot = iterator.next();
                             reactionModelList.add(snapshot.getValue(ReactionModel.class));
-                        });
+                        }
                         Log.d(LOG_TAG,
                                 "Get all by user successful " + reactionModelList.toString());
                         listener.onSuccess(reactionModelList);
@@ -292,12 +292,15 @@ public class PostReactionRepository extends Repository {
                     @Override
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         List<ReactionModel> reactionModelList = new ArrayList<>();
-                        dataSnapshot.getChildren().forEach(snapshot -> {
+                        Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+                        while (iterator.hasNext()) {
+                            DataSnapshot snapshot = iterator.next();
                             reactionModelList.add(dataSnapshot.getValue(ReactionModel.class));
-                        });
-                        reactionModelList.forEach(reactionModel -> {
+                        }
+                        for (int i = 0; i < reactionModelList.size(); ++i) {
+                            ReactionModel reactionModel = reactionModelList.get(i);
                             deletePostReaction(reactionModel, null);
-                        });
+                        }
                     }
                 });
     }

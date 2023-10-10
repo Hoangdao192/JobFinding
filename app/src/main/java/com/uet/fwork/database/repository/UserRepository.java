@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -241,14 +242,16 @@ public class UserRepository extends Repository {
     public void getAllUser(OnQuerySuccessListener<List<UserModel>> listener) {
         rootDatabaseReference.get().addOnSuccessListener(dataSnapshot -> {
             List<UserModel> userModels = new ArrayList<>();
-            dataSnapshot.getChildren().forEach(item -> {
+            Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+            while (iterator.hasNext()) {
+                DataSnapshot item = iterator.next();
                 String userRole = (String) item.child("role").getValue();
                 if (userRole.equals(UserRole.CANDIDATE)) {
                     userModels.add(item.getValue(CandidateModel.class));
                 } else if (userRole.equals(UserRole.EMPLOYER)) {
                     userModels.add(item.getValue(EmployerModel.class));
                 }
-            });
+            }
             listener.onSuccess(userModels);
         });
     }

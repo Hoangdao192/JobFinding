@@ -72,7 +72,8 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
         chatRepository.getChatChanelById(chanelId, new Repository.OnQuerySuccessListener<ChanelModel>() {
             @Override
             public void onSuccess(ChanelModel chanel) {
-                chanel.getMembers().forEach(memberId -> {
+                for (int i = 0; i < chanel.getMembers().size(); ++i) {
+                    String memberId = chanel.getMembers().get(i);
                     if (!memberId.equals(currentUserId)) {
                         if (!userMap.containsKey(memberId)) {
                             //  Lấy thông tin user
@@ -133,7 +134,7 @@ public class ChatListRecyclerViewAdapter extends RecyclerView.Adapter<ChatListRe
                             });
                         }
                     }
-                });
+                }
             }
         });
     }

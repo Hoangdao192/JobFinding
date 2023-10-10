@@ -7,6 +7,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.uet.fwork.database.model.NotificationModel;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class NotificationRepository extends Repository {
@@ -39,9 +40,11 @@ public class NotificationRepository extends Repository {
                         .addOnSuccessListener(dataSnapshot -> {
                             Log.d(LOG_TAG, "Get all by user id successful " + userId);
                             List<NotificationModel> notificationList = new ArrayList<>();
-                            dataSnapshot.getChildren().forEach(snapshot -> {
+                            Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+                            while (iterator.hasNext()) {
+                                DataSnapshot snapshot = iterator.next();
                                 notificationList.add(snapshot.getValue(NotificationModel.class));
-                            });
+                            }
                             onSuccess(notificationList);
                         })
                         .addOnFailureListener(e -> {
@@ -65,9 +68,11 @@ public class NotificationRepository extends Repository {
                     public void onSuccess(DataSnapshot dataSnapshot) {
                         Log.d(LOG_TAG, "Get all by user id successful " + userId);
                         List<NotificationModel> notificationList = new ArrayList<>();
-                        dataSnapshot.getChildren().forEach(snapshot -> {
+                        Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+                        while (iterator.hasNext()) {
+                            DataSnapshot snapshot = iterator.next();
                             notificationList.add(snapshot.getValue(NotificationModel.class));
-                        });
+                        }
                         listener.onSuccess(notificationList);
                     }
                 })

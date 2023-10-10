@@ -51,7 +51,8 @@ public class CandidatePostApplyRecyclerViewAdapter extends RecyclerView.Adapter<
         this.userRepository = UserRepository.getInstance();
         this.postApplyRepository = PostApplyRepository.getInstance();
 
-        postApplyList.forEach(postApplyModel -> {
+        for (int i = 0; i < postApplyList.size(); ++i) {
+            PostApplyModel postApplyModel = postApplyList.get(i);
             switch (postApplyModel.getStatus()) {
                 case PostApplyStatus.WAITING:
                     unCheckApplicationList.add(postApplyModel);
@@ -63,7 +64,7 @@ public class CandidatePostApplyRecyclerViewAdapter extends RecyclerView.Adapter<
                     rejectedApplicationList.add(postApplyModel);
                     break;
             }
-        });
+        }
 
         this.postApplyList = unCheckApplicationList;
     }

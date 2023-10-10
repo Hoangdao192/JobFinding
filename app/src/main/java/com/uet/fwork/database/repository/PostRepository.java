@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.uet.fwork.database.model.post.PostModel;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class PostRepository extends Repository {
@@ -140,9 +141,11 @@ public class PostRepository extends Repository {
                 .addOnSuccessListener(dataSnapshot -> {
                     if (dataSnapshot.exists()) {
                         List<PostModel> postModels = new ArrayList<>();
-                        dataSnapshot.getChildren().forEach(snapshot -> {
+                        Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+                        while (iterator.hasNext()) {
+                            DataSnapshot snapshot = iterator.next();
                             postModels.add(snapshot.getValue(PostModel.class));
-                        });
+                        }
                         Log.d(LOG_TAG,
                                 "Get all post by user id successful "
                                         + userId + " " + postModels.toString());

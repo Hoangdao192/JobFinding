@@ -59,9 +59,11 @@ public class EmployerShowPostApplyFragment extends Fragment {
             @Override
             public void onSuccess(List<PostModel> postModelList) {
                 Map<String, PostModel> postMap = new HashMap<>();
-                postModelList.forEach(post -> {
+                for (int i = 0; i < postModelList.size(); ++i) {
+                    PostModel post = postModelList.get(i);
                     postMap.put(post.getPostId(), post);
-                });
+                }
+
                postApplyAdapter = new EmployerPostApplyRecyclerViewAdapter(
                     getContext(), postMap,
                        unReadPostApplyList, acceptedPostApplyList, rejectedPostApplyList
@@ -69,33 +71,33 @@ public class EmployerShowPostApplyFragment extends Fragment {
                 recPostApply.setLayoutManager(new LinearLayoutManager(getContext()));
                 recPostApply.setAdapter(postApplyAdapter);
 
-                postModelList.forEach(post -> {
-                    postApplyRepository.getAllByPost(post, new Repository.OnQuerySuccessListener<List<PostApplyModel>>() {
-                        @Override
-                        public void onSuccess(List<PostApplyModel> result) {
-                            //  Lọc post apply theo trạng thái đã chọn
-                            result.forEach(postApplyModel -> {
-                                switch (postApplyModel.getStatus()) {
-                                    case PostApplyStatus.WAITING:
-                                        unReadPostApplyList.add(postApplyModel);
-                                        postApplyAdapter
-                                                .notifyItemInserted(unReadPostApplyList.size());
-                                        break;
-                                    case PostApplyStatus.ACCEPTED:
-                                        acceptedPostApplyList.add(postApplyModel);
-                                        postApplyAdapter
-                                                .notifyItemInserted(acceptedPostApplyList.size());
-                                        break;
-                                    case PostApplyStatus.REJECTED:
-                                        rejectedPostApplyList.add(postApplyModel);
-                                        postApplyAdapter
-                                                .notifyItemInserted(rejectedPostApplyList.size());
-                                        break;
-                                }
-                            });
+                for (int i = 0; i < postModelList.size(); ++i) {
+                    PostModel post = postModelList.get(i);
+                    postApplyRepository.getAllByPost(post, result -> {
+                        //  Lọc post apply theo trạng thái đã chọn
+                        for (int j = 0; j < result.size(); ++j) {
+                            PostApplyModel postApplyModel = result.get(j);
+                            switch (postApplyModel.getStatus()) {
+                                case PostApplyStatus.WAITING:
+                                    unReadPostApplyList.add(postApplyModel);
+                                    postApplyAdapter
+                                            .notifyItemInserted(unReadPostApplyList.size());
+                                    break;
+                                case PostApplyStatus.ACCEPTED:
+                                    acceptedPostApplyList.add(postApplyModel);
+                                    postApplyAdapter
+                                            .notifyItemInserted(acceptedPostApplyList.size());
+                                    break;
+                                case PostApplyStatus.REJECTED:
+                                    rejectedPostApplyList.add(postApplyModel);
+                                    postApplyAdapter
+                                            .notifyItemInserted(rejectedPostApplyList.size());
+                                    break;
+                            }
                         }
                     });
-                });
+
+                }
             }
         });
 

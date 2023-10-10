@@ -144,13 +144,13 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void updateSelectedItem() {
-        btnList.forEach(btn -> {
+        for (ImageView btn : btnList) {
             if (btn.getId() == selectedButtonId) {
                 System.out.println("SETTER");
                 btn.setColorFilter(Color.parseColor("#0D0140"));
             } else {
                 btn.setColorFilter(Color.parseColor("#A49EB5"));
             }
-        });
+        }
     }
 }
